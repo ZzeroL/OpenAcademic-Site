@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EFF1F5">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic：把「读过并真的知道」做成一条可核对的生产线。派方向，它持续读、持续比对、持续记；交付能直接进稿子的结论，每条追得到原文出处。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OpenAcademic · 可核对的研究生产线">
+<meta property="og:description" content="派方向，它持续读、持续比对、持续记；交付的每条结论都挂着 paper_id 与节锚点。">
+<meta property="og:locale" content="zh_CN">
+<title>OpenAcademic · 可核对的研究生产线</title>
+<style>
+/* ============================================================
+   tokens
+   ============================================================ */
+:root{
+  --bg:#EFF1F5;
+  --card:#FFFFFF;
+  --card-alt:#FAFBFD;
+  --ink:#14161B;
+  --ink-2:#454B56;
+  --ink-3:#666D7A;
+  --rule:#E4E8EF;
+  --rule-2:#D6DAE3;
+  --brand:#6C5CE7;
+  --brand-deep:#5B4BD6;
+  --brand-weak:#EFECFD;
+  --brand-weak2:#E3DFFB;
+  --warn:#B57A0B;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.05),0 2px 8px rgba(16,24,40,.04);
+  --shadow-md:0 1px 2px rgba(16,24,40,.06),0 10px 30px -16px rgba(16,24,40,.35);
+  --sans:-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --mono:"IBM Plex Mono","JetBrains Mono","Cascadia Code","SF Mono",Consolas,ui-monospace,monospace;
+  --maxw:1240px;
+  --pad:32px;
+  --radius:22px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.75;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.nw{white-space:nowrap}
+::selection{background:var(--brand-weak);color:var(--ink)}
+:target{scroll-margin-top:84px}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+code{font-family:var(--mono)}
+
+/* ============================================================
+   masthead
+   ============================================================ */
+.masthead{
+  position:sticky;top:0;z-index:60;
+  background:rgba(239,241,245,.82);
+  backdrop-filter:blur(18px) saturate(1.6);-webkit-backdrop-filter:blur(18px) saturate(1.6);
+  border-bottom:1px solid var(--rule);
+}
+.mast-inner{
+  max-width:var(--maxw);margin:0 auto;padding:12px var(--pad);
+  display:flex;align-items:center;gap:28px;
+}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.brand-mark{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,#8B7CF0,#5B4BD6);
+  box-shadow:0 4px 12px rgba(108,92,231,.28),inset 0 1px 0 rgba(255,255,255,.25);
+  display:grid;place-items:center;color:#fff;
+  font-weight:800;font-size:12.5px;letter-spacing:.5px;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-name{font-weight:800;font-size:15.5px;letter-spacing:.1px}
+.brand-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--ink-3);margin-top:2px;text-transform:uppercase}
+.mast-nav{display:flex;gap:2px}
+.mast-nav a{
+  font-size:13.5px;color:var(--ink-2);text-decoration:none;
+  padding:6px 12px;border-radius:8px;transition:color .15s,background .15s;
+}
+.mast-nav a:hover{color:var(--ink);background:var(--card)}
+.mast-cta{
+  margin-left:auto;display:inline-flex;align-items:center;gap:7px;
+  background:var(--brand);color:#fff;text-decoration:none;
+  font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.02em;
+  padding:8px 15px;border-radius:9px;
+  box-shadow:0 2px 10px rgba(108,92,231,.28);
+  transition:background .15s,transform .15s;
+}
+.mast-cta:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.mast-cta .arr{font-family:var(--sans);font-size:12.5px;line-height:1}
+
+/* ============================================================
+   hero（首屏，整块浅灰不套卡）
+   ============================================================ */
+.hero{
+  max-width:var(--maxw);margin:0 auto;padding:76px var(--pad) 0;
+  position:relative;
+}
+.hero::before{
+  content:'';position:absolute;inset:0 0 0 0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(720px 380px at 12% -6%, rgba(108,92,231,.09) 0%, transparent 62%),
+    radial-gradient(560px 320px at 96% 4%, rgba(139,124,240,.07) 0%, transparent 60%);
+}
+.hero > *{position:relative;z-index:1}
+.kicker{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--brand-deep);
+  font-weight:600;
+}
+.kicker::before{content:'';width:34px;height:1px;background:var(--brand);flex-shrink:0}
+.hero h1{
+  font-weight:800;
+  font-size:clamp(36px,5.4vw,62px);line-height:1.16;letter-spacing:-.03em;
+  margin:26px 0 0;max-width:16em;
+}
+.hero h1 .mk{
+  background:linear-gradient(100deg,#8B7CF0,#6C5CE7 60%,#5B4BD6);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-lede{
+  font-size:clamp(16px,1.4vw,18px);line-height:1.9;
+  color:var(--ink-2);max-width:40em;margin-top:24px;text-wrap:pretty;
+}
+.hero-lede code,.sec-lede code,.three p code{font-family:var(--mono);font-size:.93em;letter-spacing:-.01em}
+.hero-lede b{color:var(--ink);font-weight:650}
+.hero-acts{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+  font-size:14.5px;font-weight:650;padding:13px 24px;border-radius:11px;transition:all .16s;
+}
+.btn-solid{background:var(--brand);color:#fff;box-shadow:0 6px 20px rgba(108,92,231,.30)}
+.btn-solid:hover{background:var(--brand-deep);transform:translateY(-1px)}
+.btn-line{background:var(--card);color:var(--ink);border:1px solid var(--rule-2);box-shadow:var(--shadow-sm)}
+.btn-line:hover{border-color:var(--brand);color:var(--brand)}
+
+.abstract{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  margin-top:44px;background:var(--card);
+  border:1px solid var(--rule);border-radius:16px;
+  box-shadow:var(--shadow-sm);overflow:hidden;
+}
+.abs-cell{padding:22px 26px;border-right:1px solid var(--rule)}
+.abs-cell:last-child{border-right:none}
+.abs-k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;display:block;margin-bottom:8px}
+.abs-v{font-size:14px;color:var(--ink-2);line-height:1.85;text-wrap:balance;word-break:keep-all}
+.abs-v b{color:var(--ink);font-weight:650}
+
+/* ============================================================
+   板块骨架：连续排版，板块之间只靠留白分节
+   ============================================================ */
+.section{max-width:var(--maxw);margin:0 auto;padding:88px var(--pad) 0}
+.sec-head{max-width:none}
+.sec-k{
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--brand-deep);
+  text-transform:uppercase;font-weight:700;
+}
+.sec-k::after{content:'';flex:1;height:1px;background:var(--rule-2)}
+.sec-head h2{font-weight:800;letter-spacing:-.025em;font-size:clamp(28px,3.6vw,42px);line-height:1.25;margin-top:18px;max-width:20em;text-wrap:balance}
+.sec-lede{margin-top:12px;font-size:16px;line-height:1.9;color:var(--ink-2);max-width:48em;text-wrap:pretty}
+.sec-lede b{color:var(--ink);font-weight:650}
+.fnref{font-family:var(--mono);font-size:9px;color:var(--brand-deep);text-decoration:none;position:relative;top:-.55em;line-height:0;padding-left:2px}
+
+/* ============================================================
+   01 收件箱样张
+   ============================================================ */
+.stage{background:var(--card-alt);border:1px solid var(--rule);border-radius:16px;padding:24px;overflow-x:auto}
+.section .stage{margin-top:28px}
+.stage-hint{display:none;margin-top:10px;text-align:right;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+@media (max-width:759px){.stage-hint{display:block}}
+.annot{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule)}
+.annot div{font-size:13.5px;color:var(--ink-2);line-height:1.8;position:relative;padding-left:32px}
+.annot div::before{
+  content:attr(data-n);position:absolute;left:0;top:1px;
+  width:20px;height:20px;border:1.5px solid var(--brand);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9.5px;line-height:1;color:var(--brand);font-weight:700;
+}
+
+/* ============================================================
+   02 三件事
+   ============================================================ */
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:32px}
+.three > div{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:30px 28px;box-shadow:var(--shadow-sm);transition:border-color .18s,transform .18s,box-shadow .18s}
+.three > div:hover{border-color:var(--brand-weak2);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.tk{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--brand);font-weight:700}
+.three h3{font-size:20px;font-weight:750;line-height:1.4;margin-top:14px;letter-spacing:-.01em}
+.three p{font-size:14.5px;line-height:1.85;color:var(--ink-2);margin-top:10px;margin-bottom:18px;text-wrap:balance}
+.three p b{color:var(--ink);font-weight:650}
+.td{display:block;margin-top:auto;padding-top:12px;border-top:1px dashed var(--rule-2);font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--ink-3);text-wrap:pretty}
+.verdict{
+  margin-top:32px;padding:26px 30px;border-radius:14px;
+  background:var(--brand-weak);border:1px solid var(--brand-weak2);
+  font-size:clamp(17px,2vw,21px);line-height:1.7;color:var(--ink);text-wrap:pretty;
+}
+.verdict b,.verdict strong{color:var(--brand-deep);font-weight:700}
+
+/* ============================================================
+   03 快速开始
+   ============================================================ */
+.start{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px;align-items:start;margin-top:32px}
+.term{background:#16151D;color:#E8E6F0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-md)}
+.term-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:11px 16px;border-bottom:1px solid rgba(232,230,240,.1);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:#9A96AC;
+}
+.term-bar .tdots{display:flex;gap:6px}
+.term-bar .tdots i{width:10px;height:10px;border-radius:50%;display:block}
+.term-bar .tdots .r{background:#FF5F57}.term-bar .tdots .y{background:#FEBC2E}.term-bar .tdots .g{background:#28C840}
+.term-body{padding:18px 18px 22px;font-family:var(--mono);font-size:12.3px;line-height:2.15;overflow-x:auto}
+.term-body .ln{display:flex;gap:10px;white-space:nowrap}
+.term-body .pr{color:#C9A8E0}
+.term-body .cm{color:#F0EBF6}
+.term-body .arg{color:#A9A3B8}
+.term-body .ok{color:#7FBF96;margin-left:auto;padding-left:24px}
+.term-body .warn{color:#D9B36A;margin-left:auto;padding-left:24px}
+.steps{list-style:none;padding:0;margin:0}
+.steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:14px;padding:0 0 22px}
+.steps li:last-child{padding-bottom:0}
+.steps .sn{
+  width:30px;height:30px;border-radius:8px;background:var(--brand-weak);color:var(--brand);
+  border:1px solid var(--brand-weak2);
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.steps b{font-size:14.5px;font-weight:700;display:block;line-height:1.6}
+.steps p{font-size:13px;color:var(--ink-2);line-height:1.8;margin-top:3px}
+.steps code{font-family:var(--mono);font-size:12px;color:var(--brand-deep);background:var(--brand-weak);border:1px solid var(--brand-weak2);padding:0 5px;border-radius:5px}
+.warn-box{border:1px solid #F0D8A8;background:#FBF4E2;padding:15px 17px;margin-top:20px;border-radius:10px}
+.warn-box .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--warn);text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px}
+.warn-box p{font-size:12.5px;line-height:1.8;color:var(--ink)}
+.warn-box code{font-family:var(--mono);font-size:12px;font-weight:700;background:#fff;border:1px solid #F0D8A8;padding:0 5px;border-radius:4px}
+
+/* ============================================================
+   产品样张（收件箱）
+   ============================================================ */
+.ui{
+  --u-bg:#F6F7F9;--u-surface:#FFFFFF;--u-border:#E6E9EF;--u-border2:#D8DCE4;
+  --u-text:#1A1D24;--u-text2:#5F6673;--u-text3:#98A0AE;
+  --u-brand:#6C5CE7;--u-brand-weak:#EFECFD;--u-ok:#0F9D6E;--u-warn:#B57A0B;
+  font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--u-text);
+  background:var(--u-bg);border:1px solid var(--u-border2);border-radius:12px;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 1px 2px rgba(16,24,40,.05),0 16px 44px -24px rgba(16,24,40,.4);
+  min-width:1000px;text-align:left;
+}
+.ui *{box-sizing:border-box}
+.u-top{flex:0 0 auto;display:flex;align-items:center;gap:16px;height:50px;padding:0 16px;background:var(--u-surface);border-bottom:1px solid var(--u-border)}
+.u-brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13.5px;letter-spacing:.2px}
+.u-logo{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#7C6CF0,#5B4BD6);color:#fff;font-size:10px;font-weight:800}
+.u-domain{display:inline-flex;align-items:center;gap:7px;background:var(--u-brand-weak);border:1px solid #DAD3FB;color:var(--u-brand);border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:600}
+.u-global{display:flex;gap:2px}
+.u-global span{font-size:12px;color:var(--u-text2);padding:5px 10px;border-radius:6px}
+.u-global span.on{background:#F1F2F6;color:var(--u-text);font-weight:700}
+.u-user{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--u-text2)}
+.u-avatar{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#E7E4FB;color:#4B3FBF;font-size:11px;font-weight:700}
+.u-body{flex:1;min-height:0;overflow:auto;padding:14px 16px 16px;display:flex;flex-direction:column}
+.u-body > *{flex:0 0 auto}
+.u-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--u-text3);text-transform:uppercase}
+.u-label.mark{color:var(--u-brand)}
+.u-meta{font-size:11px;color:var(--u-text3)}
+.u-btn{appearance:none;border:1px solid var(--u-border2);background:var(--u-surface);color:var(--u-text);font-size:11.5px;font-weight:600;border-radius:7px;padding:6px 13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.u-btn:hover{border-color:#B9BFCC}
+.u-btn.primary{background:var(--u-brand);border-color:var(--u-brand);color:#fff;box-shadow:0 2px 8px rgba(108,92,231,.28)}
+.u-btn.sm{padding:4px 10px;font-size:11px}
+.u-btn.ghost{color:var(--u-brand);border-color:#CFC7FB;background:#FBFAFF}
+.u-status{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--u-surface);border:1px solid var(--u-border);border-radius:9px;padding:9px 13px;font-size:12px;color:var(--u-text2)}
+.u-status .u-strong{font-weight:800;color:var(--u-text)}
+.u-status .u-btn{margin-left:auto}
+.u-compose{margin-top:12px}
+.u-compose-row{margin-top:6px;display:flex;align-items:center;gap:9px;background:var(--u-surface);border:1px solid var(--u-border2);border-radius:9px;padding:8px 9px 8px 13px}
+.u-ph{color:#A6ADBA;font-size:12.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u-pick{font-size:11px;color:var(--u-text2);background:#F3F4F8;border:1px solid var(--u-border);padding:4px 9px;border-radius:6px;white-space:nowrap}
+.u-decision{margin-top:12px;background:var(--u-surface);border:1px solid #DED8FC;border-left:3px solid var(--u-brand);border-radius:8px;padding:11px 14px}
+.u-decision-top{display:flex;align-items:baseline;gap:10px}
+.u-decision-top .u-meta{margin-left:auto}
+.u-decision-text{font-size:14.5px;font-weight:600;line-height:1.55;margin-top:6px}
+.u-acts{display:flex;gap:7px;margin-top:9px}
+.u-kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.u-kh{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--u-text2);margin-bottom:7px}
+.u-kh b{font-family:var(--mono);font-size:10px;background:#EDEFF4;color:var(--u-text2);border-radius:4px;padding:1px 5px;font-weight:600}
+.u-card{background:var(--u-surface);border:1px solid var(--u-border);border-radius:8px;padding:10px 11px;margin-bottom:8px;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+.u-card-t{font-size:12.5px;font-weight:650;line-height:1.5}
+.u-card-m{font-size:10.5px;color:var(--u-text3);margin-top:4px}
+.u-trace{margin-top:7px;font-family:var(--mono);font-size:10px;line-height:1.9;color:var(--u-text2);background:#F7F8FB;border-radius:5px;padding:5px 7px}
+.u-trace i{font-style:normal;color:var(--u-ok)}
+.u-trace .curl{color:var(--u-brand)}
+.u-progress{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:10px;color:var(--u-text3)}
+.u-bar{flex:1;height:4px;background:#EDEFF4;border-radius:99px;overflow:hidden}
+.u-bar i{display:block;height:100%;width:66%;background:var(--u-brand);border-radius:99px}
+.u-digest{margin-top:12px;border:1px solid var(--u-border);background:var(--u-surface);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:12px;font-size:11.5px;color:var(--u-text2)}
+.u-digest b{color:var(--u-text);font-weight:700}
+.u-digest .r{margin-left:auto;font-size:10.5px;color:var(--u-text3);white-space:nowrap}
+.u-digest .r span{color:var(--u-brand);font-weight:600;margin-left:9px}
+
+/* ============================================================
+   footer
+   ============================================================ */
+footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64px}
+.foot-top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:56px;background:#14161B;border:1px solid #14161B;border-radius:var(--radius);box-shadow:0 30px 70px -40px rgba(16,24,40,.55);padding:48px 48px}
+.foot-line{font-weight:800;letter-spacing:-.025em;font-size:clamp(32px,4.5vw,48px);line-height:1.2;color:#fff}
+.foot-sub{font-size:15px;color:#A9B0BD;margin-top:14px;line-height:1.8}
+.foot-nope{margin-top:14px;font-size:12px;line-height:1.9;color:#8E96A5;max-width:34em;text-wrap:pretty}
+.foot-links{list-style:none;padding:0;margin:0;align-self:end}
+.foot-links li{border-top:1px solid rgba(255,255,255,.14)}
+.foot-links a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 2px;text-decoration:none;font-size:14px;color:#D9DDE6;transition:color .15s,padding-left .15s}
+.foot-links a:hover{color:#fff;padding-left:6px}
+.foot-links a:hover .arr{color:#A08CF7}
+.foot-links .lab{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#8E96A5;display:block;margin-bottom:2px}
+.foot-links .arr{color:#8E96A5;transition:color .15s}
+.foot-meta{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:28px;padding:0 4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--ink-3)}
+.notes{margin-top:26px;padding:0 4px}
+.notes p{font-size:11.5px;line-height:1.8;color:var(--ink-3);max-width:64em;text-wrap:pretty}
+.notes p b{font-family:var(--mono);color:var(--ink-2);font-weight:500;margin-right:6px}
+
+/* ============================================================
+   responsive
+   ============================================================ */
+@media (max-width:1120px){
+  .start{grid-template-columns:1fr}
+  .mast-nav{display:none}
+}
+@media (max-width:900px){
+  :root{--pad:22px}
+  .hero{padding-top:60px}
+  .abstract{grid-template-columns:1fr}
+  .abs-cell{border-right:none;border-bottom:1px solid var(--rule);padding:18px 22px}
+  .abs-cell:last-child{border-bottom:none}
+  .section{padding-top:64px}
+  .sec-head h2{margin-top:14px}
+  .three{grid-template-columns:1fr;margin-top:24px}
+  .annot{grid-template-columns:1fr;gap:12px}
+  .foot-top{grid-template-columns:1fr;gap:34px;padding:32px 22px}
+  .stage{padding:14px}
+  .ui{min-width:1000px;height:auto}
+}
+@media (max-width:600px){
+  .hero h1{font-size:34px}
+  .mast-inner{gap:12px}
+  .brand-sub{display:none}
+  .mast-cta{font-size:10.5px;padding:7px 11px}
+  .term-body{font-size:11px}
+  .term-body .ln{flex-wrap:wrap;white-space:normal}
+  .sec-head h2{font-size:26px}
+  .verdict{padding:22px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+@media print{
+  body{background:#fff}
+  .masthead{position:static}
+  .mast-nav,.mast-cta,.stage-hint{display:none}
+  .foot-top{box-shadow:none}
+  .foot-top{background:#fff;border-color:#ddd}
+  .foot-line{color:var(--ink)}
+  .foot-sub,.foot-links a{color:var(--ink-2)}
+  .stage{overflow:visible}
+  .ui{height:auto;min-width:0}
+}
+/* tablet and up: let the inbox mock fill the stage instead of forcing 1000px */
+@media (min-width:760px){.ui{min-width:0}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="#top" aria-label="OpenAcademic 首页">
+      <span class="brand-mark">OA</span>
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">可核对的研究生产线</span>
+      </span>
+    </a>
+    <nav class="mast-nav">
+      <a href="#how">收件箱</a>
+      <a href="#how2">三件事</a>
+      <a href="#start">上手</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">
+      GitHub <span class="arr" aria-hidden="true">↗</span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="kicker">开源 · Apache-2.0 · 可私有部署 · 2026</div>
+    <h1>把「读过并真的知道」<br>做成一条<span class="mk">可核对</span>的生产线</h1>
+    <p class="hero-lede">
+      派方向，它持续读、持续比对、持续记。你收回来的不是聊天记录，而是<b>能直接进稿子和幻灯片的结论</b>——每一条都挂着 <code>paper_id</code> 与节锚点，点开就是原文。
+    </p>
+    <div class="hero-acts">
+      <a class="btn btn-solid" href="#how">看它怎么干活 <span class="arr" aria-hidden="true">↓</span></a>
+      <a class="btn btn-line" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">查看源码 <span class="arr" aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="abstract">
+      <div class="abs-cell">
+        <span class="abs-k">形态</span>
+        <p class="abs-v"><b>CLI + Web</b> 两种运行形态，共用一套 Agent 内核、记忆与上下文管理。</p>
+      </div>
+      <div class="abs-cell">
+        <span class="abs-k">交付</span>
+        <p class="abs-v">交互单位是<b>条目与决定</b>，不是对话轮次；白卷也是一等交付物。</p>
+      </div>
+      <div class="abs-cell">
+        <span class="abs-k">边界</span>
+        <p class="abs-v">只做 arXiv、中文界面、私有部署。<b>可以牺牲通用性，不牺牲可靠性。</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01 收件箱 ============ -->
+  <section class="section" id="how">
+    <div class="sec-head">
+      <span class="sec-k">FIG. 01 · 收件箱</span>
+      <h2>登录后的第一屏是收件箱，不是聊天框</h2>
+      <p class="sec-lede">打开就有答案。交给它一件事，它自己在三列看板里跑；干完的活停在<span class="nw">「待验」</span>，等你的裁决。</p>
+    </div>
+    <div class="stage">
+        <div class="ui" role="img" aria-label="收件箱界面示意：顶部状态线显示距组会 2 天、3 条决定待确认、2 条干完待验；下方是三列看板（派出的活、进行中、干完待验），底部为本周清单摘要。">
+          <div class="u-top">
+            <div class="u-brand"><span class="u-logo">OA</span>OpenAcademic</div>
+            <div class="u-domain">全部领域 · 选一个领域<i>▾</i></div>
+            <div class="u-global"><span class="on">收件箱</span><span>本周清单</span></div>
+            <div class="u-user"><span class="u-avatar">林</span>林一<i>▾</i></div>
+          </div>
+          <div class="u-body">
+            <div class="u-status">
+              <span class="u-strong">距组会 2 天</span>
+              <span>3 条决定待确认</span>
+              <span>2 条干完待验</span>
+              <button type="button" tabindex="-1" class="u-btn ghost">交付本周清单</button>
+            </div>
+            <div class="u-compose">
+              <div class="u-label">交给它一件事</div>
+              <div class="u-compose-row">
+                <span class="u-ph">读 LooGLE 那篇，出节级笔记，重点看长依赖</span>
+                <span class="u-pick">长上下文大语言模型 ▾</span>
+                <button type="button" tabindex="-1" class="u-btn primary">派出去</button>
+              </div>
+            </div>
+            <div class="u-decision">
+              <div class="u-decision-top">
+                <span class="u-label mark">本周决定</span>
+                <span class="u-meta">agent 起草 · 依据 3 条已确认 · 11-09</span>
+              </div>
+              <div class="u-decision-text">本周不深读新论文，先把 3 篇种子补齐节级引句。</div>
+              <div class="u-acts">
+                <button type="button" tabindex="-1" class="u-btn primary sm">确认</button>
+                <button type="button" tabindex="-1" class="u-btn sm">修改</button>
+                <button type="button" tabindex="-1" class="u-btn sm">推翻</button>
+              </div>
+            </div>
+            <div class="u-kanban">
+              <div>
+                <div class="u-kh">派出的活 <b>2</b></div>
+                <div class="u-card">
+                  <div class="u-card-t">综述 · RAG 评测方法</div>
+                  <div class="u-card-m">长上下文大语言模型 · 5 分钟前</div>
+                </div>
+                <div class="u-card">
+                  <div class="u-card-t">对比表 · 长上下文评测基准</div>
+                  <div class="u-card-m">长上下文大语言模型 · 2 小时前</div>
+                </div>
+              </div>
+              <div>
+                <div class="u-kh">进行中 <b>1</b></div>
+                <div class="u-card">
+                  <div class="u-card-t">精读 · LooGLE</div>
+                  <div class="u-trace">
+                    <div><i>✓</i> get_papers · 3 命中</div>
+                    <div><i>✓</i> paper_pdf_download</div>
+                    <div><span class="curl">▸</span> read_paper_section §4</div>
+                  </div>
+                  <div class="u-progress"><span class="u-bar"><i></i></span>6 / 9 节</div>
+                </div>
+              </div>
+              <div>
+                <div class="u-kh">干完待验 <b>2</b></div>
+                <div class="u-card">
+                  <div class="u-card-t">条目 × 4 · LooGLE</div>
+                  <div class="u-card-m">每条第 4 节有出处</div>
+                  <div class="u-acts">
+                    <button type="button" tabindex="-1" class="u-btn primary sm">确认采用</button>
+                    <button type="button" tabindex="-1" class="u-btn sm">退回重跑</button>
+                  </div>
+                </div>
+                <div class="u-card">
+                  <div class="u-card-t">粗筛未读 × 17</div>
+                  <div class="u-card-m">每篇附一句不读的理由</div>
+                </div>
+              </div>
+            </div>
+            <div class="u-digest"><span><b>本周清单</b> · 12 条判断 / 4 个领域</span><span class="r">粗筛未读 17 · 通道异常 1 <span>打开 →</span></span></div>
+          </div>
+        </div>
+      </div>
+      <p class="stage-hint">← 横向拖动查看整屏</p>
+      <div class="annot">
+        <div data-n="1">状态线只说三件事：<b>距组会几天、几条待确认、几条<span class="nw">待验</span></b>。扫一眼就知道今天欠什么。</div>
+        <div data-n="2">本周决定由它起草，你只裁决。推翻要写理由——理由它也先替你写好。</div>
+        <div data-n="3">三列是派出的活、进行中、<span class="nw">干完待验</span>。干完的可以<span class="nw">确认采用</span>，也可以退回重跑。</div>
+      </div>
+  </section>
+
+  <!-- ============ 02 三件事 ============ -->
+  <section class="section" id="how2">
+    <div class="sec-head">
+      <span class="sec-k">FIG. 02 · 收 / 核 / 变</span>
+      <h2>它只做三件事</h2>
+      <p class="sec-lede">界面为示意<a class="fnref" href="#n1">1</a>，细节以仓库为准。</p>
+    </div>
+    <div class="three">
+        <div>
+          <span class="tk">01 · 收</span>
+          <h3>一句话派活</h3>
+          <p>不选关键词、不挑论文、不配检索式。它自己检索、下载、按节读，干完的活停在收件箱等你验。</p>
+          <span class="td">默认 40 轮 · 27 个工具 · 3 层记忆</span>
+        </div>
+        <div>
+          <span class="tk">02 · 核</span>
+          <h3>每条结论带出处</h3>
+          <p>挂 <code>paper_id</code> + 节锚点，点开就是原文高亮句。定位不到就显式标<span class="nw">「未定位」</span>，禁止编造节号或引句。</p>
+          <span class="td">128K 上下文 · 70% / 90% 两档压缩</span>
+        </div>
+        <div>
+          <span class="tk">03 · 变</span>
+          <h3>判断的变更留痕</h3>
+          <p>起草、确认、推翻都进轨迹轴；被推翻的判断带理由变成负样本，同类候选下次自动降级为粗筛。</p>
+          <span class="td">召回目前以 arXiv 为主，多源对齐在路线图</span>
+        </div>
+      </div>
+      <p class="verdict">素材层的错误没人能发现，所以<strong>错了必须看得见</strong>。</p>
+  </section>
+
+  <!-- ============ 03 快速开始 ============ -->
+  <section class="section" id="start">
+    <div class="sec-head">
+      <span class="sec-k">FIG. 03 · 上手</span>
+      <h2>五分钟，跑起一个实验室</h2>
+      <p class="sec-lede">前置条件只有三个：Python ≥ 3.10、Node.js ≥ 20.9、一个 OpenAI 兼容的模型端点。</p>
+    </div>
+    <div class="start">
+        <div class="term">
+          <div class="term-bar">
+            <span class="tdots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+            <span>quickstart · bash</span>
+          </div>
+          <div class="term-body">
+            <div class="ln"><span class="pr">$</span><span class="cm">git clone</span> <span class="arg">https://github.com/ZzeroL/OpenAcademic.git</span></div>
+            <div class="ln"><span class="pr">$</span><span class="cm">cd</span> <span class="arg">OpenAcademic</span> <span class="arg">&amp;&amp; python -m venv .venv</span></div>
+            <div class="ln"><span class="pr">$</span><span class="cm">source</span> <span class="arg">.venv/bin/activate</span> <span class="arg">&amp;&amp; pip install -e .</span></div>
+            <div class="ln"><span class="pr">$</span><span class="cm">cd</span> <span class="arg">frontend &amp;&amp; npm ci &amp;&amp; cd ..</span></div>
+            <div class="ln"><span class="pr">$</span><span class="cm">cp</span> <span class="arg">.env.example .env</span><span class="warn"># 填 MODEL_URL / MODEL_API_KEY</span></div>
+            <div class="ln"><span class="pr">$</span><span class="cm">node</span> <span class="arg">start.mjs</span></div>
+            <div class="ln"><span class="ok">✓ ready → http://localhost:3000</span></div>
+          </div>
+        </div>
+        <div>
+          <ol class="steps">
+            <li><span class="sn">01</span><div><b>clone 只是下载代码</b><p>不建库、不建工作区、不写任何配置。</p></div></li>
+            <li><span class="sn">02</span><div><b>首次启动才初始化</b><p>建工作区 → 播种技能 → 建库 → 插入管理员。</p></div></li>
+            <li><span class="sn">03</span><div><b>服务器部署</b><p>systemd + Nginx；前端产物由 CI 出包，<b>服务器上不编译。</b></p></div></li>
+          </ol>
+          <div class="warn-box">
+            <span class="k">部署后第一件事</span>
+            <p>初始口令 <code>admin123</code> 公开写在源码里，等同无口令。<b>登录后立即改密</b>，再给组员开账号。</p>
+          </div>
+        </div>
+      </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="colophon">
+    <div class="foot-top">
+      <div>
+        <h2 class="foot-line">派方向，它开读。</h2>
+        <p class="foot-sub">「读过并真的知道」——每条结论，追得到原文出处。</p>
+        <p class="foot-nope">不做论文管理器、纪要与 PPT 工具、外部日历、自动化研究。</p>
+      </div>
+      <ul class="foot-links">
+        <li><a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener"><span><span class="lab">SOURCE</span>GitHub 仓库</span><span class="arr" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://github.com/ZzeroL/OpenAcademic/blob/main/docs/roadmap.md" target="_blank" rel="noopener"><span><span class="lab">ROADMAP</span>已知限制与规划</span><span class="arr" aria-hidden="true">↗</span></a></li>
+      </ul>
+    </div>
+    <div class="notes" id="notes">
+      <p id="n1"><b>1</b>本页界面为产品样张，数据与节选均为示意；链路与工具名取自真实实现。</p>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 可核对的研究生产线 · 2026</span>
+    </div>
+  </footer>
+
+</body>
+</html>
