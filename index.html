@@ -39,11 +39,12 @@
   --radius:22px;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--sans);font-size:16px;line-height:1.75;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-wrap:break-word;
 }
 a{color:inherit}
 a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
@@ -148,7 +149,7 @@ code{font-family:var(--mono)}
 .abs-cell{padding:22px 26px;border-right:1px solid var(--rule)}
 .abs-cell:last-child{border-right:none}
 .abs-k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;display:block;margin-bottom:8px}
-.abs-v{font-size:14px;color:var(--ink-2);line-height:1.85;text-wrap:balance;word-break:keep-all}
+.abs-v{font-size:14px;color:var(--ink-2);line-height:1.85;text-wrap:balance;overflow-wrap:break-word}
 .abs-v b{color:var(--ink);font-weight:650}
 
 /* ============================================================
@@ -172,8 +173,6 @@ code{font-family:var(--mono)}
    ============================================================ */
 .stage{background:var(--card-alt);border:1px solid var(--rule);border-radius:16px;padding:24px;overflow-x:auto}
 .section .stage{margin-top:28px}
-.stage-hint{display:none;margin-top:10px;text-align:right;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
-@media (max-width:759px){.stage-hint{display:block}}
 .annot{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule)}
 .annot div{font-size:13.5px;color:var(--ink-2);line-height:1.8;position:relative;padding-left:32px}
 .annot div::before{
@@ -249,7 +248,7 @@ code{font-family:var(--mono)}
   background:var(--u-bg);border:1px solid var(--u-border2);border-radius:12px;
   display:flex;flex-direction:column;overflow:hidden;
   box-shadow:0 1px 2px rgba(16,24,40,.05),0 16px 44px -24px rgba(16,24,40,.4);
-  min-width:1000px;text-align:left;
+  text-align:left;
 }
 .ui *{box-sizing:border-box}
 .u-top{flex:0 0 auto;display:flex;align-items:center;gap:16px;height:50px;padding:0 16px;background:var(--u-surface);border-bottom:1px solid var(--u-border)}
@@ -324,7 +323,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
    responsive
    ============================================================ */
 @media (max-width:1120px){
-  .start{grid-template-columns:1fr}
+  .start{grid-template-columns:minmax(0,1fr)}
   .mast-nav{display:none}
 }
 @media (max-width:900px){
@@ -339,17 +338,71 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
   .annot{grid-template-columns:1fr;gap:12px}
   .foot-top{grid-template-columns:1fr;gap:34px;padding:32px 22px}
   .stage{padding:14px}
-  .ui{min-width:1000px;height:auto}
+}
+/* 窄屏：收件箱样张改为纵向自适应，不再横向滚动 */
+@media (max-width:759px){
+  .stage{padding:12px;overflow:visible}
+  .ui{min-width:0;min-height:0}
+  .u-body{padding:12px}
+  .u-top{gap:8px 12px;height:auto;padding:10px 12px;flex-wrap:wrap}
+  .u-global{display:none}
+  .u-user{margin-left:auto}
+  .u-status{gap:6px 12px;padding:8px 11px;font-size:11.5px}
+  .u-status .u-btn{margin-left:0}
+  .u-compose-row{gap:7px;padding:8px 9px;flex-wrap:wrap}
+  .u-ph{flex:1 1 100%;min-width:0;white-space:normal}
+  .u-compose-row .u-btn{margin-left:auto}
+  .u-decision{padding:10px 12px}
+  .u-decision-top{gap:2px 8px;flex-wrap:wrap}
+  .u-decision-top .u-meta{margin-left:0;flex-basis:100%}
+  .u-acts{flex-wrap:wrap}
+  .u-kanban{grid-template-columns:1fr;gap:8px;margin-top:12px}
+  .u-trace{overflow-wrap:anywhere}
+  .u-digest{flex-wrap:wrap;gap:4px 10px}
+  .u-digest .r{margin-left:0;width:100%;white-space:normal}
 }
 @media (max-width:600px){
-  .hero h1{font-size:34px}
+  .hero h1{font-size:clamp(28px,8.2vw,34px)}
   .mast-inner{gap:12px}
   .brand-sub{display:none}
   .mast-cta{font-size:10.5px;padding:7px 11px}
+  .hero-acts{align-items:stretch;flex-direction:column}
+  .hero-acts .btn{justify-content:center}
   .term-body{font-size:11px}
-  .term-body .ln{flex-wrap:wrap;white-space:normal}
+  .term-body .ln{flex-wrap:wrap;white-space:normal;gap:6px}
+  .term-body .arg{overflow-wrap:anywhere}
+  .term-body .ok,.term-body .warn{margin-left:0;padding-left:0;flex-basis:100%}
   .sec-head h2{font-size:26px}
   .verdict{padding:22px 22px}
+  .foot-top{padding:28px 20px}
+  .annot div{font-size:13px;padding-left:30px}
+}
+@media (max-width:480px){
+  :root{--pad:16px}
+  .hero{padding-top:44px}
+  .hero h1{letter-spacing:-.02em}
+  .hero-lede{font-size:15px;line-height:1.85}
+  .kicker{font-size:10.5px;letter-spacing:.06em;gap:8px}
+  .kicker::before{width:20px}
+  .section{padding-top:52px}
+  .sec-head h2{font-size:23px}
+  .sec-lede{font-size:15px;line-height:1.85}
+  .abstract{margin-top:32px}
+  .abs-cell{padding:16px 18px}
+  .abs-v{font-size:13.5px}
+  .three > div{padding:24px 20px}
+  .verdict{padding:18px;font-size:16px}
+  .steps li{grid-template-columns:26px minmax(0,1fr);gap:10px;padding-bottom:18px}
+  .steps .sn{width:26px;height:26px;border-radius:7px}
+  .warn-box{padding:13px 14px}
+  .term-body{padding:14px 14px 16px;line-height:1.95}
+  .stage{padding:8px}
+  .u-body{padding:10px}
+  .foot-top{padding:24px 16px;border-radius:18px}
+  .foot-line{font-size:27px}
+  .foot-sub{font-size:14px}
+  .foot-links a{font-size:13.5px}
+  .foot-meta{font-size:9.5px;gap:8px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -358,16 +411,14 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
 @media print{
   body{background:#fff}
   .masthead{position:static}
-  .mast-nav,.mast-cta,.stage-hint{display:none}
+  .mast-nav,.mast-cta{display:none}
   .foot-top{box-shadow:none}
   .foot-top{background:#fff;border-color:#ddd}
   .foot-line{color:var(--ink)}
   .foot-sub,.foot-links a{color:var(--ink-2)}
   .stage{overflow:visible}
-  .ui{height:auto;min-width:0}
+  .ui{height:auto}
 }
-/* tablet and up: let the inbox mock fill the stage instead of forcing 1000px */
-@media (min-width:760px){.ui{min-width:0}}
 </style>
 </head>
 <body>
@@ -508,7 +559,6 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
           </div>
         </div>
       </div>
-      <p class="stage-hint">← 横向拖动查看整屏</p>
       <div class="annot">
         <div data-n="1">状态线只说三件事：<b>距组会几天、几条待确认、几条<span class="nw">待验</span></b>。扫一眼就知道今天欠什么。</div>
         <div data-n="2">本周决定由它起草，你只裁决。推翻要写理由——理由它也先替你写好。</div>
