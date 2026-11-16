@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#EFF1F5">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
-<meta name="description" content="OpenAcademic：把「读过并真的知道」做成一条可核对的生产线。派方向，它持续读、持续比对、持续记；交付能直接进稿子的结论，每条追得到原文出处。">
+<meta name="description" content="OpenAcademic：把「读过并真的知道」做成一条可核对的生产线。派方向，它持续读、持续比对、持续记；关键词与引用链双通道每周扫描，漏检能归因；交付的每条结论都追得到原文出处。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="OpenAcademic · 可核对的研究生产线">
-<meta property="og:description" content="派方向，它持续读、持续比对、持续记；交付的每条结论都挂着 paper_id 与节锚点。">
+<meta property="og:description" content="关键词 + 引用链双通道每周扫描，候选一键派活；交付的每条结论都挂着 paper_id 与节锚点。">
 <meta property="og:locale" content="zh_CN">
 <title>OpenAcademic · 可核对的研究生产线</title>
 <style>
@@ -183,7 +183,7 @@ code{font-family:var(--mono)}
 }
 
 /* ============================================================
-   02 三件事
+   03 三件事
    ============================================================ */
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:32px}
 .three > div{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:30px 28px;box-shadow:var(--shadow-sm);transition:border-color .18s,transform .18s,box-shadow .18s}
@@ -201,7 +201,7 @@ code{font-family:var(--mono)}
 .verdict b,.verdict strong{color:var(--brand-deep);font-weight:700}
 
 /* ============================================================
-   03 快速开始
+   04 快速开始
    ============================================================ */
 .start{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px;align-items:start;margin-top:32px}
 .term{background:#16151D;color:#E8E6F0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-md)}
@@ -300,6 +300,27 @@ code{font-family:var(--mono)}
 .u-digest .r span{color:var(--u-brand);font-weight:600;margin-left:9px}
 
 /* ============================================================
+   02 扫描通道样张
+   ============================================================ */
+.scan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.scan-card{background:var(--u-surface);border:1px solid var(--u-border);border-radius:8px;padding:11px 12px}
+.scan-top{display:flex;align-items:center;gap:8px}
+.scan-name{font-size:12.5px;font-weight:700;line-height:1.4}
+.scan-tag{margin-left:auto;flex-shrink:0;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;font-weight:600;border-radius:4px;padding:2px 6px}
+.scan-tag.ok{color:#0E7C57;background:#E6F5EE}
+.scan-tag.skip{color:#95650E;background:#FAF1DB}
+.scan-num{font-family:var(--mono);font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-top:9px}
+.scan-num small{font-family:var(--sans);font-size:10.5px;font-weight:600;color:var(--u-text3);letter-spacing:0;margin-left:3px}
+.scan-note{font-size:10.5px;line-height:1.7;color:var(--u-text3);margin-top:3px;text-wrap:pretty}
+.u-cand{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;margin-top:12px;border:1px solid #DED8FC;background:#FBFAFF;border-radius:8px;padding:10px 13px}
+.u-cand-main{flex:1;min-width:0;font-size:12px;color:var(--u-text2)}
+.u-cand-main b{color:var(--u-text);font-weight:800}
+.u-cand .u-btn{margin-left:auto}
+.u-cand-note{flex-basis:100%;font-size:10.5px;line-height:1.6;color:var(--u-text3)}
+.u-health{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;margin-top:10px;font-size:10.5px;line-height:1.6;color:var(--u-text3)}
+.u-health .tag{font-family:var(--mono);font-size:9.5px;font-weight:600;color:#95650E;background:#FAF1DB;border:1px solid #EEDCB8;border-radius:4px;padding:1px 6px}
+
+/* ============================================================
    footer
    ============================================================ */
 footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64px}
@@ -339,7 +360,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
   .foot-top{grid-template-columns:1fr;gap:34px;padding:32px 22px}
   .stage{padding:14px}
 }
-/* 窄屏：收件箱样张改为纵向自适应，不再横向滚动 */
+/* 窄屏：产品样张改为纵向自适应，不再横向滚动 */
 @media (max-width:759px){
   .stage{padding:12px;overflow:visible}
   .ui{min-width:0;min-height:0}
@@ -360,6 +381,8 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
   .u-trace{overflow-wrap:anywhere}
   .u-digest{flex-wrap:wrap;gap:4px 10px}
   .u-digest .r{margin-left:0;width:100%;white-space:normal}
+  .scan-grid{grid-template-columns:1fr;gap:8px}
+  .u-cand .u-btn{margin-left:0}
 }
 @media (max-width:600px){
   .hero h1{font-size:clamp(28px,8.2vw,34px)}
@@ -434,6 +457,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
     </a>
     <nav class="mast-nav">
       <a href="#how">收件箱</a>
+      <a href="#scan">扫描</a>
       <a href="#how2">三件事</a>
       <a href="#start">上手</a>
     </nav>
@@ -450,7 +474,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
     <div class="kicker">开源 · Apache-2.0 · 可私有部署 · 2026</div>
     <h1>把「读过并真的知道」<br>做成一条<span class="mk">可核对</span>的生产线</h1>
     <p class="hero-lede">
-      派方向，它持续读、持续比对、持续记。你收回来的不是聊天记录，而是<b>能直接进稿子和幻灯片的结论</b>——每一条都挂着 <code>ID</code> 与节锚点，点开就是原文。
+      派方向，它自己扫通道、持续读、持续比对、持续记。你收回来的不是聊天记录，而是<b>能直接进稿子和幻灯片的结论</b>——每一条都挂着 <code>ID</code> 与节锚点，点开就是原文。
     </p>
     <div class="hero-acts">
       <a class="btn btn-solid" href="#how">看它怎么干活 <span class="arr" aria-hidden="true">↓</span></a>
@@ -555,7 +579,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
                 </div>
               </div>
             </div>
-            <div class="u-digest"><span><b>本周清单</b> · 12 条判断 / 4 个领域</span><span class="r">粗筛未读 17 · 通道异常 1 <span>打开 →</span></span></div>
+            <div class="u-digest"><span><b>本周清单</b> · 12 条判断 / 4 个领域</span><span class="r">粗筛未读 17 · 候选 15 · 通道异常 1 <span>打开 →</span></span></div>
           </div>
         </div>
       </div>
@@ -566,10 +590,63 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
       </div>
   </section>
 
-  <!-- ============ 02 三件事 ============ -->
+  <!-- ============ 02 扫描 ============ -->
+  <section class="section" id="scan">
+    <div class="sec-head">
+      <span class="sec-k">FIG. 02 · 扫描</span>
+      <h2>每周先扫一圈，再决定读什么</h2>
+      <p class="sec-lede">关键词抓组里已有的叫法，引用链抓邻近的工作。每条通道跑了什么、哪里没跑、跑了没命中，都写进本周清单<a class="fnref" href="#n2">2</a>。</p>
+    </div>
+    <div class="stage">
+      <div class="ui" role="img" aria-label="本周通道示意：关键词通道命中 12 篇；引用链前向命中 3 篇新引用；引用链后向因 429 跳过。下方扫描候选共 15 篇，已派 6 篇，未派 9 篇，可一键派给 agent。">
+        <div class="u-top">
+          <div class="u-brand"><span class="u-logo">OA</span>OpenAcademic</div>
+          <div class="u-domain">长上下文大语言模型<i>▾</i></div>
+          <div class="u-global"><span>收件箱</span><span class="on">本周清单</span></div>
+          <div class="u-user"><span class="u-avatar">林</span>林一<i>▾</i></div>
+        </div>
+        <div class="u-body">
+          <div class="scan-grid">
+            <div class="scan-card">
+              <div class="scan-top"><span class="scan-name">关键词 · arXiv</span><span class="scan-tag ok">ok</span></div>
+              <div class="scan-num">12 <small>篇命中</small></div>
+              <div class="scan-note">领域关键词 + 本周 submittedDate 窗口</div>
+            </div>
+            <div class="scan-card">
+              <div class="scan-top"><span class="scan-name">引用链 · 前向</span><span class="scan-tag ok">ok</span></div>
+              <div class="scan-num">3 <small>篇新引用</small></div>
+              <div class="scan-note">种子 6 篇 · 本周谁引了它们</div>
+            </div>
+            <div class="scan-card">
+              <div class="scan-top"><span class="scan-name">引用链 · 后向</span><span class="scan-tag skip">skip</span></div>
+              <div class="scan-num">— <small>429 · 下次再跑</small></div>
+              <div class="scan-note">种子 6 篇 · 该读却没在读的邻近工作</div>
+            </div>
+          </div>
+          <div class="u-cand">
+            <span class="u-label mark">扫描候选</span>
+            <span class="u-cand-main"><b>15 篇</b> · 已派 6 · 未派 9</span>
+            <button type="button" tabindex="-1" class="u-btn primary sm">派给 agent</button>
+            <span class="u-cand-note">按「领域 + 周 + 标识」去重；派过的候选跨周不再入库。</span>
+          </div>
+          <div class="u-health">
+            <span class="tag">openalex_backward · skip</span>
+            <span>通道挂了看得见：429 记 skip，超时记 fail，清单照常交付。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="annot">
+      <div data-n="1">关键词通道按领域跑 arXiv：命中、失败、限流都写回执，<b>网络失败不回 5xx</b>。</div>
+      <div data-n="2">引用链走 OpenAlex：arXiv id → DOI 直达，没中再按标题兜底；对齐实测 <b>100/100</b>（代理样本）。对不上会标出来，不猜。</div>
+      <div data-n="3">候选先落池再去重，<b>「派给 agent」只给清单</b>：读哪几篇、按什么顺序，归它自己定。</div>
+    </div>
+  </section>
+
+  <!-- ============ 03 三件事 ============ -->
   <section class="section" id="how2">
     <div class="sec-head">
-      <span class="sec-k">FIG. 02 · 收 / 核 / 变</span>
+      <span class="sec-k">FIG. 03 · 收 / 核 / 变</span>
       <h2>它只做三件事</h2>
       <p class="sec-lede">界面为示意<a class="fnref" href="#n1">1</a>，细节以仓库为准。</p>
     </div>
@@ -589,17 +666,17 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
         <div>
           <span class="tk">03 · 变</span>
           <h3>判断的变更留痕</h3>
-          <p>起草、确认、推翻都进轨迹轴；被推翻的判断带理由变成负样本，同类候选下次自动降级为粗筛。</p>
-          <span class="td">召回目前以 arXiv 为主，多源对齐在路线图</span>
+          <p>起草、确认、推翻都进轨迹轴；agent 精读时按 <code>save_item</code> 契约发表判断，候选态等你确认或推翻。被推翻的判断带理由变成负样本，同类候选下次自动降级为粗筛。</p>
+          <span class="td">轨迹轴 append-only · 推翻必须写理由</span>
         </div>
       </div>
       <p class="verdict">素材层的错误没人能发现，所以<strong>错了必须看得见</strong>。</p>
   </section>
 
-  <!-- ============ 03 快速开始 ============ -->
+  <!-- ============ 04 快速开始 ============ -->
   <section class="section" id="start">
     <div class="sec-head">
-      <span class="sec-k">FIG. 03 · 上手</span>
+      <span class="sec-k">FIG. 04 · 上手</span>
       <h2>五分钟，跑起一个实验室</h2>
       <p class="sec-lede">前置条件只有三个：Python ≥ 3.10、Node.js ≥ 20.9、一个 OpenAI 兼容的模型端点。</p>
     </div>
@@ -650,6 +727,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
     </div>
     <div class="notes" id="notes">
       <p id="n1"><b>1</b>本页界面为产品样张，数据与节选均为示意；链路与工具名取自真实实现。</p>
+      <p id="n2"><b>2</b>对齐实测为 2026-11-13 的代理样本 100 篇（arXiv 主题检索，非库内论文）：OpenAlex 100/100（99 篇 DOI 直达 + 1 篇标题兜底），Crossref 的 arXiv DOI 直达 0/100。口径见仓库 <code>docs/reports/proxy/</code>。</p>
     </div>
     <div class="foot-meta">
       <span>Apache License 2.0 · OpenAcademic contributors</span>
