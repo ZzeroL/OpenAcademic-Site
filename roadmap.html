@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 已知限制与规划：已经落地的能力、功能缺口、部署前必须处理的事项与验证债。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="已知限制与规划 · OpenAcademic">
+<meta property="og:description" content="主链路可用，双通道扫描已接入；最大缺口是阅读页与 LaTeX 精确模式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>已知限制与规划 · OpenAcademic</title>
+<link rel="stylesheet" href="./assets/site.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body>
+
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="./index.html" aria-label="OpenAcademic 首页">
+      <span class="brand-mark">OA</span>
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="./index.html">首页</a>
+      <a href="./docs.html">文档</a>
+      <a href="./roadmap.html" aria-current="page">路线图</a>
+      <a href="./source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">ROADMAP · WHAT WORKS TODAY</p>
+      <h1>现在能用到哪，<br><span class="grad">接下来往哪走。</span></h1>
+      <p class="lead">主链路已经可用，工作区与扫描通道都接上了后端；最大的功能缺口是<strong>阅读页</strong>与 <strong>LaTeX 精确模式</strong>，最大的工程债是<strong>验证</strong>。</p>
+      <div class="actions">
+        <a class="btn btn-dark" href="https://github.com/ZzeroL/OpenAcademic/blob/main/docs/roadmap.md" target="_blank" rel="noopener">读完整路线图 <span class="arr" aria-hidden="true">↗</span></a>
+        <a class="btn btn-line" href="./docs.html">回文档索引 <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <div class="glass reveal">
+        <div class="glass-top">
+          <span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+          <span class="glass-label">status / 2026-11-13</span>
+          <span class="glass-badge">live</span>
+        </div>
+        <div class="glass-body">
+          <div class="board">
+            <div class="board-row">
+              <span class="board-name">主链路</span>
+              <span class="board-meta ok">可用</span>
+              <span class="bar"><i style="width:100%"></i></span>
+              <span class="pct">100%</span>
+            </div>
+            <div class="board-row">
+              <span class="board-name">工作区</span>
+              <span class="board-meta ok">已接后端</span>
+              <span class="bar"><i style="width:100%"></i></span>
+              <span class="pct">100%</span>
+            </div>
+            <div class="board-row">
+              <span class="board-name">扫描与引用链</span>
+              <span class="board-meta ok">双通道</span>
+              <span class="bar"><i style="width:92%"></i></span>
+              <span class="pct">92%</span>
+            </div>
+            <div class="board-row">
+              <span class="board-name">阅读页</span>
+              <span class="board-meta wip">未完成</span>
+              <span class="bar"><i class="wip" style="width:24%"></i></span>
+              <span class="pct">24%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">BY THE NUMBERS</p>
+        <h2 class="h2">四个数字看现状。</h2>
+      </div>
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="n">100/100</div>
+          <div class="l">OpenAlex 对齐</div>
+          <div class="d">2026-11-13 代理样本；99 DOI 直达 + 1 标题兜底。</div>
+        </div>
+        <div class="stat">
+          <div class="n">3</div>
+          <div class="l">扫描通道</div>
+          <div class="d">arXiv 关键词 + OpenAlex 前向 / 后向引用。</div>
+        </div>
+        <div class="stat">
+          <div class="n">27</div>
+          <div class="l">工具绑定</div>
+          <div class="d">论文、笔记、领域、审批与上下文工具。</div>
+        </div>
+        <div class="stat">
+          <div class="n">40</div>
+          <div class="l">轮数上限</div>
+          <div class="d">主循环单轮上限，子代理 20 轮。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">SHIPPED</p>
+        <h2 class="h2">从派活到回写，闭环已经能跑。</h2>
+        <p class="sub">判断、决定、任务、通道健康与粗筛未读都来自后端；派活会真跑，任务收尾后本周数据整批重取。</p>
+      </div>
+      <ul class="checks reveal">
+        <li><b>收件箱 / 本周清单 / 领域条目流</b>共用一份工作区状态，路由切换不丢操作。</li>
+        <li><b>派活落库</b>：<code>tasks</code> + 进程内队列，重启后 <code>queued</code> 自动恢复。</li>
+        <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻。</li>
+        <li><b>关键词通道</b>：逐领域跑 arXiv，命中 / 失败 / 限流写 <code>channel_runs</code>。</li>
+        <li><b>引用链通道</b>：OpenAlex 前向「本周谁引了种子」与后向「种子引了谁」。</li>
+        <li><b>扫描候选</b>：落 <code>scan_candidates</code>，按领域 + 周 + 标识去重，可一键派活。</li>
+        <li><b>三标识对齐</b>：arXiv → OpenAlex 实测 100/100，引用链本期做。</li>
+        <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">GAPS</p>
+        <h2 class="h2">四个最大的缺口。</h2>
+        <p class="sub">这些不是小修小补，决定「读」能不能从 Agent 的工具调用，变成人也能操作的阅读与批注。</p>
+      </div>
+      <div class="bento two reveal">
+        <div class="tile dark">
+          <span class="num">01 · READING</span>
+          <h3>阅读页与分级阅读</h3>
+          <p><code>/p/[projectId]/paper/[paperId]</code> 路由、L1 速览 / L2 精读 / L3 复现、<code>reading_level</code> 可写 UI、原文文档端点、高亮与批注、阅读进度、「精读才入库」门槛都还没有。</p>
+        </div>
+        <div class="tile dark">
+          <span class="num">02 · LATEX</span>
+          <h3>精确研究工具未注册</h3>
+          <p>8 个基于 LaTeX 源码的精确工具（overview / outline / search / figures / tables / equations / references）写在代码里，但没注册进模型工具表，模型调不到。</p>
+        </div>
+        <div class="tile dark">
+          <span class="num">03 · WORKSPACE</span>
+          <h3>导入与笔记操作</h3>
+          <p>本地 PDF 导入没有 multipart 端点；领域笔记页只读，没有新建、编辑与反链；跨领域笔记列表与向量召回也还没有。</p>
+        </div>
+        <div class="tile dark">
+          <span class="num">04 · FRONTEND</span>
+          <h3>搜索、编辑与长会话</h3>
+          <p>会话历史没有全文搜索；笔记没有编辑能力；connect 回放没有分页；长会话的消息导航没有虚拟化。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">BEFORE DEPLOY</p>
+        <h2 class="h2">先改口令，再收窄边界。</h2>
+        <p class="sub">内部小团队可以先跑；对公网开放前，至少把这四组事情处理掉。</p>
+      </div>
+      <div class="columns reveal">
+        <div class="column">
+          <ul class="list">
+            <li><b>默认管理员口令</b><span>首次登录立即改密</span></li>
+            <li><b>账号开通</b><span>没有注册入口，管理员建号</span></li>
+            <li><b>.secret_key</b><span>备份，不要重新生成</span></li>
+            <li><b>依赖与发布门禁</b><span>lock 文件 / lint / typecheck</span></li>
+          </ul>
+          <p class="note">CI 在 GitHub Actions，主仓在 Gitee；需要镜像或自建 runner。</p>
+        </div>
+        <div class="column">
+          <div class="notice">
+            <b>公网前还要补的安全项：</b>Cookie 尚未设 <code>Secure</code>；会话令牌按明文存储；配置密文是 AES-CBC 无 MAC。应补 HTTPS、令牌哈希与 AES-GCM / HMAC。CORS 目前全开，登录也没有失败节流。
+          </div>
+          <div class="actions start">
+            <a class="btn btn-dark" href="./source.html">看部署页 <span class="arr" aria-hidden="true">→</span></a>
+            <a class="btn btn-line" href="https://github.com/ZzeroL/OpenAcademic/blob/main/docs/deployment.md" target="_blank" rel="noopener">部署文档 <span class="arr" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">VERIFICATION</p>
+        <h2 class="h2">代码写完了，还没在真实环境里跑过。</h2>
+        <p class="sub">这些只能人工跑，按组一次跑完最省事。Agent 主循环、限流、笔记与后端路由目前没有自动化测试。</p>
+      </div>
+      <ul class="pills reveal">
+        <li>多用户隔离</li>
+        <li>PDF 真样本页眉过滤</li>
+        <li>领域 IA 23 条路由</li>
+        <li>前端 IA：登录 → 交活 → 四态回写</li>
+        <li>上下文回收 B1–B8</li>
+        <li>一次真机精读端到端</li>
+        <li>LaTeX 产物与节边界一致性</li>
+      </ul>
+      <div class="notice reveal">
+        <b>优先补测：</b><code>crypto_utils</code> 往返与 mask、<code>load_model_config</code> 合并优先级、<code>AgentState.update_todos</code> 的五种终止路径、<code>run_agent_stream</code> 的事件序列、多会话并发写入与断连续跑。
+      </div>
+    </div>
+  </section>
+
+  <section class="section white">
+    <div class="container">
+      <div class="columns">
+        <div class="column reveal">
+          <p class="kicker">NOT DOING</p>
+          <h3>这些不是欠债。</h3>
+          <p>提 PR 前先对齐：有些东西不是没做，是决定不做。</p>
+          <ul class="pills">
+            <li>每人自带 API Key（BYOK）</li>
+            <li>登录改 JWT</li>
+            <li>对话里直接建领域</li>
+            <li>删除论文的 UI 入口</li>
+            <li>run_bash 进模型工具表</li>
+            <li>统计持久化与历史回溯</li>
+            <li>会议纪要 / PPT / 外部日历</li>
+            <li>无界 todo 硬拒</li>
+          </ul>
+        </div>
+        <div class="column reveal">
+          <p class="kicker">NEXT</p>
+          <h3>往哪走。</h3>
+          <p>方向不是「更聪明的模型」，而是模型越强越值钱的资产：证据链、轨迹轴、通道运行记录。</p>
+          <ul class="list">
+            <li><b>可追溯综述</b><span>paper_id + section + quote</span></li>
+            <li><b>评估</b><span>citation precision / hallucination rate</span></li>
+            <li><b>多源检索与图谱</b><span>Semantic Scholar / PubMed / 引文图谱</span></li>
+            <li><b>RAG</b><span>可配置嵌入 / rerank / 来源标注</span></li>
+            <li><b>产出</b><span>LaTeX / BibTeX / Word / PDF</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <div class="container">
+      <div class="quote-card reveal">
+        <blockquote>目标不是完美召回，<br>是让<span class="grad">漏检可归因</span>。</blockquote>
+        <cite>OPENACADEMIC · 召回判据</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <h2>完整路线图在仓库里。</h2>
+        <p>本页是面向访客的摘要；已知限制、刻意不做与长期方向的完整版本随代码更新。</p>
+        <div class="actions">
+          <a class="btn btn-white" href="https://github.com/ZzeroL/OpenAcademic/blob/main/docs/roadmap.md" target="_blank" rel="noopener">读 docs/roadmap.md <span class="arr" aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="./docs.html">回文档索引 <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="./source.html">源码与部署 <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><span class="mark">OA</span>OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="./index.html">首页</a>
+        <a href="./docs.html">文档</a>
+        <a href="./source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 已知限制与规划 · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./assets/reveal.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 源码与自部署：一个 OpenAI 兼容端点，五分钟跑起自己的研究生产线。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="源码与自部署 · OpenAcademic">
+<meta property="og:description" content="Python + FastAPI + Next.js，数据留在自己的机器上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>源码与自部署 · OpenAcademic</title>
+<link rel="stylesheet" href="./assets/site.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body>
+
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="./index.html" aria-label="OpenAcademic 首页">
+      <span class="brand-mark">OA</span>
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="./index.html">首页</a>
+      <a href="./docs.html">文档</a>
+      <a href="./roadmap.html">路线图</a>
+      <a href="./source.html" aria-current="page">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">SOURCE · APACHE-2.0</p>
+      <h1>把实验室，<br><span class="grad">装进一台服务器。</span></h1>
+      <p class="lead">Python + FastAPI + Next.js。一个 OpenAI 兼容端点，五分钟跑起自己的研究生产线；论文、笔记与判断都留在你的机器上。</p>
+      <div class="actions">
+        <a class="btn btn-dark" href="#quickstart">开始部署 <span class="arr" aria-hidden="true">↓</span></a>
+        <a class="btn btn-line" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub 仓库 <span class="arr" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="glass reveal">
+        <div class="glass-top">
+          <span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+          <span class="glass-label">quickstart · bash</span>
+          <span class="glass-badge">localhost:3000</span>
+        </div>
+        <div class="term-body">
+          <div class="ln"><span class="pr">$</span><span class="cm">git clone</span> <span class="arg">https://gitee.com/zerohzl/open-academic.git</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">cd</span> <span class="arg">open-academic</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">python</span> <span class="arg">-m venv .venv</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">source</span> <span class="arg">.venv/bin/activate</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">pip install</span> <span class="arg">-e .</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">cd</span> <span class="arg">frontend &amp;&amp; npm ci &amp;&amp; cd ..</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">cp</span> <span class="arg">.env.example .env</span><span class="warn"># 填 MODEL_NAME / URL / API_KEY</span></div>
+          <div class="ln"><span class="pr">$</span><span class="cm">node</span> <span class="arg">start.mjs</span></div>
+          <div class="ln"><span class="ok start">✓ ready → http://localhost:3000</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section white" id="stack">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">STACK</p>
+        <h2 class="h2">一个内核，两种外壳。</h2>
+        <p class="sub">CLI 与 Web 共用工具、记忆与上下文管理；后端只依赖 <code>core</code>，<code>core</code> 不反向依赖 <code>backend</code>。</p>
+      </div>
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="n">CLI + Web</div>
+          <div class="l">两种形态</div>
+          <div class="d">共用同一套 Agent 内核与记忆。</div>
+        </div>
+        <div class="stat">
+          <div class="n">40</div>
+          <div class="l">轮数上限</div>
+          <div class="d">主循环单轮上限，子代理 20 轮。</div>
+        </div>
+        <div class="stat">
+          <div class="n">27</div>
+          <div class="l">工具绑定</div>
+          <div class="d">另有 run_bash 只走 HITL 审批。</div>
+        </div>
+        <div class="stat">
+          <div class="n">3</div>
+          <div class="l">层记忆</div>
+          <div class="d">笔记检索 / 论文元数据 / 上下文。</div>
+        </div>
+      </div>
+      <div class="bento reveal">
+        <div class="tile span2 dark">
+          <span class="num">01 · BACKEND</span>
+          <h3>FastAPI + SSE，多人多会话</h3>
+          <p>登录、会话归属、右栏进度与 AG-UI 事件流。Cookie 鉴权，单机 SQLite，不依赖外部服务。</p>
+        </div>
+        <div class="tile">
+          <span class="num">02 · FRONTEND</span>
+          <h3>Next.js 16</h3>
+          <p>收件箱、清单、领域工作台；CopilotKit 接 SSE。</p>
+        </div>
+        <div class="tile">
+          <span class="num">03 · STORAGE</span>
+          <h3>SQLite + Chroma</h3>
+          <p>会话、论文、笔记与向量索引都在工作区目录。</p>
+        </div>
+        <div class="tile span2 grad">
+          <span class="num">04 · SOURCE</span>
+          <h3>arXiv 全文，OpenAlex 引用</h3>
+          <p>全文只从 arXiv 来；引用链与标识对齐走 OpenAlex。对不上会显式上清单，不猜。</p>
+        </div>
+        <div class="tile">
+          <span class="num">05 · AGENT</span>
+          <h3>按节读，带证据写</h3>
+          <p>模型自己决定下一步；判断经 save_item 发表，候选态等人裁决。</p>
+        </div>
+        <div class="tile">
+          <span class="num">06 · DEPLOY</span>
+          <h3>systemd + Nginx</h3>
+          <p>前端产物由 CI 出包，服务器只跑产物与后端。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light" id="quickstart">
+    <div class="container feature">
+      <div class="feature-text reveal">
+        <p class="kicker">QUICKSTART</p>
+        <h2 class="h2">五分钟，先跑起来。</h2>
+        <p class="sub">前置只有 <b>Python ≥ 3.10</b>、<b>Node.js ≥ 20.9</b>，和一个 OpenAI 兼容端点。</p>
+        <ol class="steps">
+          <li><div><b>装依赖</b><p><code>pip install -e .</code>，前端 <code>npm ci</code>。</p></div></li>
+          <li><div><b>填模型端点</b><p><code>.env</code> 里至少填 <code>MODEL_NAME</code> / <code>MODEL_URL</code> / <code>MODEL_API_KEY</code>。</p></div></li>
+          <li><div><b>启动</b><p><code>node start.mjs</code> 拉起后端与前端，浏览器打开 3000。</p></div></li>
+          <li><div><b>登录并改密</b><p>初始管理员是公开口令，改完再给组员开账号。</p></div></li>
+        </ol>
+        <p class="note">Windows 下激活虚拟环境用 <code>.venv\Scripts\activate</code>，其余命令相同。GitHub 镜像：<code>https://github.com/ZzeroL/OpenAcademic.git</code>。</p>
+        <div class="notice">
+          <b>部署后第一件事：</b><code>admin@example.com / admin123</code> 写在源码里，等同无口令。登录后立即改密。
+        </div>
+      </div>
+      <div class="feature-art reveal">
+        <div class="term">
+          <div class="term-bar">
+            <span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+            <span class="label">first launch</span>
+          </div>
+          <div class="term-body pad">
+            <div class="ln"><span class="cm">$</span> <span class="arg">node start.mjs</span></div>
+            <div class="ln"><span class="pr">▸</span><span class="arg">ensure_workspace()</span><span class="ok">workspace ready</span></div>
+            <div class="ln"><span class="pr">▸</span><span class="arg">storage.init_db()</span><span class="ok">schema ok</span></div>
+            <div class="ln"><span class="pr">▸</span><span class="arg">init_users()</span><span class="ok">admin seeded</span></div>
+            <div class="ln"><span class="pr">▸</span><span class="arg">backend :8000</span><span class="ok">healthy</span></div>
+            <div class="ln"><span class="pr">▸</span><span class="arg">frontend :3000</span><span class="ok">ready</span></div>
+            <div class="ln"><span class="cm"># 数据根：&lt;repo&gt;/.openacademic/</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light" id="deploy">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">DEPLOY</p>
+        <h2 class="h2">服务器上，只跑产物。</h2>
+        <p class="sub">systemd + Nginx；前端由 CI 出包，下载后切换，不在服务器上编译。</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-text">
+          <ol class="steps">
+            <li><div><b>装 unit</b><p>按模板安装 backend / frontend，开自启。</p></div></li>
+            <li><div><b>传前端产物</b><p>CI 出包后 <code>scp</code> 上去，用 <code>release</code> 切换。</p></div></li>
+            <li><div><b>数据放在代码外</b><p><code>OPENACADEMIC_HOME</code> 指向独立目录。</p></div></li>
+            <li><div><b>备份 .secret_key</b><p>它是解密已存 API Key 的唯一钥匙，不要重生成。</p></div></li>
+          </ol>
+        </div>
+        <div class="feature-art">
+          <div class="term">
+            <div class="term-bar">
+              <span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+              <span class="label">deploy.sh · server</span>
+            </div>
+            <div class="term-body pad">
+              <div class="ln"><span class="pr">$</span><span class="cm">./deploy.sh</span> <span class="arg">startall</span></div>
+              <div class="ln"><span class="pr">$</span><span class="cm">./deploy.sh</span> <span class="arg">release /tmp/frontend.tar.gz &lt;sha&gt;</span></div>
+              <div class="ln"><span class="pr">$</span><span class="cm">./deploy.sh</span> <span class="arg">health</span><span class="ok">all ok</span></div>
+              <div class="ln"><span class="pr">$</span><span class="cm">./deploy.sh</span> <span class="arg">status</span></div>
+              <div class="ln"><span class="pr">$</span><span class="cm">./deploy.sh</span> <span class="arg">rollback</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notice">
+        <b>从旧版升级：</b>代码放到新目录，不要覆盖旧目录；<code>.env</code> 里的 <code>IPAPER_</code> 改成 <code>OPENACADEMIC_</code>，<code>.secret_key</code> 原样复制。完整停机与回滚步骤见部署文档。
+      </div>
+    </div>
+  </section>
+
+  <section class="section white">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <h2>源码在这里。</h2>
+        <p>Apache-2.0，可私有部署。日常提交走 Gitee，GitHub 收口同步；两边内容一致。</p>
+        <div class="actions">
+          <a class="btn btn-white" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub 仓库 <span class="arr" aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="https://gitee.com/zerohzl/open-academic" target="_blank" rel="noopener">Gitee 仓库 <span class="arr" aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="./docs.html">产品文档 <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="./roadmap.html">已知限制 <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><span class="mark">OA</span>OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="./index.html">首页</a>
+        <a href="./docs.html">文档</a>
+        <a href="./roadmap.html">路线图</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 源码与自部署 · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="./assets/reveal.js" defer></script>
+</body>
+</html>
