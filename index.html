@@ -9,9 +9,24 @@
 <meta name="description" content="OpenAcademic：把「读过并真的知道」做成一条可核对的生产线。派方向，它持续读、持续比对、持续记；关键词与引用链双通道每周扫描，漏检能归因；交付的每条结论都追得到原文出处。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="OpenAcademic · 可核对的研究生产线">
-<meta property="og:description" content="关键词 + 引用链双通道每周扫描，候选一键派活；交付的每条结论都挂着 paper_id 与节锚点。">
+<meta property="og:description" content="关键词 + 引用链双通道每周扫描，候选一键派活；交付的每条结论都挂着 ID 与节锚点。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
 <title>OpenAcademic · 可核对的研究生产线</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OpenAcademic",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "isAccessibleForFree": true,
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "codeRepository": "https://github.com/ZzeroL/OpenAcademic",
+  "description": "可核对的研究生产线：关键词与引用链双通道扫描，按节精读论文，交付带 ID 与节锚点的结论。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
 <style>
 /* ============================================================
    tokens
@@ -48,6 +63,8 @@ body{
 }
 a{color:inherit}
 a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.skip{position:fixed;left:10px;top:-52px;z-index:100;background:var(--ink);color:#fff;padding:10px 16px;border-radius:9px;text-decoration:none;font-size:13px;transition:top .15s}
+.skip:focus{top:10px}
 .nw{white-space:nowrap}
 ::selection{background:var(--brand-weak);color:var(--ink)}
 :target{scroll-margin-top:84px}
@@ -201,6 +218,27 @@ code{font-family:var(--mono)}
 .verdict b,.verdict strong{color:var(--brand-deep);font-weight:700}
 
 /* ============================================================
+   证据链条目样张
+   ============================================================ */
+.ev{
+  margin-top:18px;padding:20px 24px;background:var(--card);
+  border:1px solid var(--rule);border-left:3px solid var(--brand);
+  border-radius:14px;box-shadow:var(--shadow-sm);
+}
+.ev-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ev-k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--brand);font-weight:700;text-transform:uppercase}
+.ev-state{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:var(--brand-deep);background:var(--brand-weak);border:1px solid var(--brand-weak2);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.ev-claim{font-size:16.5px;font-weight:650;line-height:1.7;letter-spacing:-.01em;margin-top:10px;max-width:56em;text-wrap:pretty}
+.ev-src{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ev-id{font-family:var(--mono);font-size:11.5px;color:var(--brand-deep);background:var(--brand-weak);border:1px solid var(--brand-weak2);border-radius:5px;padding:2px 7px}
+.ev-sec{font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.ev-act{appearance:none;margin-left:auto;border:1px solid #CFC7FB;background:#FBFAFF;color:var(--brand);font-size:11px;font-weight:600;border-radius:6px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+.ev-quote{margin-top:8px;padding-left:12px;border-left:2px solid var(--rule-2);font-size:13px;line-height:1.8;color:var(--ink-2);max-width:60em;text-wrap:pretty}
+.ev-quote .ev-tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ink-3);margin-left:6px;white-space:nowrap}
+.ev-foot{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--rule-2);font-size:11.5px;line-height:1.7;color:var(--ink-3)}
+.ev-foot b{color:var(--ink-2);font-weight:600}
+
+/* ============================================================
    04 快速开始
    ============================================================ */
 .start{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px;align-items:start;margin-top:32px}
@@ -236,6 +274,8 @@ code{font-family:var(--mono)}
 .warn-box .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--warn);text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px}
 .warn-box p{font-size:12.5px;line-height:1.8;color:var(--ink)}
 .warn-box code{font-family:var(--mono);font-size:12px;font-weight:700;background:#fff;border:1px solid #F0D8A8;padding:0 5px;border-radius:4px}
+.term-note{margin-top:12px;font-size:11.5px;line-height:1.75;color:var(--ink-3);text-wrap:pretty}
+.term-note code{font-family:var(--mono);font-size:11px;color:var(--brand-deep);background:var(--brand-weak);border:1px solid var(--brand-weak2);padding:0 4px;border-radius:4px;overflow-wrap:anywhere}
 
 /* ============================================================
    产品样张（收件箱）
@@ -345,7 +385,6 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
    ============================================================ */
 @media (max-width:1120px){
   .start{grid-template-columns:minmax(0,1fr)}
-  .mast-nav{display:none}
 }
 @media (max-width:900px){
   :root{--pad:22px}
@@ -359,6 +398,15 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
   .annot{grid-template-columns:1fr;gap:12px}
   .foot-top{grid-template-columns:1fr;gap:34px;padding:32px 22px}
   .stage{padding:14px}
+  .mast-inner{flex-wrap:wrap;gap:8px 16px;padding-top:10px;padding-bottom:8px}
+  .mast-nav{
+    display:flex;order:3;flex:1 1 100%;gap:4px;
+    overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px;
+  }
+  .mast-nav::-webkit-scrollbar{display:none}
+  .mast-nav a{white-space:nowrap;font-size:12.5px;padding:5px 11px;background:rgba(255,255,255,.7);border:1px solid var(--rule)}
+  .mast-nav a:hover{background:var(--card);border-color:var(--rule-2)}
+  :target{scroll-margin-top:118px}
 }
 /* 窄屏：产品样张改为纵向自适应，不再横向滚动 */
 @media (max-width:759px){
@@ -397,6 +445,10 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
   .term-body .ok,.term-body .warn{margin-left:0;padding-left:0;flex-basis:100%}
   .sec-head h2{font-size:26px}
   .verdict{padding:22px 22px}
+  .ev{padding:17px 18px}
+  .ev-state{margin-left:0;flex-basis:100%}
+  .ev-claim{font-size:15px}
+  .ev-act{margin-left:0}
   .foot-top{padding:28px 20px}
   .annot div{font-size:13px;padding-left:30px}
 }
@@ -434,17 +486,20 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
 @media print{
   body{background:#fff}
   .masthead{position:static}
-  .mast-nav,.mast-cta{display:none}
+  .mast-nav,.mast-cta,.skip{display:none}
   .foot-top{box-shadow:none}
   .foot-top{background:#fff;border-color:#ddd}
   .foot-line{color:var(--ink)}
   .foot-sub,.foot-links a{color:var(--ink-2)}
   .stage{overflow:visible}
   .ui{height:auto}
+  .abstract,.three > div,.ev,.verdict,.stage,.term,.warn-box,.foot-top{break-inside:avoid}
 }
 </style>
 </head>
 <body>
+
+<a class="skip" href="#top">跳到正文</a>
 
 <header class="masthead">
   <div class="mast-inner">
@@ -455,7 +510,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
         <span class="brand-sub">可核对的研究生产线</span>
       </span>
     </a>
-    <nav class="mast-nav">
+    <nav class="mast-nav" aria-label="页面导航">
       <a href="#how">收件箱</a>
       <a href="#scan">扫描</a>
       <a href="#how2">三件事</a>
@@ -502,7 +557,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
     <div class="sec-head">
       <span class="sec-k">FIG. 01 · 收件箱</span>
       <h2>登录后的第一屏是收件箱，不是聊天框</h2>
-      <p class="sec-lede">打开就有答案。交给它一件事，它自己在三列看板里跑；干完的活停在<span class="nw">「待验」</span>，等你的裁决。</p>
+      <p class="sec-lede">打开就有答案。交给它一件事，它自己在三列看板里跑；干完的活停在<span class="nw">「待验」</span>，等你的裁决。界面为示意<a class="fnref" href="#n1">1</a>。</p>
     </div>
     <div class="stage">
         <div class="ui" role="img" aria-label="收件箱界面示意：顶部状态线显示距组会 2 天、3 条决定待确认、2 条干完待验；下方是三列看板（派出的活、进行中、干完待验），底部为本周清单摘要。">
@@ -666,9 +721,23 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
         <div>
           <span class="tk">03 · 变</span>
           <h3>判断的变更留痕</h3>
-          <p>起草、确认、推翻都进轨迹轴；agent 精读时按 <code>save_item</code> 契约发表判断，候选态等你确认或推翻。被推翻的判断带理由变成负样本，同类候选下次自动降级为粗筛。</p>
+          <p>起草、确认、推翻都进轨迹轴；agent 精读时按 <code>save_item</code> 契约发表判断，候选态等你确认或推翻。被推翻的判断带理由留在轨迹轴，谁改的、为什么，都能回看。</p>
           <span class="td">轨迹轴 append-only · 推翻必须写理由</span>
         </div>
+      </div>
+      <div class="ev" role="img" aria-label="条目样张（示意）：判断内容为 LooGLE 的长依赖题在上下文变长后掉点集中，依据 arXiv 2311.04939 的 §4 Results 与原文引句，可回原文核对。">
+        <div class="ev-top">
+          <span class="ev-k">一条条目 · 示意</span>
+          <span class="ev-state">候选 · 待你确认</span>
+        </div>
+        <p class="ev-claim">LooGLE 的长依赖题说明：上下文变长后，掉点集中在需要跨段拼接证据的题目上，而不是检索本身。</p>
+        <div class="ev-src">
+          <span class="ev-id">2311.04939</span>
+          <span class="ev-sec">§4 · Results</span>
+          <button type="button" tabindex="-1" class="ev-act">核对原文 →</button>
+        </div>
+        <p class="ev-quote">“…the drop concentrates on questions whose evidence spans multiple distant segments.”<span class="ev-tag">引句 · 示意</span></p>
+        <div class="ev-foot"><span>依据：§4 第 2 段 · 引句可回原文</span><span>推翻时，<b>理由必填</b></span></div>
       </div>
       <p class="verdict">素材层的错误没人能发现，所以<strong>错了必须看得见</strong>。</p>
   </section>
@@ -702,6 +771,7 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
             <li><span class="sn">02</span><div><b>首次启动才初始化</b><p>建工作区 → 播种技能 → 建库 → 插入管理员。</p></div></li>
             <li><span class="sn">03</span><div><b>服务器部署</b><p>systemd + Nginx；前端产物由 CI 出包，<b>服务器上不编译。</b></p></div></li>
           </ol>
+          <p class="term-note">Windows 下激活虚拟环境用 <code>.venv\Scripts\activate</code>，其余命令相同。</p>
           <div class="warn-box">
             <span class="k">部署后第一件事</span>
             <p>初始口令 <code>admin123</code> 公开写在源码里，等同无口令。<b>登录后立即改密</b>，再给组员开账号。</p>
@@ -722,12 +792,13 @@ footer.colophon{max-width:var(--maxw);margin:96px auto 0;padding:0 var(--pad) 64
       </div>
       <ul class="foot-links">
         <li><a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener"><span><span class="lab">SOURCE</span>GitHub 仓库</span><span class="arr" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://github.com/ZzeroL/OpenAcademic/tree/main/docs" target="_blank" rel="noopener"><span><span class="lab">DOCS</span>产品文档</span><span class="arr" aria-hidden="true">↗</span></a></li>
         <li><a href="https://github.com/ZzeroL/OpenAcademic/blob/main/docs/roadmap.md" target="_blank" rel="noopener"><span><span class="lab">ROADMAP</span>已知限制与规划</span><span class="arr" aria-hidden="true">↗</span></a></li>
       </ul>
     </div>
     <div class="notes" id="notes">
       <p id="n1"><b>1</b>本页界面为产品样张，数据与节选均为示意；链路与工具名取自真实实现。</p>
-      <p id="n2"><b>2</b>对齐实测为 2026-11-13 的代理样本 100 篇（arXiv 主题检索，非库内论文）：OpenAlex 100/100（99 篇 DOI 直达 + 1 篇标题兜底），Crossref 的 arXiv DOI 直达 0/100。口径见仓库 <code>docs/reports/proxy/</code>。</p>
+      <p id="n2"><b>2</b>对齐实测为 2026-11-13 的代理样本 100 篇（arXiv 主题检索，非库内论文）：OpenAlex 100/100（99 篇 DOI 直达 + 1 篇标题兜底）。arXiv 预印本在 Crossref 没有 <code>10.48550</code> 记录，所以引用链走 OpenAlex。口径见仓库 <code>docs/reports/proxy/</code>。</p>
     </div>
     <div class="foot-meta">
       <span>Apache License 2.0 · OpenAcademic contributors</span>
