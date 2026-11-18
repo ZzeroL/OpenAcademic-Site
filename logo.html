@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/svg+xml" href="./assets/logo-mark-sm.svg">
+<title>标志设计稿 · OpenAcademic</title>
+<style>
+:root{
+  --ink:#14161B;--ink-2:#4A4F59;--ink-3:#767C88;
+  --paper:#F2F3F6;--white:#fff;--line:#DDE0E7;
+  --violet:#6C5CE7;--violet-2:#8B7CF0;--lav:#C9C2FF;
+  --mono:"IBM Plex Mono","JetBrains Mono","Cascadia Code",Consolas,ui-monospace,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+img{display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.top b{color:var(--ink);font-weight:600}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;padding-top:clamp(28px,4vw,48px)}
+.copy{padding:clamp(12px,2vw,24px) 0}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);font-weight:700;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:30px;height:1px;background:var(--violet)}
+h1{margin-top:22px;font-size:clamp(34px,4.6vw,58px);line-height:1.08;letter-spacing:-.045em;font-weight:800}
+.lead{margin-top:20px;max-width:32em;font-size:15.5px;line-height:1.8;color:var(--ink-2)}
+.lead b{color:var(--ink);font-weight:650}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-3)}
+.stage-dark{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;border-radius:26px;background:radial-gradient(340px 260px at 22% 10%,rgba(139,124,240,.3),transparent 64%),linear-gradient(145deg,#241D36,#0C0A11);box-shadow:0 40px 90px -60px rgba(16,24,40,.7)}
+.stage-dark::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.1) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 70%);pointer-events:none}
+.stage-dark img{position:relative;z-index:1;width:148px;height:148px;border-radius:21.875%;box-shadow:0 30px 70px -28px rgba(76,48,190,.8)}
+.stage-label{position:relative;z-index:1;margin-top:26px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#8E879F}
+.lockup-card{margin-top:18px;padding:30px 34px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:0 20px 50px -44px rgba(16,24,40,.5)}
+.lockup-card img{width:min(100%,320px)}
+.lockup-card p{margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.sec{margin-top:clamp(48px,6vw,76px)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:18px}
+.sec-k{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+h2{font-size:clamp(20px,2.4vw,28px);letter-spacing:-.03em;line-height:1.25;font-weight:800;max-width:22em;text-wrap:balance}
+.sizes{display:flex;flex-direction:column;gap:20px;margin-top:26px;padding:26px 30px;background:var(--white);border:1px solid var(--line);border-radius:20px}
+.sizes-head{display:flex;align-items:baseline;gap:12px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.sizes-head b{font-size:10px;color:var(--ink);font-weight:700}
+.sizes-row{display:flex;align-items:flex-end;gap:clamp(16px,3vw,36px);flex-wrap:wrap}
+.size{display:flex;flex-direction:column;align-items:center;gap:10px}
+.size img{border-radius:21.875%;box-shadow:0 10px 24px -18px rgba(76,48,190,.7)}
+.size span{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:var(--ink-3)}
+.insitu{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.ctx{padding:22px 24px;border:1px solid var(--line);border-radius:18px;background:var(--white)}
+.ctx-k{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.ctx-mast{display:flex;align-items:center;gap:10px;margin-top:16px}
+.ctx-mast img{width:26px;height:26px}
+.ctx-mast b{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.ctx-tab{display:flex;align-items:center;gap:8px;margin-top:16px;padding:8px 12px;border-radius:9px 9px 0 0;background:var(--paper);border:1px solid var(--line);border-bottom:none;max-width:230px}
+.ctx-tab img{width:16px;height:16px;flex-shrink:0}
+.ctx-tab span{font-size:11.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctx-note{margin-top:14px;font-size:12px;line-height:1.7;color:var(--ink-3)}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
+.card{padding:24px;background:var(--white);border:1px solid var(--line);border-radius:18px}
+.card .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);font-weight:700}
+.card h3{margin-top:10px;font-size:17px;line-height:1.4;letter-spacing:-.02em;font-weight:750}
+.card p{margin-top:8px;font-size:12.5px;line-height:1.75;color:var(--ink-3)}
+.card p b{color:var(--ink-2);font-weight:650}
+.colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.sw{padding:18px;border-radius:16px;border:1px solid var(--line);min-height:112px;display:flex;flex-direction:column;justify-content:flex-end}
+.sw b{display:block;font-size:13px;font-weight:700}
+.sw span{display:block;margin-top:5px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;opacity:.7}
+.sw.dark{background:#0C0A11;color:#fff;border-color:#0C0A11}
+.sw.violet{background:#6C5CE7;color:#fff;border-color:#6C5CE7}
+.sw.lav{background:#C9C2FF;color:#231B3D;border-color:#C9C2FF}
+.sw.white{background:#fff;color:#14161B}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.rule{padding:20px 22px;border-radius:16px;background:var(--white);border:1px solid var(--line);font-size:12.5px;line-height:1.75;color:var(--ink-2)}
+.rule b{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.rule strong{font-weight:700;color:var(--ink)}
+.rule.ok{border-color:#CFE9DD;background:#F4FAF7}
+.rule.no{border-color:#F0D8A8;background:#FCF7EC}
+.rule code{font-family:var(--mono);font-size:.95em;color:var(--violet);background:rgba(108,92,231,.08);padding:1px 5px;border-radius:4px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:64px;padding:20px 0 44px;border-top:1px solid var(--line);font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .stage-dark{min-height:360px}
+  .grid3{grid-template-columns:1fr}
+  .colors{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rules{grid-template-columns:1fr}
+  .insitu{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .stage-dark img{width:112px;height:112px}
+  .sizes{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span><b>OpenAcademic</b> / Identity</span>
+    <span>Logo sheet · v2 · 2026-11-18</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="copy">
+        <p class="eyebrow">MARK &amp; LOCKUP</p>
+        <h1>断开的横杠，<br>一条可替换的证据。</h1>
+        <p class="lead">标志只保留一个字母 <b>A</b>：两条稳定的斜线，一条被节点断开的横杠。A 是 Academic，也是 Argument；断点代表判断仍在候选中，证据可以被替换。开放不等于不完整，而是允许被核对。</p>
+        <div class="meta"><span>INK / LAVENDER</span><span>5.4 &amp; 6 / 64 GRID</span><span>MIN 16 PX</span></div>
+      </div>
+      <div>
+        <div class="stage-dark">
+          <img src="./assets/logo-mark.svg" alt="OpenAcademic 标志">
+          <span class="stage-label">App mark · 148 px</span>
+        </div>
+        <div class="lockup-card">
+          <img src="./assets/logo-lockup.svg" alt="OpenAcademic 横向标志">
+          <p>Lockup · mark + wordmark</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="sec-k">01 / Scale</span><h2>同一副骨架，两档描边。</h2></div>
+      <div class="sizes">
+        <div class="sizes-head"><b>Regular</b><span>≥ 32 px · logo-mark.svg · 描边 5.4 / 节点 r3.2</span></div>
+        <div class="sizes-row">
+          <div class="size"><img src="./assets/logo-mark.svg" width="72" height="72" alt=""><span>72</span></div>
+          <div class="size"><img src="./assets/logo-mark.svg" width="48" height="48" alt=""><span>48</span></div>
+          <div class="size"><img src="./assets/logo-mark.svg" width="32" height="32" alt=""><span>32</span></div>
+        </div>
+      </div>
+      <div class="sizes">
+        <div class="sizes-head"><b>Small</b><span>≤ 24 px · logo-mark-sm.svg · 描边 6 / 节点 r4.4</span></div>
+        <div class="sizes-row">
+          <div class="size"><img src="./assets/logo-mark-sm.svg" width="32" height="32" alt=""><span>32</span></div>
+          <div class="size"><img src="./assets/logo-mark-sm.svg" width="24" height="24" alt=""><span>24</span></div>
+          <div class="size"><img src="./assets/logo-mark-sm.svg" width="20" height="20" alt=""><span>20</span></div>
+          <div class="size"><img src="./assets/logo-mark-sm.svg" width="16" height="16" alt=""><span>16</span></div>
+        </div>
+      </div>
+      <div class="insitu">
+        <div class="ctx">
+          <span class="ctx-k">Masthead · 26 px</span>
+          <div class="ctx-mast"><img src="./assets/logo-mark-sm.svg" alt=""><b>OpenAcademic</b></div>
+          <p class="ctx-note">页眉走 Small 档：节点与缺口都放大，26 px 下「断」不靠抗锯齿运气。</p>
+        </div>
+        <div class="ctx">
+          <span class="ctx-k">Favicon · 16 px</span>
+          <div class="ctx-tab"><img src="./assets/logo-mark-sm.svg" alt=""><span>OpenAcademic · 可核对的生产线</span></div>
+          <p class="ctx-note">Small 档把缺口从 10.4 加宽到 13.2、节点从 r3.2 放大到 r4.4，16 px 下仍能读出「断」。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="sec-k">02 / Idea</span><h2>每一笔都在讲产品，而不是装饰。</h2></div>
+      <div class="grid3">
+        <div class="card"><span class="k">01 · OPEN</span><h3>横杠断开</h3><p>结论不是封死的文本。横杠留出缺口，表示判断可以被推翻、补证、重写。</p></div>
+        <div class="card"><span class="k">02 · EVIDENCE</span><h3>中间的节点</h3><p>缺口处是一颗浅紫节点：一条判断的落点。它对应 <code>save_item</code> 的候选态，等人裁决。</p></div>
+        <div class="card"><span class="k">03 · STABLE</span><h3>两条斜线</h3><p>斜线不弯曲、不装饰，像论文里的论证结构：稳定、可复核、可以被追问依据。</p></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="sec-k">03 / Color</span><h2>深墨底，单一紫色节点。</h2></div>
+      <div class="colors">
+        <div class="sw dark"><b>Ink</b><span>#0C0A11</span></div>
+        <div class="sw violet"><b>Brand violet</b><span>#6C5CE7</span></div>
+        <div class="sw lav"><b>Evidence</b><span>#C9C2FF</span></div>
+        <div class="sw white"><b>Paper</b><span>#FFFFFF</span></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head"><span class="sec-k">04 / Usage</span><h2>少做，才像品牌。</h2></div>
+      <div class="rules">
+        <div class="rule ok"><b>Do</b>保持 <code>1:1</code> 比例。<code>≥32px</code> 用 Regular，<code>≤24px</code> 用 Small——页眉 26 px 与 favicon 16 px 都走 Small。应用图标 64 px 以上用 Regular，在深底上直接使用，不描边。</div>
+        <div class="rule no"><b>Don't</b>不加第二个节点、不换字体、不拉伸、<strong>两档都不把横杠补全</strong>。横杠一补，标志就变回普通的字母 A。也不要拿 Regular 直接缩到 16 px：缺口会先于轮廓糊掉，那正是要有 Small 档的原因。</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>OpenAcademic · identity sheet</span>
+    <span>assets/logo-mark.svg · logo-mark-sm.svg · logo-lockup.svg</span>
+  </footer>
+</div>
+</body>
+</html>

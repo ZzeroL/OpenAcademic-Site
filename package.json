@@ -1,0 +1,8 @@
+{
+  "name": "openacademic-site",
+  "private": true,
+  "description": "OpenAcademic 产品站点",
+  "scripts": {
+    "build:docs": "node tools/build-docs.mjs"
+  }
+}

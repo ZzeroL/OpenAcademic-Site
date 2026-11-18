@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#F5F5F7">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
 <meta name="description" content="OpenAcademic 服务器部署与升级：systemd unit、Nginx 反代、前端产物发布与回滚、全新部署与旧版升级。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务器部署与升级 · 产品文档 · OpenAcademic">
-<meta property="og:description" content="systemd、Nginx、前端产物发布与回滚。">
+<meta property="og:description" content="OpenAcademic 服务器部署与升级：systemd unit、Nginx 反代、前端产物发布与回滚、全新部署与旧版升级。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="OpenAcademic">
 <title>服务器部署与升级 · 产品文档 · OpenAcademic</title>
@@ -17,9 +17,28 @@
 <link rel="stylesheet" href="../assets/docs.css">
 <script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
 </head>
-<body data-root="..">
+<body>
 
 <a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="../index.html" aria-label="OpenAcademic 首页">
+      <img class="brand-mark" src="../assets/logo-mark-sm.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="../index.html">首页</a>
+      <a href="../docs.html" aria-current="page">文档</a>
+      <a href="../roadmap.html">路线图</a>
+      <a href="../source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
 
 <main id="main">
   <div class="doc-hero">
@@ -48,9 +67,18 @@
   </div>
 
   <div class="container doc-shell">
-    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+    <aside class="doc-toc" aria-label="本页目录">
       <p class="toc-k">本页目录</p>
-      <ol></ol>
+      <ol>
+        <li><a href="#shape"><span class="i">01</span><span>部署形态与前置</span></a></li>
+        <li><a href="#local"><span class="i">02</span><span>本地启动</span></a></li>
+        <li><a href="#env"><span class="i">03</span><span>生产目录与环境变量</span></a></li>
+        <li><a href="#systemd"><span class="i">04</span><span>systemd 与 Nginx</span></a></li>
+        <li><a href="#release"><span class="i">05</span><span>前端产物：发布与回滚</span></a></li>
+        <li><a href="#upgrade"><span class="i">06</span><span>从旧版升级</span></a></li>
+        <li><a href="#security"><span class="i">07</span><span>上线前安全清单</span></a></li>
+        <li><a href="#troubleshoot"><span class="i">08</span><span>故障排查顺序</span></a></li>
+      </ol>
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
@@ -59,8 +87,23 @@
     </aside>
 
     <article class="prose">
+      <details class="toc-mobile">
+        <summary>本页目录 · 8 节</summary>
+        <ol>
+        <li><a href="#shape"><span class="i">01</span><span>部署形态与前置</span></a></li>
+        <li><a href="#local"><span class="i">02</span><span>本地启动</span></a></li>
+        <li><a href="#env"><span class="i">03</span><span>生产目录与环境变量</span></a></li>
+        <li><a href="#systemd"><span class="i">04</span><span>systemd 与 Nginx</span></a></li>
+        <li><a href="#release"><span class="i">05</span><span>前端产物：发布与回滚</span></a></li>
+        <li><a href="#upgrade"><span class="i">06</span><span>从旧版升级</span></a></li>
+        <li><a href="#security"><span class="i">07</span><span>上线前安全清单</span></a></li>
+        <li><a href="#troubleshoot"><span class="i">08</span><span>故障排查顺序</span></a></li>
+        </ol>
+      </details>
+
       <section id="shape">
         <h2><span class="n">01</span>部署形态与前置</h2>
+
         <p>生产形态是<strong>单机、多用户、自部署</strong>：Nginx 在最前，两个 systemd 服务（前端与后端），数据放在代码目录之外。没有外部数据库、消息队列或对象存储。</p>
         <div class="dtable">
           <table>
@@ -75,10 +118,12 @@
           </table>
         </div>
         <p>Windows 下激活虚拟环境用 <code>.venv\Scripts\activate</code>，其余命令相同。GitHub 镜像：<code>https://github.com/ZzeroL/OpenAcademic.git</code>；主仓在 Gitee。</p>
+      
       </section>
 
       <section id="local">
         <h2><span class="n">02</span>本地启动</h2>
+
         <div class="codeblock">
           <div class="bar"><span class="lamp"><i class="r"></i><i class="y"></i><i class="g"></i></span><span>quickstart · bash</span></div>
           <pre><span class="p">$</span> git clone https://github.com/ZzeroL/OpenAcademic.git
@@ -94,10 +139,12 @@
           <span class="k">第一件事：改密</span>
           <p>初始管理员 <code>admin@example.com / admin123</code> 公开写在源码里，等同无口令。登录后立即改密，再给组员开账号。没有注册入口，账号由管理员创建。</p>
         </div>
+      
       </section>
 
       <section id="env">
         <h2><span class="n">03</span>生产目录与环境变量</h2>
+
         <p>生产环境把数据根移出代码目录：</p>
         <div class="dtable">
           <table>
@@ -115,10 +162,12 @@
           <span class="k">目录结构</span>
           <p>建议 <code>/srv/openacademic/data</code> 放数据，<code>/srv/openacademic/app</code> 放代码，<code>/srv/openacademic/releases</code> 放前端产物。升级时只换 app 与 releases，不动 data。</p>
         </div>
+      
       </section>
 
       <section id="systemd">
         <h2><span class="n">04</span>systemd 与 Nginx</h2>
+
         <p>两个 unit：一个跑后端，一个跑前端产物。按模板安装后开启自启。</p>
         <div class="codeblock">
           <div class="bar"><span class="lamp"><i class="r"></i><i class="y"></i><i class="g"></i></span><span>server · systemctl</span></div>
@@ -131,10 +180,12 @@
           <span class="k">SSE 注意</span>
           <p>反向代理默认可能缓冲事件流，导致界面进度延迟。需要关闭对应路径的代理缓冲，并给足读超时；否则任务在跑，页面看起来像卡住。</p>
         </div>
+      
       </section>
 
       <section id="release">
         <h2><span class="n">05</span>前端产物：发布与回滚</h2>
+
         <p>前端由 CI 出包，服务器下载后切换 release，不在服务器上编译。</p>
         <div class="codeblock">
           <div class="bar"><span class="lamp"><i class="r"></i><i class="y"></i><i class="g"></i></span><span>deploy.sh · server</span></div>
@@ -150,10 +201,12 @@
           <li><b>回滚</b>：切回上一个 release；数据与后端代码不回滚，除非同版本发布说明要求。</li>
         </ul>
         <p>发布顺序建议：后端兼容改动 → 前端产物 → 配置变更。先让旧前端能跑新后端，再切前端，回滚窗口最小。</p>
+      
       </section>
 
       <section id="upgrade">
         <h2><span class="n">06</span>从旧版升级</h2>
+
         <p>旧版使用 <code>IPAPER_</code> 前缀。升级不是覆盖安装，而是新目录并行：</p>
         <ol>
           <li>代码放到新目录，不要覆盖旧目录。</li>
@@ -167,10 +220,12 @@
           <p>不要删除旧目录作为「清理」；不要在未备份 <code>.secret_key</code> 的情况下重装；不要在数据目录里直接跑迁移而不先备份。</p>
         </div>
         <p>停机与回滚需要按发布说明逐条执行。若没有发布说明，按「新目录 + 同数据 + 健康检查 + 切流」的最小路径操作。</p>
+      
       </section>
 
       <section id="security">
         <h2><span class="n">07</span>上线前安全清单</h2>
+
         <div class="dtable">
           <table>
             <thead><tr><th>项</th><th>当前</th><th>上线要求</th></tr></thead>
@@ -187,10 +242,12 @@
           </table>
         </div>
         <p>内部小团队可以先跑；对公网开放前，这张表里的 <code>wip</code> 项必须处理。</p>
+      
       </section>
 
       <section id="troubleshoot">
         <h2><span class="n">08</span>故障排查顺序</h2>
+
         <ol>
           <li><b>看服务</b>：<code>systemctl status</code> 两个 unit 是否都在跑。</li>
           <li><b>看健康</b>：<code>./deploy.sh health</code> 是否通过；后端能否读数据目录。</li>
@@ -203,10 +260,11 @@
           <span class="k">排查原则</span>
           <p>先确认「失败发生在哪一层」，再决定重启什么。盲目重启会丢掉正在运行的任务上下文，让问题更难复现。</p>
         </div>
+      
       </section>
 
       <nav class="docnav" aria-label="文档翻页">
-        <a class="prev" href="./identifier-alignment.html"><span class="k">← 上一篇 · DATA &amp; CHANNELS</span><span class="t">三标识对齐报告</span></a>
+        <a class="prev" href="./identifier-alignment.html"><span class="k">← 上一篇 · DATA & CHANNELS</span><span class="t">三标识对齐报告</span></a>
         <a class="next" href="./development-workflow.html"><span class="k">下一篇 · ENGINEERING →</span><span class="t">开发与发版流程</span></a>
       </nav>
 
@@ -215,8 +273,7 @@
         <div class="related-grid">
           <a href="./development-workflow.html"><span class="tag">ENGINEERING</span><span class="t">开发与发版流程</span><span class="d">分支、PR 清单、测试与双仓同步。</span></a>
           <a href="./architecture-diagram.html"><span class="tag">MECHANISM</span><span class="t">系统上下文与容器</span><span class="d">上下文、容器、组件、部署拓扑与请求时序。</span></a>
-          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
-          <a href="./desktop-packaging.html"><span class="tag">ENGINEERING</span><span class="t">桌面打包设计</span><span class="d">打包边界、数据目录与运行期约束（设计稿）。</span></a>
+          <a href="./roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
         </div>
       </aside>
 
@@ -225,7 +282,46 @@
   </div>
 </main>
 
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><img class="mark" src="../assets/logo-mark-sm.svg" alt="" width="22" height="22">OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../docs.html">文档</a>
+        <a href="../roadmap.html">路线图</a>
+        <a href="../source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 产品文档 · 2026</span>
+    </div>
+  </div>
+</footer>
+
 <script src="../assets/reveal.js" defer></script>
-<script src="../assets/doc-page.js" defer></script>
+<script>
+(function(){
+  var links = document.querySelectorAll(".doc-toc a[href^='#']");
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  var sections = document.querySelectorAll(".prose section[id]");
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove("on"); });
+      var link = map[e.target.id];
+      if (link) link.classList.add("on");
+    });
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function(s){ io.observe(s); });
+})();
+</script>
 </body>
 </html>

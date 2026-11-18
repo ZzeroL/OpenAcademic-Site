@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#F5F5F7">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
 <meta name="description" content="OpenAcademic 前端信息架构：/inbox、/digest、/p/[projectId]/items 的路由、跳转规则与后端数据契约。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="收件箱、清单与领域 · 产品文档 · OpenAcademic">
-<meta property="og:description" content="三条主路由、跳转规则与后端数据契约。">
+<meta property="og:description" content="OpenAcademic 前端信息架构：/inbox、/digest、/p/[projectId]/items 的路由、跳转规则与后端数据契约。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="OpenAcademic">
 <title>收件箱、清单与领域 · 产品文档 · OpenAcademic</title>
@@ -17,9 +17,28 @@
 <link rel="stylesheet" href="../assets/docs.css">
 <script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
 </head>
-<body data-root="..">
+<body>
 
 <a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="../index.html" aria-label="OpenAcademic 首页">
+      <img class="brand-mark" src="../assets/logo-mark-sm.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="../index.html">首页</a>
+      <a href="../docs.html" aria-current="page">文档</a>
+      <a href="../roadmap.html">路线图</a>
+      <a href="../source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
 
 <main id="main">
   <div class="doc-hero">
@@ -48,9 +67,17 @@
   </div>
 
   <div class="container doc-shell">
-    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+    <aside class="doc-toc" aria-label="本页目录">
       <p class="toc-k">本页目录</p>
-      <ol></ol>
+      <ol>
+        <li><a href="#routes"><span class="i">01</span><span>三条主路由</span></a></li>
+        <li><a href="#inbox"><span class="i">02</span><span>/inbox：先给状态，再给输入</span></a></li>
+        <li><a href="#digest"><span class="i">03</span><span>/digest：覆盖情况比数量重要</span></a></li>
+        <li><a href="#items"><span class="i">04</span><span>/p/[projectId]/items：领域条目流</span></a></li>
+        <li><a href="#jumps"><span class="i">05</span><span>跳转规则</span></a></li>
+        <li><a href="#contract"><span class="i">06</span><span>后端数据契约</span></a></li>
+        <li><a href="#future"><span class="i">07</span><span>阅读页的预留</span></a></li>
+      </ol>
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
@@ -59,8 +86,22 @@
     </aside>
 
     <article class="prose">
+      <details class="toc-mobile">
+        <summary>本页目录 · 7 节</summary>
+        <ol>
+        <li><a href="#routes"><span class="i">01</span><span>三条主路由</span></a></li>
+        <li><a href="#inbox"><span class="i">02</span><span>/inbox：先给状态，再给输入</span></a></li>
+        <li><a href="#digest"><span class="i">03</span><span>/digest：覆盖情况比数量重要</span></a></li>
+        <li><a href="#items"><span class="i">04</span><span>/p/[projectId]/items：领域条目流</span></a></li>
+        <li><a href="#jumps"><span class="i">05</span><span>跳转规则</span></a></li>
+        <li><a href="#contract"><span class="i">06</span><span>后端数据契约</span></a></li>
+        <li><a href="#future"><span class="i">07</span><span>阅读页的预留</span></a></li>
+        </ol>
+      </details>
+
       <section id="routes">
         <h2><span class="n">01</span>三条主路由</h2>
+
         <div class="dtable routes">
           <table>
             <thead><tr><th>路由</th><th>回答的问题</th><th>主要数据</th><th>状态</th></tr></thead>
@@ -73,10 +114,12 @@
           </table>
         </div>
         <p>前三条路由共用一份工作区状态：在收件箱确认一条判断，切到领域条目流不需要重新拉取；在清单里派活，回到收件箱能立刻看到任务卡。路由是视图，不是数据边界。</p>
+      
       </section>
 
       <section id="inbox">
         <h2><span class="n">02</span>/inbox：先给状态，再给输入</h2>
+
         <p>收件箱的首屏不是输入框，而是状态线。它只说三件事：<strong>距组会几天、几条决定待确认、几条干完待验</strong>。扫一眼就知道今天欠什么。</p>
         <ul>
           <li><b>状态线</b>：时间压力 + 待处理数量，不展示无关统计。</li>
@@ -86,22 +129,42 @@
           <li><b>清单摘要</b>：判断、粗筛未读、候选、通道异常四个数，点开进 /digest。</li>
         </ul>
         <p>这五个区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
+      
       </section>
 
       <section id="digest">
         <h2><span class="n">03</span>/digest：覆盖情况比数量重要</h2>
+
         <p>本周清单不是论文排行榜，而是覆盖报告。它至少包含四组数据：</p>
         <div class="split2">
-          <div class="panel"><span class="k">JUDGMENTS</span><h4>本周判断</h4><p>按领域分组，标出候选 / 确认 / 推翻 / 搁置；每条可回原文。</p></div>
-          <div class="panel"><span class="k">UNREAD</span><h4>粗筛未读</h4><p>每篇附一句不读的理由，避免「没读」变成隐形状态。</p></div>
-          <div class="panel"><span class="k">CANDIDATES</span><h4>扫描候选</h4><p>共多少、已派多少、未派多少；可一键派给 agent。</p></div>
-          <div class="panel"><span class="k">CHANNELS</span><h4>通道异常</h4><p>哪条通道 <code>skip</code> / <code>fail</code>，原因与下周是否重跑。</p></div>
+          <div class="panel">
+            <span class="k">JUDGMENTS</span>
+            <h4>本周判断</h4>
+            <p>按领域分组，标出候选 / 确认 / 推翻 / 搁置；每条可回原文。</p>
+          </div>
+          <div class="panel">
+            <span class="k">UNREAD</span>
+            <h4>粗筛未读</h4>
+            <p>每篇附一句不读的理由，避免「没读」变成隐形状态。</p>
+          </div>
+          <div class="panel">
+            <span class="k">CANDIDATES</span>
+            <h4>扫描候选</h4>
+            <p>共多少、已派多少、未派多少；可一键派给 agent。</p>
+          </div>
+          <div class="panel">
+            <span class="k">CHANNELS</span>
+            <h4>通道异常</h4>
+            <p>哪条通道 <code>skip</code> / <code>fail</code>，原因与下周是否重跑。</p>
+          </div>
         </div>
         <p>清单可以交付「不完整」的结果，但不能交付「不知道哪里不完整」的结果。这是页面与数据的共同责任。</p>
+      
       </section>
 
       <section id="items">
         <h2><span class="n">04</span>/p/[projectId]/items：领域条目流</h2>
+
         <p>领域是判断的归属维度，不是文件夹。条目流展示这个领域当前「知道什么」，每条判断带状态、出处与变更记录。</p>
         <div class="flow">
           <div class="flow-step"><b>FILTER</b><strong>按状态</strong><span>候选 / 确认 / 推翻 / 搁置。</span></div>
@@ -113,10 +176,12 @@
           <div class="flow-step"><b>ACT</b><strong>裁决</strong><span>确认 / 推翻 / 搁置，理由必填。</span></div>
         </div>
         <p>领域 IA 规划有 23 条路由，覆盖条目、笔记、论文、扫描、设置等；当前并非全部可用。新增路由前需要先确认它落在哪份共享状态上，避免出现「页面有自己的缓存」。</p>
+      
       </section>
 
       <section id="jumps">
         <h2><span class="n">05</span>跳转规则</h2>
+
         <p>跳转只读状态，不复制状态：</p>
         <ul>
           <li><b>收件箱 → 清单</b>：携带当前周与领域筛选，不重置。</li>
@@ -128,10 +193,12 @@
           <span class="k">不做的事</span>
           <p>不在 URL 里放敏感令牌；不通过前端拼装后端没有的统计；不用「小圆点」代替明确的通道状态。所有可见状态都必须有数据落点。</p>
         </div>
+      
       </section>
 
       <section id="contract">
         <h2><span class="n">06</span>后端数据契约</h2>
+
         <p>页面能承诺什么，取决于后端给了什么。几条核心契约：</p>
         <div class="dtable">
           <table>
@@ -145,17 +212,20 @@
           </table>
         </div>
         <p>「缺数据时显示未知」比「显示 0」更重要。0 是一个事实，未知是另一个事实；把未知渲染成 0，会让漏检重新变得不可见。</p>
+      
       </section>
 
       <section id="future">
         <h2><span class="n">07</span>阅读页的预留</h2>
+
         <p>阅读页是当前最大的功能缺口。规划中的路由是 <code>/p/[projectId]/paper/[paperId]</code>，要同时满足三件事：</p>
         <ul>
           <li><b>原文</b>：文档端点、节边界、页眉过滤，引句可高亮。</li>
           <li><b>分级</b>：L1 速览 / L2 精读 / L3 复现，<code>reading_level</code> 可写。</li>
           <li><b>动作</b>：高亮、批注、阅读进度；「精读才入库」的门槛。</li>
         </ul>
-        <p>阅读页不是把 PDF 塞进 iframe。它要能把判断的节锚点映射到原文位置，否则「点开就是原文」仍然只是一句文案。完整缺口见<a href="../roadmap.html">已知限制与规划</a>。</p>
+        <p>阅读页不是把 PDF 塞进 iframe。它要能把判断的节锚点映射到原文位置，否则「点开就是原文」仍然只是一句文案。完整缺口见<a href="./roadmap.html">已知限制与规划</a>。</p>
+      
       </section>
 
       <nav class="docnav" aria-label="文档翻页">
@@ -167,9 +237,8 @@
         <p class="k">继续阅读</p>
         <div class="related-grid">
           <a href="./usage-flow.html"><span class="tag">MECHANISM</span><span class="t">一个人，一周，从交活到组会</span><span class="d">周三一句话，周一收清单，会后勾四态。</span></a>
-          <a href="./workspace-data-model.html"><span class="tag">DATA</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
-          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
-          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+          <a href="./workspace-data-model.html"><span class="tag">DATA & CHANNELS</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
+          <a href="./roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
         </div>
       </aside>
 
@@ -178,7 +247,46 @@
   </div>
 </main>
 
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><img class="mark" src="../assets/logo-mark-sm.svg" alt="" width="22" height="22">OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../docs.html">文档</a>
+        <a href="../roadmap.html">路线图</a>
+        <a href="../source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 产品文档 · 2026</span>
+    </div>
+  </div>
+</footer>
+
 <script src="../assets/reveal.js" defer></script>
-<script src="../assets/doc-page.js" defer></script>
+<script>
+(function(){
+  var links = document.querySelectorAll(".doc-toc a[href^='#']");
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  var sections = document.querySelectorAll(".prose section[id]");
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove("on"); });
+      var link = map[e.target.id];
+      if (link) link.classList.add("on");
+    });
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function(s){ io.observe(s); });
+})();
+</script>
 </body>
 </html>

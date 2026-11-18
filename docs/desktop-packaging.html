@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#F5F5F7">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
 <meta name="description" content="OpenAcademic 桌面打包设计：打包边界、数据目录、运行期约束、未决问题与验收标准。当前仍是设计稿。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="桌面打包设计 · 产品文档 · OpenAcademic">
-<meta property="og:description" content="打包边界、数据目录与运行期约束（设计稿）。">
+<meta property="og:description" content="OpenAcademic 桌面打包设计：打包边界、数据目录、运行期约束、未决问题与验收标准。当前仍是设计稿。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="OpenAcademic">
 <title>桌面打包设计 · 产品文档 · OpenAcademic</title>
@@ -17,9 +17,28 @@
 <link rel="stylesheet" href="../assets/docs.css">
 <script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
 </head>
-<body data-root="..">
+<body>
 
 <a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="../index.html" aria-label="OpenAcademic 首页">
+      <img class="brand-mark" src="../assets/logo-mark-sm.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="../index.html">首页</a>
+      <a href="../docs.html" aria-current="page">文档</a>
+      <a href="../roadmap.html">路线图</a>
+      <a href="../source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
 
 <main id="main">
   <div class="doc-hero">
@@ -48,9 +67,17 @@
   </div>
 
   <div class="container doc-shell">
-    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+    <aside class="doc-toc" aria-label="本页目录">
       <p class="toc-k">本页目录</p>
-      <ol></ol>
+      <ol>
+        <li><a href="#status"><span class="i">01</span><span>这是一份设计稿</span></a></li>
+        <li><a href="#shape"><span class="i">02</span><span>目标形态</span></a></li>
+        <li><a href="#data"><span class="i">03</span><span>数据目录</span></a></li>
+        <li><a href="#runtime"><span class="i">04</span><span>运行期约束</span></a></li>
+        <li><a href="#boundary"><span class="i">05</span><span>打包边界</span></a></li>
+        <li><a href="#open"><span class="i">06</span><span>未决问题</span></a></li>
+        <li><a href="#acceptance"><span class="i">07</span><span>验收标准</span></a></li>
+      </ol>
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
@@ -59,17 +86,33 @@
     </aside>
 
     <article class="prose">
+      <details class="toc-mobile">
+        <summary>本页目录 · 7 节</summary>
+        <ol>
+        <li><a href="#status"><span class="i">01</span><span>这是一份设计稿</span></a></li>
+        <li><a href="#shape"><span class="i">02</span><span>目标形态</span></a></li>
+        <li><a href="#data"><span class="i">03</span><span>数据目录</span></a></li>
+        <li><a href="#runtime"><span class="i">04</span><span>运行期约束</span></a></li>
+        <li><a href="#boundary"><span class="i">05</span><span>打包边界</span></a></li>
+        <li><a href="#open"><span class="i">06</span><span>未决问题</span></a></li>
+        <li><a href="#acceptance"><span class="i">07</span><span>验收标准</span></a></li>
+        </ol>
+      </details>
+
       <section id="status">
         <h2><span class="n">01</span>这是一份设计稿</h2>
+
         <p class="lead-in">桌面形态尚未实现。本页不是安装说明，而是边界文档：哪些能力必须保留、哪些可以舍弃、数据放在哪里、失败时怎么办。</p>
         <div class="callout warn">
           <span class="k">现状</span>
           <p>当前只有 Web 与 CLI 两种形态。桌面包没有发布，也没有承诺时间表。任何「已经支持桌面版」的说法都不准确。</p>
         </div>
+      
       </section>
 
       <section id="shape">
         <h2><span class="n">02</span>目标形态</h2>
+
         <p>目标不是把 Web 套一个壳，而是<strong>单用户、本地优先</strong>的研究工作站：</p>
         <ul>
           <li>复用同一套 <code>core</code>、工具与记忆，不另写一套 Agent。</li>
@@ -78,10 +121,12 @@
           <li>模型端点与 arXiv / OpenAlex 仍需网络；离线时只读已有数据。</li>
         </ul>
         <p>外壳选型（如 Tauri / Electron）尚未定稿。选型标准应优先看：安装体积、系统 WebView 依赖、进程管理与自动更新能力。</p>
+      
       </section>
 
       <section id="data">
         <h2><span class="n">03</span>数据目录</h2>
+
         <p>桌面版必须把数据放在用户目录，而不是安装目录：</p>
         <div class="dtable">
           <table>
@@ -98,21 +143,41 @@
           <span class="k">备份</span>
           <p>备份是一个目录复制动作，不是一个数据库导出命令。论文文件与向量索引都在目录里，只导出 SQLite 会丢依据。</p>
         </div>
+      
       </section>
 
       <section id="runtime">
         <h2><span class="n">04</span>运行期约束</h2>
+
         <div class="split2">
-          <div class="panel"><span class="k">PROCESS</span><h4>单实例</h4><p>同一数据目录只允许一个实例运行；重复启动应聚焦已有窗口，而不是开第二个后端。</p></div>
-          <div class="panel"><span class="k">NETWORK</span><h4>只监听回环</h4><p>默认 <code>127.0.0.1</code>，不开放局域网；需要远程访问时走显式配置，并提示风险。</p></div>
-          <div class="panel"><span class="k">LIFECYCLE</span><h4>关窗不退任务</h4><p>关闭窗口应提示运行中任务；退出时保存 queued 状态，下次启动恢复。</p></div>
-          <div class="panel"><span class="k">SECRETS</span><h4>系统钥匙串优先</h4><p>若可用，<code>.secret_key</code> 交由系统钥匙串保管；不可用时至少限制文件权限。</p></div>
+          <div class="panel">
+            <span class="k">PROCESS</span>
+            <h4>单实例</h4>
+            <p>同一数据目录只允许一个实例运行；重复启动应聚焦已有窗口，而不是开第二个后端。</p>
+          </div>
+          <div class="panel">
+            <span class="k">NETWORK</span>
+            <h4>只监听回环</h4>
+            <p>默认 <code>127.0.0.1</code>，不开放局域网；需要远程访问时走显式配置，并提示风险。</p>
+          </div>
+          <div class="panel">
+            <span class="k">LIFECYCLE</span>
+            <h4>关窗不退任务</h4>
+            <p>关闭窗口应提示运行中任务；退出时保存 queued 状态，下次启动恢复。</p>
+          </div>
+          <div class="panel">
+            <span class="k">SECRETS</span>
+            <h4>系统钥匙串优先</h4>
+            <p>若可用，<code>.secret_key</code> 交由系统钥匙串保管；不可用时至少限制文件权限。</p>
+          </div>
         </div>
         <p>这些约束的核心是：桌面版不是一个更小的服务器，而是一个<strong>数据归用户所有</strong>的本地工作区。</p>
+      
       </section>
 
       <section id="boundary">
         <h2><span class="n">05</span>打包边界</h2>
+
         <p>以下能力在桌面版里保留或舍弃，需要先定：</p>
         <div class="dtable">
           <table>
@@ -128,10 +193,12 @@
           </table>
         </div>
         <p>舍弃多用户不等于删除鉴权代码；桌面版可以用单账号模式启动，但数据模型仍保留 <code>owner_id</code>，避免未来迁移时重写。</p>
+      
       </section>
 
       <section id="open">
         <h2><span class="n">06</span>未决问题</h2>
+
         <ul>
           <li><b>外壳与 WebView</b>：系统 WebView 版本差异会影响 SSE 与字体渲染。</li>
           <li><b>Python 运行时</b>：打包 Python 依赖还是要求用户自装；后者会显著提高上手成本。</li>
@@ -140,10 +207,12 @@
           <li><b>导入既有工作区</b>：从服务器迁移到桌面，<code>.secret_key</code> 与论文文件如何校验。</li>
         </ul>
         <p>这些问题没有答案之前，不应发布「桌面版预览」。预览会制造支持承诺，而当前没有对应的验证能力。</p>
+      
       </section>
 
       <section id="acceptance">
         <h2><span class="n">07</span>验收标准</h2>
+
         <ol>
           <li>首次启动完成建工作区、建库、播种账号，且不需要命令行。</li>
           <li>断网时能打开已有清单与条目，明确提示模型不可用。</li>
@@ -153,6 +222,7 @@
           <li>崩溃后日志可定位到任务与工具步骤，而不是只有一段堆栈。</li>
         </ol>
         <p>这些标准与服务器部署的<a href="./deployment.html">安全清单</a>共享同一条原则：失败要可见，数据要可迁移。</p>
+      
       </section>
 
       <nav class="docnav" aria-label="文档翻页">
@@ -165,8 +235,7 @@
         <div class="related-grid">
           <a href="./deployment.html"><span class="tag">ENGINEERING</span><span class="t">服务器部署与升级</span><span class="d">systemd、Nginx、前端产物发布与回滚。</span></a>
           <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
-          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
-          <a href="./development-workflow.html"><span class="tag">ENGINEERING</span><span class="t">开发与发版流程</span><span class="d">分支、PR 清单、测试与双仓同步。</span></a>
+          <a href="./roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
         </div>
       </aside>
 
@@ -175,7 +244,46 @@
   </div>
 </main>
 
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><img class="mark" src="../assets/logo-mark-sm.svg" alt="" width="22" height="22">OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../docs.html">文档</a>
+        <a href="../roadmap.html">路线图</a>
+        <a href="../source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 产品文档 · 2026</span>
+    </div>
+  </div>
+</footer>
+
 <script src="../assets/reveal.js" defer></script>
-<script src="../assets/doc-page.js" defer></script>
+<script>
+(function(){
+  var links = document.querySelectorAll(".doc-toc a[href^='#']");
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  var sections = document.querySelectorAll(".prose section[id]");
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove("on"); });
+      var link = map[e.target.id];
+      if (link) link.classList.add("on");
+    });
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function(s){ io.observe(s); });
+})();
+</script>
 </body>
 </html>

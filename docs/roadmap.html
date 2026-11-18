@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
+<meta name="description" content="OpenAcademic 已知限制与规划：已落地能力、四个最大缺口、部署前必改项、验证债与刻意不做的边界。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="已知限制与规划 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="OpenAcademic 已知限制与规划：已落地能力、四个最大缺口、部署前必改项、验证债与刻意不做的边界。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>已知限制与规划 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body>
+
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="../index.html" aria-label="OpenAcademic 首页">
+      <img class="brand-mark" src="../assets/logo-mark-sm.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="../index.html">首页</a>
+      <a href="../docs.html" aria-current="page">文档</a>
+      <a href="../roadmap.html">路线图</a>
+      <a href="../source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>START</span><span class="sep">/</span><span class="here">已知限制与规划</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">STATUS · 03</p>
+          <h1>现在缺什么，<br><span class="grad">接下来做什么。</span></h1>
+          <p class="lead">主链路已经可用，工作区与扫描通道都接上了后端；最大的功能缺口是阅读页与 LaTeX 精确模式，最大的工程债是验证。这是一份面向使用者的现状清单，不是承诺表。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 9 分钟</span><span class="dot"></span>
+            <span class="state">持续更新</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>4</b><span>最大功能缺口</span></div>
+          <div><b>8</b><span>已落地能力</span></div>
+          <div><b>2026-11-13</b><span>状态口径</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol>
+        <li><a href="#status"><span class="i">01</span><span>一句话现状</span></a></li>
+        <li><a href="#shipped"><span class="i">02</span><span>已经落地</span></a></li>
+        <li><a href="#gaps"><span class="i">03</span><span>四个最大的缺口</span></a></li>
+        <li><a href="#deploy"><span class="i">04</span><span>部署前必改</span></a></li>
+        <li><a href="#verification"><span class="i">05</span><span>验证债</span></a></li>
+        <li><a href="#notdoing"><span class="i">06</span><span>刻意不做</span></a></li>
+        <li><a href="#next"><span class="i">07</span><span>接下来往哪走</span></a></li>
+      </ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <details class="toc-mobile">
+        <summary>本页目录 · 7 节</summary>
+        <ol>
+        <li><a href="#status"><span class="i">01</span><span>一句话现状</span></a></li>
+        <li><a href="#shipped"><span class="i">02</span><span>已经落地</span></a></li>
+        <li><a href="#gaps"><span class="i">03</span><span>四个最大的缺口</span></a></li>
+        <li><a href="#deploy"><span class="i">04</span><span>部署前必改</span></a></li>
+        <li><a href="#verification"><span class="i">05</span><span>验证债</span></a></li>
+        <li><a href="#notdoing"><span class="i">06</span><span>刻意不做</span></a></li>
+        <li><a href="#next"><span class="i">07</span><span>接下来往哪走</span></a></li>
+        </ol>
+      </details>
+
+      <section id="status">
+        <h2><span class="n">01</span>一句话现状</h2>
+
+        <p class="lead-in">从派活到回写，闭环已经能跑；从「人也能读」到「精确研究」，还差一层。</p>
+        <div class="strip">
+          <div><b>100%</b><span>主链路</span><em>可用</em></div>
+          <div><b>100%</b><span>工作区</span><em>已接后端</em></div>
+          <div><b>92%</b><span>扫描与引用链</span><em>双通道</em></div>
+          <div><b>24%</b><span>阅读页</span><em>未完成</em></div>
+        </div>
+        <p>百分比是粗略进度，不是精确工期。它的作用是让访客一眼看出：主链已经能用，阅读体验仍是最大缺口。</p>
+      
+      </section>
+
+      <section id="shipped">
+        <h2><span class="n">02</span>已经落地</h2>
+
+        <ul>
+          <li><b>收件箱 / 本周清单 / 领域条目流</b>共用一份工作区状态，路由切换不丢操作。</li>
+          <li><b>派活落库</b>：<code>tasks</code> + 进程内队列，重启后 <code>queued</code> 自动恢复。</li>
+          <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻。</li>
+          <li><b>关键词通道</b>：逐领域跑 arXiv，命中 / 失败 / 限流写 <code>channel_runs</code>。</li>
+          <li><b>引用链通道</b>：OpenAlex 前向「本周谁引了种子」与后向「种子引了谁」。</li>
+          <li><b>扫描候选</b>：落 <code>scan_candidates</code>，按领域 + 周 + 标识去重，可一键派活。</li>
+          <li><b>三标识对齐</b>：arXiv → OpenAlex 实测 100/100，引用链本期做。</li>
+          <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。</li>
+        </ul>
+        <div class="callout ok">
+          <span class="k">可验证的说法</span>
+          <p>以上能力都能在后端数据里找到对应表或字段；界面只是这些状态的视图。判断一个功能是否真的落地，先看它有没有状态落点，而不是看页面上有没有按钮。</p>
+        </div>
+      
+      </section>
+
+      <section id="gaps">
+        <h2><span class="n">03</span>四个最大的缺口</h2>
+
+        <p>这些不是小修小补，决定「读」能不能从 Agent 的工具调用，变成人也能操作的阅读与批注。</p>
+        <div class="split2">
+          <div class="panel warn">
+            <span class="k">01 · READING</span>
+            <h4>阅读页与分级阅读</h4>
+            <p><code>/p/[projectId]/paper/[paperId]</code> 路由、L1 速览 / L2 精读 / L3 复现、<code>reading_level</code> 可写 UI、原文文档端点、高亮与批注、阅读进度、「精读才入库」门槛都还没有。</p>
+          </div>
+          <div class="panel warn">
+            <span class="k">02 · LATEX</span>
+            <h4>精确研究工具未注册</h4>
+            <p>8 个基于 LaTeX 源码的精确工具（overview / outline / search / figures / tables / equations / references）写在代码里，但没注册进模型工具表，模型调不到。</p>
+          </div>
+          <div class="panel warn">
+            <span class="k">03 · WORKSPACE</span>
+            <h4>导入与笔记操作</h4>
+            <p>本地 PDF 导入没有 multipart 端点；领域笔记页只读，没有新建、编辑与反链；跨领域笔记列表与向量召回也还没有。</p>
+          </div>
+          <div class="panel warn">
+            <span class="k">04 · FRONTEND</span>
+            <h4>搜索、编辑与长会话</h4>
+            <p>会话历史没有全文搜索；笔记没有编辑能力；connect 回放没有分页；长会话的消息导航没有虚拟化。</p>
+          </div>
+        </div>
+      
+      </section>
+
+      <section id="deploy">
+        <h2><span class="n">04</span>部署前必改</h2>
+
+        <p>内部小团队可以先跑；对公网开放前，至少把这四组事情处理掉。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>事项</th><th>现状</th><th>要求</th></tr></thead>
+            <tbody>
+              <tr><td><b>默认管理员口令</b></td><td><code>admin@example.com / admin123</code> 写在源码里</td><td>首次登录立即改密</td></tr>
+              <tr><td><b>账号开通</b></td><td>没有注册入口</td><td>管理员建号</td></tr>
+              <tr><td><b>.secret_key</b></td><td>解密已存 API Key 的唯一钥匙</td><td>备份，不要重新生成</td></tr>
+              <tr><td><b>依赖与发布门禁</b></td><td>部分检查未强制</td><td>lock 文件 / lint / typecheck</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout warn">
+          <span class="k">公网前还要补的安全项</span>
+          <p>Cookie 尚未设 <code>Secure</code>；会话令牌按明文存储；配置密文是 AES-CBC 无 MAC。应补 HTTPS、令牌哈希与 AES-GCM / HMAC。CORS 目前全开，登录也没有失败节流。</p>
+        </div>
+        <p>完整步骤见<a href="./deployment.html">服务器部署与升级</a>。CI 在 GitHub Actions，主仓在 Gitee；需要镜像或自建 runner。</p>
+      
+      </section>
+
+      <section id="verification">
+        <h2><span class="n">05</span>验证债</h2>
+
+        <p>有些代码写完了，还没在真实环境里跑过。这些只能人工跑，按组一次跑完最省事。</p>
+        <ul class="pillrow">
+          <li>多用户隔离</li>
+          <li>PDF 真样本页眉过滤</li>
+          <li>领域 IA 23 条路由</li>
+          <li>前端 IA：登录 → 交活 → 四态回写</li>
+          <li>上下文回收 B1–B8</li>
+          <li>一次真机精读端到端</li>
+          <li>LaTeX 产物与节边界一致性</li>
+        </ul>
+        <div class="callout">
+          <span class="k">优先补测</span>
+          <p><code>crypto_utils</code> 往返与 mask、<code>load_model_config</code> 合并优先级、<code>AgentState.update_todos</code> 的五种终止路径、<code>run_agent_stream</code> 的事件序列、多会话并发写入与断连续跑。</p>
+        </div>
+        <p>Agent 主循环、限流、笔记与后端路由目前没有自动化测试。验证债不是「质量不好」，是「还没有证据说它好」——在产品里，这两者的区别很重要。</p>
+      
+      </section>
+
+      <section id="notdoing">
+        <h2><span class="n">06</span>刻意不做</h2>
+
+        <p>提 PR 前先对齐：有些东西不是没做，是决定不做。</p>
+        <ul class="pillrow">
+          <li class="no">每人自带 API Key（BYOK）</li>
+          <li class="no">登录改 JWT</li>
+          <li class="no">对话里直接建领域</li>
+          <li class="no">删除论文的 UI 入口</li>
+          <li class="no">run_bash 进模型工具表</li>
+          <li class="no">统计持久化与历史回溯</li>
+          <li class="no">会议纪要 / PPT / 外部日历</li>
+          <li class="no">无界 todo 硬拒</li>
+        </ul>
+        <p>判断标准见<a href="./product-thesis.html">产品主旨</a>：是否强化「判断—出处—轨迹」主链。</p>
+      
+      </section>
+
+      <section id="next">
+        <h2><span class="n">07</span>接下来往哪走</h2>
+
+        <p>方向不是「更聪明的模型」，而是模型越强越值钱的资产：证据链、轨迹轴、通道运行记录。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>方向</th><th>落点</th><th>为什么现在做</th></tr></thead>
+            <tbody>
+              <tr><td><b>可追溯综述</b></td><td><code>paper_id + section + quote</code></td><td>判断已经落库，差的是聚合与排版</td></tr>
+              <tr><td><b>评估</b></td><td>citation precision / hallucination rate</td><td>没有指标就无法证明「可核对」</td></tr>
+              <tr><td><b>多源检索与图谱</b></td><td>Semantic Scholar / PubMed / 引文图谱</td><td>单 arXiv 覆盖不了邻近工作</td></tr>
+              <tr><td><b>RAG</b></td><td>可配置嵌入 / rerank / 来源标注</td><td>笔记检索已有索引，缺可调参数</td></tr>
+              <tr><td><b>产出</b></td><td>LaTeX / BibTeX / Word / PDF</td><td>判断要进稿子，不能只停在界面</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <blockquote>目标不是完美召回，是让漏检可归因。</blockquote>
+      
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./architecture.html"><span class="k">← 上一篇 · START</span><span class="t">系统架构</span></a>
+        <a class="next" href="./architecture-diagram.html"><span class="k">下一篇 · MECHANISM →</span><span class="t">系统上下文与容器</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./deployment.html"><span class="tag">ENGINEERING</span><span class="t">服务器部署与升级</span><span class="d">systemd、Nginx、前端产物发布与回滚。</span></a>
+          <a href="./reliability.html"><span class="tag">MECHANISM</span><span class="t">行为治理与失败可见性</span><span class="d">限流、压缩、工具结果与失败可见性。</span></a>
+          <a href="./product-thesis.html"><span class="tag">START</span><span class="t">产品主旨与亮点定位</span><span class="d">交付物、漏检归因与轨迹轴：产品为什么成立。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><img class="mark" src="../assets/logo-mark-sm.svg" alt="" width="22" height="22">OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../docs.html">文档</a>
+        <a href="../roadmap.html">路线图</a>
+        <a href="../source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 产品文档 · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/reveal.js" defer></script>
+<script>
+(function(){
+  var links = document.querySelectorAll(".doc-toc a[href^='#']");
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  var sections = document.querySelectorAll(".prose section[id]");
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove("on"); });
+      var link = map[e.target.id];
+      if (link) link.classList.add("on");
+    });
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function(s){ io.observe(s); });
+})();
+</script>
+</body>
+</html>

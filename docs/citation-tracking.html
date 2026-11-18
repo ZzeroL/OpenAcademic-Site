@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#F5F5F7">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
 <meta name="description" content="OpenAcademic 引用追踪：arXiv id 到 OpenAlex work 的 DOI 直达与标题兜底，前向 / 后向扫描与通道回执。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前向 / 后向引用追踪 · 产品文档 · OpenAcademic">
-<meta property="og:description" content="arXiv → OpenAlex 对齐、前向 / 后向与回执。">
+<meta property="og:description" content="OpenAcademic 引用追踪：arXiv id 到 OpenAlex work 的 DOI 直达与标题兜底，前向 / 后向扫描与通道回执。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="OpenAcademic">
 <title>前向 / 后向引用追踪 · 产品文档 · OpenAcademic</title>
@@ -17,15 +17,34 @@
 <link rel="stylesheet" href="../assets/docs.css">
 <script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
 </head>
-<body data-root="..">
+<body>
 
 <a class="skip" href="#main">跳到正文</a>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <a class="brand" href="../index.html" aria-label="OpenAcademic 首页">
+      <img class="brand-mark" src="../assets/logo-mark-sm.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-name">OpenAcademic</span>
+        <span class="brand-sub">Research Production Line</span>
+      </span>
+    </a>
+    <nav class="mast-nav" aria-label="页面导航">
+      <a href="../index.html">首页</a>
+      <a href="../docs.html" aria-current="page">文档</a>
+      <a href="../roadmap.html">路线图</a>
+      <a href="../source.html">源码</a>
+    </nav>
+    <a class="mast-cta" href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub <span class="arr" aria-hidden="true">↗</span></a>
+  </div>
+</header>
 
 <main id="main">
   <div class="doc-hero">
     <div class="container">
       <nav class="crumb" aria-label="面包屑">
-        <a href="../docs.html">文档</a><span class="sep">/</span><span>DATA &amp; CHANNELS</span><span class="sep">/</span><span class="here">前向 / 后向引用追踪</span>
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>DATA & CHANNELS</span><span class="sep">/</span><span class="here">前向 / 后向引用追踪</span>
       </nav>
       <div class="doc-head">
         <div>
@@ -48,9 +67,17 @@
   </div>
 
   <div class="container doc-shell">
-    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+    <aside class="doc-toc" aria-label="本页目录">
       <p class="toc-k">本页目录</p>
-      <ol></ol>
+      <ol>
+        <li><a href="#why"><span class="i">01</span><span>为什么走 OpenAlex</span></a></li>
+        <li><a href="#align"><span class="i">02</span><span>arXiv id → work：两条对齐路径</span></a></li>
+        <li><a href="#forward"><span class="i">03</span><span>前向：本周谁引了种子</span></a></li>
+        <li><a href="#backward"><span class="i">04</span><span>后向：种子引了谁</span></a></li>
+        <li><a href="#receipts"><span class="i">05</span><span>回执：ok / fail / skip</span></a></li>
+        <li><a href="#rules"><span class="i">06</span><span>对齐规则：对不上会标出来</span></a></li>
+        <li><a href="#limits"><span class="i">07</span><span>已知限制</span></a></li>
+      </ol>
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
@@ -59,18 +86,34 @@
     </aside>
 
     <article class="prose">
+      <details class="toc-mobile">
+        <summary>本页目录 · 7 节</summary>
+        <ol>
+        <li><a href="#why"><span class="i">01</span><span>为什么走 OpenAlex</span></a></li>
+        <li><a href="#align"><span class="i">02</span><span>arXiv id → work：两条对齐路径</span></a></li>
+        <li><a href="#forward"><span class="i">03</span><span>前向：本周谁引了种子</span></a></li>
+        <li><a href="#backward"><span class="i">04</span><span>后向：种子引了谁</span></a></li>
+        <li><a href="#receipts"><span class="i">05</span><span>回执：ok / fail / skip</span></a></li>
+        <li><a href="#rules"><span class="i">06</span><span>对齐规则：对不上会标出来</span></a></li>
+        <li><a href="#limits"><span class="i">07</span><span>已知限制</span></a></li>
+        </ol>
+      </details>
+
       <section id="why">
         <h2><span class="n">01</span>为什么走 OpenAlex</h2>
+
         <p>arXiv 预印本通常没有正式 DOI；即使有 <code>10.48550</code>，Crossref 也查不到对应记录。直接用 DOI 查引用链会大面积落空。</p>
         <p>OpenAlex 以 work 为单位组织引用关系，能通过 arXiv id、DOI、标题等多个入口对齐。因此全文只从 arXiv 来，引用链与标识对齐走 OpenAlex，两套标识各司其职。</p>
         <div class="callout">
           <span class="k">边界</span>
           <p>OpenAlex 的引用列表可能滞后或不完整。后向引用只说明「它引了谁」，不保证穷尽；前向引用只说明「本周谁引了它」，不保证覆盖所有出版渠道。</p>
         </div>
+      
       </section>
 
       <section id="align">
         <h2><span class="n">02</span>arXiv id → work：两条对齐路径</h2>
+
         <div class="flow vert">
           <div class="flow-step"><b>01</b><strong>DOI 直达</strong><span>用 arXiv id 找到对应 DOI，再查 OpenAlex work。</span></div>
           <i>↓ 未命中</i>
@@ -89,10 +132,12 @@
             </tbody>
           </table>
         </div>
+      
       </section>
 
       <section id="forward">
         <h2><span class="n">03</span>前向：本周谁引了种子</h2>
+
         <p>前向引用回答「种子论文的新邻居」。每周对领域内的种子论文跑一次，只保留本周新增的引用关系。</p>
         <ul>
           <li>输入：种子论文的 OpenAlex work id。</li>
@@ -101,10 +146,12 @@
           <li>失败：429 / 超时记 <code>skip</code> 或 <code>fail</code>，清单可见。</li>
         </ul>
         <p>前向引用的价值在于发现「刚开始引用种子的新工作」，而不是完整引用图谱。因此它不需要历史全量，只需要本周增量。</p>
+      
       </section>
 
       <section id="backward">
         <h2><span class="n">04</span>后向：种子引了谁</h2>
+
         <p>后向引用回答「该读却没在读的邻近工作」。它对种子的参考文献列表跑一遍，把尚未入库的 work 变成候选。</p>
         <ul>
           <li>输入：种子的 OpenAlex referenced_works。</li>
@@ -116,10 +163,12 @@
           <span class="k">示例状态</span>
           <p>后向通道若遇 429，显示 <code>skip</code> 与「429 · 下次再跑」，而不是 0 命中。0 命中意味着跑过了但没有新候选；429 意味着没跑成。两者不能混。</p>
         </div>
+      
       </section>
 
       <section id="receipts">
         <h2><span class="n">05</span>回执：ok / fail / skip</h2>
+
         <p>每条通道每次运行都写一条回执，至少包含：通道名、领域、周、状态、命中数、错误摘要、起止时间。</p>
         <div class="dtable">
           <table>
@@ -132,10 +181,12 @@
           </table>
         </div>
         <p>回执不是日志，是产品数据。它决定清单里「通道异常」这一栏是否出现，也决定人下周要不要换源或补扫。</p>
+      
       </section>
 
       <section id="rules">
         <h2><span class="n">06</span>对齐规则：对不上会标出来</h2>
+
         <ol>
           <li><b>优先稳定标识。</b>DOI 直达优先于标题；标题只做兜底。</li>
           <li><b>唯一匹配才采用。</b>多候选不取最高分，直接判未对齐。</li>
@@ -144,10 +195,12 @@
           <li><b>可复核。</b>对齐结果可以人工改，改动写回执，不覆盖原记录。</li>
         </ol>
         <p>这套规则的目标不是把对齐率做高，而是让「对不上」可见。100/100 是当前代理样本的结果，不是永久保证。</p>
+      
       </section>
 
       <section id="limits">
         <h2><span class="n">07</span>已知限制</h2>
+
         <ul>
           <li>OpenAlex 引用列表可能滞后，新预印本的被引关系不一定当周可见。</li>
           <li>标题兜底对同名论文、翻译标题、副标题变动敏感；宁可未对齐，不硬匹配。</li>
@@ -155,20 +208,20 @@
           <li>后向引用不递归展开，避免候选爆炸；需要更深图谱时另开任务。</li>
         </ul>
         <p>实测方法与结果见<a href="./identifier-alignment.html">三标识对齐报告</a>；候选如何落池见<a href="./scan-candidates.html">候选落表与一键派活</a>。</p>
+      
       </section>
 
       <nav class="docnav" aria-label="文档翻页">
-        <a class="prev" href="./scan-candidates.html"><span class="k">← 上一篇 · DATA &amp; CHANNELS</span><span class="t">候选落表与一键派活</span></a>
-        <a class="next" href="./identifier-alignment.html"><span class="k">下一篇 · DATA &amp; CHANNELS →</span><span class="t">三标识对齐报告</span></a>
+        <a class="prev" href="./scan-candidates.html"><span class="k">← 上一篇 · DATA & CHANNELS</span><span class="t">候选落表与一键派活</span></a>
+        <a class="next" href="./identifier-alignment.html"><span class="k">下一篇 · DATA & CHANNELS →</span><span class="t">三标识对齐报告</span></a>
       </nav>
 
       <aside class="related">
         <p class="k">继续阅读</p>
         <div class="related-grid">
-          <a href="./scan-candidates.html"><span class="tag">DATA</span><span class="t">候选落表与一键派活</span><span class="d">三通道落池、去重键与一键派活的边界。</span></a>
-          <a href="./identifier-alignment.html"><span class="tag">DATA</span><span class="t">三标识对齐报告</span><span class="d">100 篇代理样本、100/100 对齐与口径。</span></a>
+          <a href="./scan-candidates.html"><span class="tag">DATA & CHANNELS</span><span class="t">候选落表与一键派活</span><span class="d">三通道落池、去重键与一键派活的边界。</span></a>
+          <a href="./identifier-alignment.html"><span class="tag">DATA & CHANNELS</span><span class="t">三标识对齐报告</span><span class="d">100 篇代理样本、100/100 对齐与口径。</span></a>
           <a href="./reliability.html"><span class="tag">MECHANISM</span><span class="t">行为治理与失败可见性</span><span class="d">限流、压缩、工具结果与失败可见性。</span></a>
-          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
         </div>
       </aside>
 
@@ -177,7 +230,46 @@
   </div>
 </main>
 
+<footer class="foot">
+  <div class="container">
+    <div class="foot-inner">
+      <div>
+        <div class="foot-brand"><img class="mark" src="../assets/logo-mark-sm.svg" alt="" width="22" height="22">OpenAcademic</div>
+        <p class="foot-tag">可核对的研究生产线 · Apache-2.0</p>
+      </div>
+      <nav class="foot-nav" aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../docs.html">文档</a>
+        <a href="../roadmap.html">路线图</a>
+        <a href="../source.html">源码</a>
+        <a href="https://github.com/ZzeroL/OpenAcademic" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+    <div class="foot-meta">
+      <span>Apache License 2.0 · OpenAcademic contributors</span>
+      <span>OpenAcademic · 产品文档 · 2026</span>
+    </div>
+  </div>
+</footer>
+
 <script src="../assets/reveal.js" defer></script>
-<script src="../assets/doc-page.js" defer></script>
+<script>
+(function(){
+  var links = document.querySelectorAll(".doc-toc a[href^='#']");
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  var sections = document.querySelectorAll(".prose section[id]");
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.remove("on"); });
+      var link = map[e.target.id];
+      if (link) link.classList.add("on");
+    });
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  sections.forEach(function(s){ io.observe(s); });
+})();
+</script>
 </body>
 </html>
