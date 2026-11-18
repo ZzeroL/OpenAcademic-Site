@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 引用追踪：arXiv id 到 OpenAlex work 的 DOI 直达与标题兜底，前向 / 后向扫描与通道回执。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前向 / 后向引用追踪 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="arXiv → OpenAlex 对齐、前向 / 后向与回执。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>前向 / 后向引用追踪 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>DATA &amp; CHANNELS</span><span class="sep">/</span><span class="here">前向 / 后向引用追踪</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">CITATION · 10</p>
+          <h1>前向 / 后向引用，<br><span class="grad">对齐规则与回执。</span></h1>
+          <p class="lead">arXiv 预印本在 Crossref 没有 DOI 记录，所以引用链走 OpenAlex：arXiv id → work 的 DOI 直达，没中再按标题兜底。通道 ok / fail / skip 都写回执。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 8 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>100/100</b><span>代理样本对齐</span></div>
+          <div><b>99 + 1</b><span>DOI 直达 + 标题兜底</span></div>
+          <div><b>2</b><span>引用方向</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="why">
+        <h2><span class="n">01</span>为什么走 OpenAlex</h2>
+        <p>arXiv 预印本通常没有正式 DOI；即使有 <code>10.48550</code>，Crossref 也查不到对应记录。直接用 DOI 查引用链会大面积落空。</p>
+        <p>OpenAlex 以 work 为单位组织引用关系，能通过 arXiv id、DOI、标题等多个入口对齐。因此全文只从 arXiv 来，引用链与标识对齐走 OpenAlex，两套标识各司其职。</p>
+        <div class="callout">
+          <span class="k">边界</span>
+          <p>OpenAlex 的引用列表可能滞后或不完整。后向引用只说明「它引了谁」，不保证穷尽；前向引用只说明「本周谁引了它」，不保证覆盖所有出版渠道。</p>
+        </div>
+      </section>
+
+      <section id="align">
+        <h2><span class="n">02</span>arXiv id → work：两条对齐路径</h2>
+        <div class="flow vert">
+          <div class="flow-step"><b>01</b><strong>DOI 直达</strong><span>用 arXiv id 找到对应 DOI，再查 OpenAlex work。</span></div>
+          <i>↓ 未命中</i>
+          <div class="flow-step"><b>02</b><strong>标题兜底</strong><span>规范化标题 + 年份 + 作者约束，匹配唯一 work。</span></div>
+          <i>↓ 仍未命中</i>
+          <div class="flow-step"><b>03</b><strong>显式未对齐</strong><span>标记并上清单，不猜、不静默丢弃。</span></div>
+        </div>
+        <p>标题兜底只在唯一匹配时采用。多个候选、标题差异过大或年份冲突，都按未对齐处理。对齐结果写入论文元数据，后续通道复用，避免每次重查。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>结果</th><th>条件</th><th>后续行为</th></tr></thead>
+            <tbody>
+              <tr><td><b>DOI 直达</b></td><td>arXiv id 能映射到 DOI，OpenAlex 命中</td><td>写入 <code>openalex_id</code> 与 <code>doi</code></td></tr>
+              <tr><td><b>标题兜底</b></td><td>规范化标题唯一匹配，年份一致</td><td>写入 <code>openalex_id</code>，标记 <code>matched_by=title</code></td></tr>
+              <tr><td><b>未对齐</b></td><td>多候选 / 无候选 / 冲突</td><td>标记 <code>locator_state=unmatched</code>，上清单</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="forward">
+        <h2><span class="n">03</span>前向：本周谁引了种子</h2>
+        <p>前向引用回答「种子论文的新邻居」。每周对领域内的种子论文跑一次，只保留本周新增的引用关系。</p>
+        <ul>
+          <li>输入：种子论文的 OpenAlex work id。</li>
+          <li>过滤：引用时间落在本周窗口；去重键用被引 work + 引用 work。</li>
+          <li>输出：候选论文（引用者），来源标 <code>forward</code>。</li>
+          <li>失败：429 / 超时记 <code>skip</code> 或 <code>fail</code>，清单可见。</li>
+        </ul>
+        <p>前向引用的价值在于发现「刚开始引用种子的新工作」，而不是完整引用图谱。因此它不需要历史全量，只需要本周增量。</p>
+      </section>
+
+      <section id="backward">
+        <h2><span class="n">04</span>后向：种子引了谁</h2>
+        <p>后向引用回答「该读却没在读的邻近工作」。它对种子的参考文献列表跑一遍，把尚未入库的 work 变成候选。</p>
+        <ul>
+          <li>输入：种子的 OpenAlex referenced_works。</li>
+          <li>过滤：排除库内已有论文、排除同周已派候选。</li>
+          <li>输出：候选论文（被引者），来源标 <code>backward</code>。</li>
+          <li>限制：OpenAlex 的引用列表可能缺项；缺失不补，按「未覆盖」处理。</li>
+        </ul>
+        <div class="callout warn">
+          <span class="k">示例状态</span>
+          <p>后向通道若遇 429，显示 <code>skip</code> 与「429 · 下次再跑」，而不是 0 命中。0 命中意味着跑过了但没有新候选；429 意味着没跑成。两者不能混。</p>
+        </div>
+      </section>
+
+      <section id="receipts">
+        <h2><span class="n">05</span>回执：ok / fail / skip</h2>
+        <p>每条通道每次运行都写一条回执，至少包含：通道名、领域、周、状态、命中数、错误摘要、起止时间。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>状态</th><th>触发</th><th>清单展示</th></tr></thead>
+            <tbody>
+              <tr><td><b>ok</b></td><td>正常返回，含 0 命中</td><td>命中数 + 窗口</td></tr>
+              <tr><td><b>skip</b></td><td>429、限流、主动跳过</td><td>「下次再跑」+ 原因</td></tr>
+              <tr><td><b>fail</b></td><td>超时、解析失败、数据源不可用</td><td>错误摘要 + 是否重跑</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>回执不是日志，是产品数据。它决定清单里「通道异常」这一栏是否出现，也决定人下周要不要换源或补扫。</p>
+      </section>
+
+      <section id="rules">
+        <h2><span class="n">06</span>对齐规则：对不上会标出来</h2>
+        <ol>
+          <li><b>优先稳定标识。</b>DOI 直达优先于标题；标题只做兜底。</li>
+          <li><b>唯一匹配才采用。</b>多候选不取最高分，直接判未对齐。</li>
+          <li><b>保留证据。</b>记录用了哪条路径、匹配到的 work id 与标题差异。</li>
+          <li><b>不静默丢弃。</b>未对齐的种子仍参与关键词通道，只是引用链跳过并标记。</li>
+          <li><b>可复核。</b>对齐结果可以人工改，改动写回执，不覆盖原记录。</li>
+        </ol>
+        <p>这套规则的目标不是把对齐率做高，而是让「对不上」可见。100/100 是当前代理样本的结果，不是永久保证。</p>
+      </section>
+
+      <section id="limits">
+        <h2><span class="n">07</span>已知限制</h2>
+        <ul>
+          <li>OpenAlex 引用列表可能滞后，新预印本的被引关系不一定当周可见。</li>
+          <li>标题兜底对同名论文、翻译标题、副标题变动敏感；宁可未对齐，不硬匹配。</li>
+          <li>引用链只覆盖 OpenAlex 收录的 work，不覆盖未收录的会议论文或技术报告。</li>
+          <li>后向引用不递归展开，避免候选爆炸；需要更深图谱时另开任务。</li>
+        </ul>
+        <p>实测方法与结果见<a href="./identifier-alignment.html">三标识对齐报告</a>；候选如何落池见<a href="./scan-candidates.html">候选落表与一键派活</a>。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./scan-candidates.html"><span class="k">← 上一篇 · DATA &amp; CHANNELS</span><span class="t">候选落表与一键派活</span></a>
+        <a class="next" href="./identifier-alignment.html"><span class="k">下一篇 · DATA &amp; CHANNELS →</span><span class="t">三标识对齐报告</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./scan-candidates.html"><span class="tag">DATA</span><span class="t">候选落表与一键派活</span><span class="d">三通道落池、去重键与一键派活的边界。</span></a>
+          <a href="./identifier-alignment.html"><span class="tag">DATA</span><span class="t">三标识对齐报告</span><span class="d">100 篇代理样本、100/100 对齐与口径。</span></a>
+          <a href="./reliability.html"><span class="tag">MECHANISM</span><span class="t">行为治理与失败可见性</span><span class="d">限流、压缩、工具结果与失败可见性。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

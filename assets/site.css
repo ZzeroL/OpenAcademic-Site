@@ -197,6 +197,8 @@ code{font-family:var(--mono)}
 .doc-mini h3{font-size:15px;font-weight:700;line-height:1.35;color:#F5F5F7;margin-top:12px;letter-spacing:-.01em}
 .doc-mini p{font-size:11.5px;line-height:1.6;color:#A1A1AA;margin-top:6px}
 .doc-mini .more{margin-top:auto;padding-top:12px;font-size:11px;color:#C9C2FF;font-weight:600}
+a.doc-mini{text-decoration:none;color:inherit;transition:border-color .2s,background .2s,transform .2s}
+a.doc-mini:hover{border-color:rgba(139,124,240,.42);background:rgba(255,255,255,.085);transform:translateY(-1px)}
 
 /* hero art: roadmap board */
 .board{display:flex;flex-direction:column}
@@ -428,6 +430,8 @@ code{font-family:var(--mono)}
 .foot-meta{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-3)}
 .foot-note{margin-top:26px;font-size:11px;line-height:1.7;color:var(--ink-3);max-width:64em;text-wrap:pretty}
 .foot-note b{font-family:var(--mono);color:var(--ink-2);font-weight:600;margin-right:5px}
+.foot-note a{color:var(--brand-3);text-decoration:none;border-bottom:1px solid rgba(75,63,191,.28)}
+.foot-note a:hover{border-bottom-color:var(--brand-3)}
 
 /* 404 */
 .four{font-size:clamp(110px,22vw,260px);line-height:.9;letter-spacing:-.06em;font-weight:800}

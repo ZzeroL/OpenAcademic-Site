@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 桌面打包设计：打包边界、数据目录、运行期约束、未决问题与验收标准。当前仍是设计稿。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="桌面打包设计 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="打包边界、数据目录与运行期约束（设计稿）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>桌面打包设计 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>ENGINEERING</span><span class="sep">/</span><span class="here">桌面打包设计</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">DESKTOP · 14</p>
+          <h1>把服务器，<br><span class="grad">收进一台电脑。</span></h1>
+          <p class="lead">桌面形态仍是设计稿，不是已发布能力。本页定义打包边界、数据目录与运行期约束，供后续实现与评审使用；外壳选型尚未定稿。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 6 分钟</span><span class="dot"></span>
+            <span class="state">设计稿</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>0</b><span>已发布桌面包</span></div>
+          <div><b>1</b><span>本地数据根</span></div>
+          <div><b>3</b><span>必须先定的约束</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="status">
+        <h2><span class="n">01</span>这是一份设计稿</h2>
+        <p class="lead-in">桌面形态尚未实现。本页不是安装说明，而是边界文档：哪些能力必须保留、哪些可以舍弃、数据放在哪里、失败时怎么办。</p>
+        <div class="callout warn">
+          <span class="k">现状</span>
+          <p>当前只有 Web 与 CLI 两种形态。桌面包没有发布，也没有承诺时间表。任何「已经支持桌面版」的说法都不准确。</p>
+        </div>
+      </section>
+
+      <section id="shape">
+        <h2><span class="n">02</span>目标形态</h2>
+        <p>目标不是把 Web 套一个壳，而是<strong>单用户、本地优先</strong>的研究工作站：</p>
+        <ul>
+          <li>复用同一套 <code>core</code>、工具与记忆，不另写一套 Agent。</li>
+          <li>本地启动后端与前端，默认只监听回环地址。</li>
+          <li>数据、论文与密钥都在本机，不依赖外部数据库。</li>
+          <li>模型端点与 arXiv / OpenAlex 仍需网络；离线时只读已有数据。</li>
+        </ul>
+        <p>外壳选型（如 Tauri / Electron）尚未定稿。选型标准应优先看：安装体积、系统 WebView 依赖、进程管理与自动更新能力。</p>
+      </section>
+
+      <section id="data">
+        <h2><span class="n">03</span>数据目录</h2>
+        <p>桌面版必须把数据放在用户目录，而不是安装目录：</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>位置</th><th>内容</th><th>迁移</th></tr></thead>
+            <tbody>
+              <tr><td><b>UserData</b></td><td>SQLite、Chroma、论文文件、<code>.secret_key</code></td><td>可导出 / 导入</td></tr>
+              <tr><td><b>Cache</b></td><td>可重取的 PDF、模型响应缓存</td><td>可清空</td></tr>
+              <tr><td><b>Logs</b></td><td>运行日志、崩溃转储</td><td>可轮转</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>桌面版与服务器共用 <code>OPENACADEMIC_HOME</code> 语义：切换目录就等于切换工作区。导入导出必须包含 <code>.secret_key</code> 的说明，否则用户换机后无法解密已存密钥。</p>
+        <div class="callout">
+          <span class="k">备份</span>
+          <p>备份是一个目录复制动作，不是一个数据库导出命令。论文文件与向量索引都在目录里，只导出 SQLite 会丢依据。</p>
+        </div>
+      </section>
+
+      <section id="runtime">
+        <h2><span class="n">04</span>运行期约束</h2>
+        <div class="split2">
+          <div class="panel"><span class="k">PROCESS</span><h4>单实例</h4><p>同一数据目录只允许一个实例运行；重复启动应聚焦已有窗口，而不是开第二个后端。</p></div>
+          <div class="panel"><span class="k">NETWORK</span><h4>只监听回环</h4><p>默认 <code>127.0.0.1</code>，不开放局域网；需要远程访问时走显式配置，并提示风险。</p></div>
+          <div class="panel"><span class="k">LIFECYCLE</span><h4>关窗不退任务</h4><p>关闭窗口应提示运行中任务；退出时保存 queued 状态，下次启动恢复。</p></div>
+          <div class="panel"><span class="k">SECRETS</span><h4>系统钥匙串优先</h4><p>若可用，<code>.secret_key</code> 交由系统钥匙串保管；不可用时至少限制文件权限。</p></div>
+        </div>
+        <p>这些约束的核心是：桌面版不是一个更小的服务器，而是一个<strong>数据归用户所有</strong>的本地工作区。</p>
+      </section>
+
+      <section id="boundary">
+        <h2><span class="n">05</span>打包边界</h2>
+        <p>以下能力在桌面版里保留或舍弃，需要先定：</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>能力</th><th>桌面版</th><th>理由</th></tr></thead>
+            <tbody>
+              <tr><td><b>Agent 内核 / 工具 / 记忆</b></td><td class="ok">保留</td><td>产品核心，不能分叉</td></tr>
+              <tr><td><b>收件箱 / 清单 / 领域</b></td><td class="ok">保留</td><td>主界面</td></tr>
+              <tr><td><b>多用户与管理员建号</b></td><td class="no">舍弃</td><td>单用户本地，保留单账号即可</td></tr>
+              <tr><td><b>systemd / Nginx</b></td><td class="no">舍弃</td><td>改由外壳管理进程</td></tr>
+              <tr><td><b>SSE 进度流</b></td><td class="ok">保留</td><td>本机回环，成本低</td></tr>
+              <tr><td><b>自动更新</b></td><td class="wip">待定</td><td>需签名与回滚策略</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>舍弃多用户不等于删除鉴权代码；桌面版可以用单账号模式启动，但数据模型仍保留 <code>owner_id</code>，避免未来迁移时重写。</p>
+      </section>
+
+      <section id="open">
+        <h2><span class="n">06</span>未决问题</h2>
+        <ul>
+          <li><b>外壳与 WebView</b>：系统 WebView 版本差异会影响 SSE 与字体渲染。</li>
+          <li><b>Python 运行时</b>：打包 Python 依赖还是要求用户自装；后者会显著提高上手成本。</li>
+          <li><b>自动更新</b>：签名、增量包、失败回滚、数据目录兼容都没有定。</li>
+          <li><b>本地模型</b>：是否支持本地推理端点；若支持，显存与进程管理需要额外设计。</li>
+          <li><b>导入既有工作区</b>：从服务器迁移到桌面，<code>.secret_key</code> 与论文文件如何校验。</li>
+        </ul>
+        <p>这些问题没有答案之前，不应发布「桌面版预览」。预览会制造支持承诺，而当前没有对应的验证能力。</p>
+      </section>
+
+      <section id="acceptance">
+        <h2><span class="n">07</span>验收标准</h2>
+        <ol>
+          <li>首次启动完成建工作区、建库、播种账号，且不需要命令行。</li>
+          <li>断网时能打开已有清单与条目，明确提示模型不可用。</li>
+          <li>关闭窗口后重开，queued 任务恢复，running 任务标为中断。</li>
+          <li>导出目录在另一台机器导入后，已存密钥可解密，判断出处可打开。</li>
+          <li>升级失败可回滚到上一版本，数据目录不被破坏。</li>
+          <li>崩溃后日志可定位到任务与工具步骤，而不是只有一段堆栈。</li>
+        </ol>
+        <p>这些标准与服务器部署的<a href="./deployment.html">安全清单</a>共享同一条原则：失败要可见，数据要可迁移。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./development-workflow.html"><span class="k">← 上一篇 · ENGINEERING</span><span class="t">开发与发版流程</span></a>
+        <a class="next" href="./research-methodology.html"><span class="k">下一篇 · ENGINEERING →</span><span class="t">研究方法提案</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./deployment.html"><span class="tag">ENGINEERING</span><span class="t">服务器部署与升级</span><span class="d">systemd、Nginx、前端产物发布与回滚。</span></a>
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+          <a href="./development-workflow.html"><span class="tag">ENGINEERING</span><span class="t">开发与发版流程</span><span class="d">分支、PR 清单、测试与双仓同步。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

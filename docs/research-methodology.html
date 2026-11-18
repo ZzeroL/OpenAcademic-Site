@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 研究方法提案：从文献综述到判断账本，可核对、可归因、可推翻三原则，以及它与当前产品的关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="研究方法提案 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="早期方法论：为什么记录判断的变更。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>研究方法提案 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>ENGINEERING</span><span class="sep">/</span><span class="here">研究方法提案</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">PROPOSAL · 15</p>
+          <h1>为什么是「判断的<br><span class="grad">变更日志」。</span></h1>
+          <p class="lead">这是一份早期方法论稿，保留作背景：为什么会从「文献综述工具」走到「判断的变更日志」。它不描述当前全部实现，但解释了产品几条硬约束的来源。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 7 分钟</span><span class="dot"></span>
+            <span class="state">背景稿</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>3</b><span>方法论原则</span></div>
+          <div><b>5</b><span>方法环节</span></div>
+          <div><b>1</b><span>核心转向</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="why">
+        <h2><span class="n">01</span>为什么写这份稿</h2>
+        <p>最初的设想是一个「更快的文献综述工具」：输入主题，输出摘要与引用列表。写到一半发现，真正的问题不在生成速度，而在<strong>半年后还能不能解释当时的判断</strong>。</p>
+        <p>综述工具交付的是一份静态文本；研究过程需要的是判断如何形成、如何被推翻、依据换了之后如何更新。这份稿记录了那次转向。</p>
+        <div class="callout">
+          <span class="k">阅读提示</span>
+          <p>本页是背景材料，不是当前产品规格。与现状冲突时，以<a href="../roadmap.html">路线图</a>和代码为准。</p>
+        </div>
+      </section>
+
+      <section id="shift">
+        <h2><span class="n">02</span>从文献综述到判断账本</h2>
+        <div class="split2">
+          <div class="panel"><span class="k">旧设想</span><h4>一份好看的综述</h4><p>按主题聚合论文，生成段落与引用；质量取决于模型那一次的输出。</p></div>
+          <div class="panel"><span class="k">新设想</span><h4>一本判断的账本</h4><p>每条判断带出处与状态；起草、确认、推翻都留痕，综述只是账本的一种视图。</p></div>
+        </div>
+        <p>这个转向带来几个直接后果：数据模型以判断为主表；界面以收件箱而非对话框为主；agent 只能发表候选判断，不能定稿；漏检必须可归因，而不是用「召回率」一句带过。</p>
+        <blockquote>交付物不是一段文字，是一组可以被追问「凭什么」的判断。</blockquote>
+      </section>
+
+      <section id="principles">
+        <h2><span class="n">03</span>三个原则</h2>
+        <div class="pillars">
+          <div class="pillar"><b>01 · VERIFIABLE</b><h4>可核对</h4><p>每条判断能回到原文的节与引句；定位不到就标未定位。</p></div>
+          <div class="pillar"><b>02 · ATTRIBUTABLE</b><h4>可归因</h4><p>没读到的论文、没跑成的通道，都要在清单里有位置。</p></div>
+          <div class="pillar"><b>03 · REVERSIBLE</b><h4>可推翻</h4><p>判断可以改，但改要留理由；轨迹 append-only。</p></div>
+        </div>
+        <p>三原则互相约束：只可核对不可归因，会漏掉「没读到」；只可归因不可推翻，会把错误判断固化；只可推翻不可核对，会退化成聊天记录。</p>
+      </section>
+
+      <section id="method">
+        <h2><span class="n">04</span>方法：五个环节</h2>
+        <div class="flow vert">
+          <div class="flow-step"><b>01 · DIRECTION</b><strong>定方向</strong><span>用一句话描述要弄明白什么，不预设检索式。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>02 · CHANNELS</b><strong>扫通道</strong><span>关键词 + 引用链，记录跑了什么、哪里没跑。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>03 · READING</b><strong>分级阅读</strong><span>粗筛 → 精读 → 复现；精读才入库。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>04 · JUDGMENT</b><strong>写判断</strong><span>一条判断一个主张，带节锚点与引句。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>05 · TRAJECTORY</b><strong>记变更</strong><span>确认、推翻、搁置都写理由，形成可回放的账本。</span></div>
+        </div>
+        <p>五个环节里，人主要参与 01 与 04 的裁决；02 与 03 尽量交给系统；05 是系统责任，不能靠人补记。</p>
+      </section>
+
+      <section id="relation">
+        <h2><span class="n">05</span>与当前产品的关系</h2>
+        <p>当前实现保留了三原则与五个环节的骨架，但在范围上收窄：</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>提案中的想法</th><th>当前状态</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><b>判断账本</b></td><td class="ok">已落地</td><td><code>items</code> + 轨迹轴</td></tr>
+              <tr><td><b>漏检归因</b></td><td class="ok">已落地</td><td>三通道 + <code>channel_runs</code></td></tr>
+              <tr><td><b>分级阅读</b></td><td class="wip">部分</td><td>四态约定已有，阅读页未完成</td></tr>
+              <tr><td><b>可追溯综述</b></td><td class="wip">规划</td><td>依赖判断聚合与导出</td></tr>
+              <tr><td><b>多源图谱</b></td><td class="no">未做</td><td>当前只有 arXiv + OpenAlex</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>收窄不是放弃，而是先让主链可验证。方法论给出方向，产品给出可交付的最小闭环。</p>
+      </section>
+
+      <section id="revisions">
+        <h2><span class="n">06</span>被保留与被修正的判断</h2>
+        <h3>保留</h3>
+        <ul>
+          <li>判断必须带出处，不能只有转述。</li>
+          <li>没读到的东西要可见，不能只报召回率。</li>
+          <li>变更必须留理由，不能覆盖历史。</li>
+        </ul>
+        <h3>修正</h3>
+        <ul>
+          <li>「完整引用图谱」改为「本周增量」：先让漏检可见，再谈覆盖。</li>
+          <li>「自动生成综述」改为「判断聚合」：没有可核对的条目，综述只是漂亮文本。</li>
+          <li>「对话式交互」改为「收件箱」：状态先于问题，减少人的认知负担。</li>
+        </ul>
+        <p>这些修正都能在当前代码里找到对应约束；它们不是文案变化，是产品边界的收紧。</p>
+      </section>
+
+      <section id="archive">
+        <h2><span class="n">07</span>为什么保留这份稿</h2>
+        <p>保留它，是为了让后来的人知道：产品不是从「做一个 AI 工具」开始的，而是从「判断如何被记住」开始的。很多现在看起来奇怪的设计——候选态、未定位、通道 skip、推翻必填理由——都可以在这里找到动机。</p>
+        <p>如果你要改主链，先读<a href="./product-thesis.html">产品主旨</a>；如果你要改流程，读<a href="./usage-flow.html">一个人，一周</a>；如果你要判断某个功能该不该做，回到这份稿的三原则。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./desktop-packaging.html"><span class="k">← 上一篇 · ENGINEERING</span><span class="t">桌面打包设计</span></a>
+        <a class="next" href="../docs.html"><span class="k">返回 · 文档索引 →</span><span class="t">全部 15 篇</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./product-thesis.html"><span class="tag">START</span><span class="t">产品主旨与亮点定位</span><span class="d">交付物、漏检归因与轨迹轴：产品为什么成立。</span></a>
+          <a href="./usage-flow.html"><span class="tag">MECHANISM</span><span class="t">一个人，一周，从交活到组会</span><span class="d">周三一句话，周一收清单，会后勾四态。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

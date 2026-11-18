@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 产品主旨：交付物、判断与操作的分界，漏检可归因，以及轨迹轴为什么是承重墙。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="产品主旨与亮点定位 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="交付物、漏检归因与轨迹轴：产品为什么成立。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>产品主旨与亮点定位 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>START</span><span class="sep">/</span><span class="here">产品主旨与亮点定位</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">PRODUCT THESIS · 01</p>
+          <h1>为什么是「等它干」，<br><span class="grad">不是助手。</span></h1>
+          <p class="lead">助手回答一个问题，生产线交回一批可核对的判断。OpenAcademic 把「读过并真的知道」拆成可验证的交付物、可归因的漏检和 append-only 的轨迹——这三件事决定了它为什么存在。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 8 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>3</b><span>承重判断：交付物 / 归因 / 轨迹</span></div>
+          <div><b>4</b><span>人一周只做四个动作</span></div>
+          <div><b>0</b><span>刻意保留的聊天式交互</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="position">
+        <h2><span class="n">01</span>定位：交付物不是聊天记录</h2>
+        <p class="lead-in">大多数科研助手优化的是「这一轮答得像不像」。OpenAcademic 优化的是「一周之后，这条结论还在不在、敢不敢拿去用」。</p>
+        <p>所以它不以对话为中心，而以<strong>收件箱</strong>为中心：你登录后先看到的是状态线、待确认的决定、三列看板与本周清单。聊天只是派活的一种入口，不是最终产物。</p>
+        <div class="split2">
+          <div class="panel"><span class="k">助手的产物</span><h4>一段看起来合理的回答</h4><p>上下文消失，结论就消失；引用是转述，无法回原文；错了只能重新问一遍。</p></div>
+          <div class="panel"><span class="k">生产线的产物</span><h4>一条挂得出处的判断</h4><p>落到领域条目里，带 ID、节锚点与原文引句；可以确认、推翻、搁置，变更留痕。</p></div>
+        </div>
+        <p>这条分界写在数据里而不是文案里：判断经 <code>save_item</code> 契约发表，候选态等人裁决；派活落 <code>tasks</code>，干完停在「待验」；扫描通道每次运行都写 <code>channel_runs</code> 回执。界面只是这些状态的视图。</p>
+        <div class="claim">
+          <div class="claim-top"><span class="k">一条条目 · 结构示意</span><span class="state">候选 · 待确认</span></div>
+          <p class="claim-t">LooGLE 的长依赖题说明：上下文变长后，掉点集中在需要跨段拼接证据的题目上，而不是检索本身。</p>
+          <div class="claim-src"><span class="claim-id">arXiv 2311.04939</span><span class="claim-sec">§4 · Results</span><span class="claim-sec">引句可回原文</span></div>
+          <p class="claim-quote">“…the drop concentrates on questions whose evidence spans multiple distant segments.”</p>
+          <div class="claim-foot"><span>判断 <b>不是摘要</b></span><span>出处 <b>不是链接列表</b></span><span>推翻时 <b>理由必填</b></span></div>
+        </div>
+      </section>
+
+      <section id="judgment">
+        <h2><span class="n">02</span>三个判断：交付物、漏检、轨迹</h2>
+        <p>产品里所有取舍都可以回溯到三句话。它们不是价值主张，是验收标准。</p>
+        <div class="pillars">
+          <div class="pillar"><b>01 · DELIVERABLE</b><h4>交付物是判断，不是操作</h4><p>判断可以进稿子、进幻灯片、进组会讨论；操作只说明「我点过这个按钮」。</p></div>
+          <div class="pillar"><b>02 · ATTRIBUTION</b><h4>漏检必须可归因</h4><p>没扫到、通道失败、扫到没派、派了没读——每一种都要在清单里留下痕迹。</p></div>
+          <div class="pillar"><b>03 · TRAJECTORY</b><h4>判断的变更必须留痕</h4><p>起草、确认、推翻、搁置都写进 append-only 的轨迹轴，理由不能省。</p></div>
+        </div>
+        <h3>为什么漏检比错检更危险</h3>
+        <p>错检会在核对时暴露，漏检不会。一篇该读的论文没进候选池，组里没有人会知道它存在。因此产品不承诺「完美召回」，而是承诺<strong>每条通道跑了什么、哪里没跑、为什么没命中，都写进本周清单</strong>。三通道的设计、<code>skip</code> / <code>fail</code> 回执与候选池去重，都是为这一条服务的。</p>
+        <h3>为什么轨迹轴是承重墙</h3>
+        <p>模型会变、prompt 会改、论文会被新版本替换。如果判断只是一次写入，半年后无法解释「当时为什么这么判」。轨迹轴保存的是判断的变更日志：谁在什么依据上起草，谁确认，谁推翻，理由是什么。它让「读过的结论」从一次性输出变成可审计的资产。</p>
+        <blockquote>素材层的错误没人能发现，所以错了必须看得见。</blockquote>
+      </section>
+
+      <section id="boundary">
+        <h2><span class="n">03</span>为什么不做「更聪明的助手」</h2>
+        <p>更聪明的助手仍然把认知负担留在人身上：你得知道该问什么、怎么追问、答案可不可信。OpenAcademic 反过来，把人的动作压缩到四个：<strong>交一句话、确认或推翻、开组会、勾四态</strong>。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>能力</th><th>聊天助手</th><th>OpenAcademic</th></tr></thead>
+            <tbody>
+              <tr><td><b>入口</b></td><td>对话框，等人想清楚问题</td><td>收件箱，状态先于问题</td></tr>
+              <tr><td><b>过程</b></td><td>一轮轮追问，过程不可见</td><td>三列看板 + 工具轨迹，进行中可见</td></tr>
+              <tr><td><b>结果</b></td><td>文本，随手复制走</td><td>领域条目，带 ID / 节锚点 / 引句</td></tr>
+              <tr><td><b>纠错</b></td><td>重新提问</td><td>确认 / 推翻 / 搁置，理由入轨迹轴</td></tr>
+              <tr><td><b>漏检</b></td><td>无法回答「你没读什么」</td><td>通道回执 + 粗筛未读 + 候选池</td></tr>
+              <tr><td><b>复用</b></td><td>依赖上下文窗口</td><td>判断落库，跨周、跨会话存在</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>这也是为什么产品不做「对话里直接建领域」「删除论文的 UI 入口」「会议纪要与 PPT 生成」。这些不是欠债，是边界：每加一个入口，都会稀释「判断—出处—轨迹」这条主链。</p>
+      </section>
+
+      <section id="lifecycle">
+        <h2><span class="n">04</span>一条判断的完整生命周期</h2>
+        <p>从一句话到一条可引用的判断，会经过六个状态。每个状态都有明确的归属与可见性。</p>
+        <div class="flow">
+          <div class="flow-step"><b>01</b><strong>派活</strong><span>一句话 + 领域，落 <code>tasks</code>，进队列。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>02</b><strong>扫描</strong><span>三通道按周跑，候选落池并去重。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>03</b><strong>精读</strong><span>按节读原文，工具轨迹可见。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>04</b><strong>发表</strong><span><code>save_item</code> 写入候选态。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>05</b><strong>裁决</strong><span>人确认 / 推翻 / 搁置，理由入轴。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>06</b><strong>复用</strong><span>交付本周清单，进稿子与组会。</span></div>
+        </div>
+        <p>注意第 4 步：agent 只能「发表」判断，不能「定稿」判断。候选态是产品里最重要的权限边界——它把模型的不确定性留在人能看见的位置，而不是靠置信度分数藏在后台。</p>
+        <div class="callout">
+          <span class="k">设计后果</span>
+          <p>如果一条判断没有出处，它应该显示「未定位」，而不是补一个像样的节号。如果一条通道挂了，它应该记 <code>skip</code> 或 <code>fail</code>，而不是让清单看起来完整。产品的可信度来自这些不体面的状态被保留下来。</p>
+        </div>
+      </section>
+
+      <section id="highlight">
+        <h2><span class="n">05</span>亮点定位：它到底强在哪</h2>
+        <p>面向访客的一句话版本：<strong>派方向，它自己扫通道、持续读、持续比对、持续记；你收回来的不是聊天记录，而是能直接进稿子的结论。</strong>展开成四条可验证的差异：</p>
+        <div class="split2">
+          <div class="panel"><span class="k">01 · EVIDENCE</span><h4>每条结论追得到原文</h4><p><code>ID</code> + 节锚点 + 引句三件套；定位不到就显式标记，禁止编造节号或引句。</p></div>
+          <div class="panel"><span class="k">02 · COVERAGE</span><h4>没读到的东西也看得见</h4><p>关键词 + OpenAlex 前向 / 后向三条通道；粗筛未读附一句不读的理由。</p></div>
+          <div class="panel"><span class="k">03 · CHANGE</span><h4>判断变更可追溯</h4><p>轨迹轴 append-only；推翻必须写理由，理由先由 agent 起草，人只改。</p></div>
+          <div class="panel"><span class="k">04 · OWNERSHIP</span><h4>数据留在自己机器上</h4><p>Apache-2.0，自部署；论文、笔记与判断都在工作区目录，不依赖外部服务。</p></div>
+        </div>
+        <div class="strip">
+          <div><b>100/100</b><span>OpenAlex 对齐</span><em>2026-11-13 代理样本</em></div>
+          <div><b>3</b><span>扫描通道</span><em>关键词 + 前向 / 后向</em></div>
+          <div><b>27</b><span>工具绑定</span><em>单轮自主调度</em></div>
+          <div><b>40</b><span>轮数上限</span><em>主循环，子代理 20</em></div>
+        </div>
+      </section>
+
+      <section id="notdo">
+        <h2><span class="n">06</span>刻意不做的边界</h2>
+        <p>产品的可信度不仅来自做了什么，也来自明确不做什么。以下方向已对齐为「不做」，提 PR 前需要先推翻这份共识，而不是顺手加上。</p>
+        <ul class="pillrow">
+          <li class="no">每人自带 API Key（BYOK）</li>
+          <li class="no">登录改 JWT</li>
+          <li class="no">对话里直接建领域</li>
+          <li class="no">删除论文的 UI 入口</li>
+          <li class="no">run_bash 进模型工具表</li>
+          <li class="no">统计持久化与历史回溯</li>
+          <li class="no">会议纪要 / PPT / 外部日历</li>
+          <li class="no">无界 todo 硬拒</li>
+        </ul>
+        <p>判断标准只有一条：<strong>它是否强化「判断—出处—轨迹」主链</strong>。强化则做，稀释则不做；与模型是否更强无关。</p>
+        <div class="callout warn">
+          <span class="k">常见误读</span>
+          <p>「不做」不等于「永远不会做」，而是「不在当前产品边界内」。如果要把其中一项纳入，需要同时说明它如何不破坏交付物的可核对性，以及轨迹轴如何记录它带来的新状态。</p>
+        </div>
+      </section>
+
+      <section id="takeaway">
+        <h2><span class="n">07</span>读完这篇，带走什么</h2>
+        <p>如果你只记三件事：</p>
+        <ol>
+          <li><b>交付物是判断。</b>没有 ID、节锚点与引句的文本，不算产品输出。</li>
+          <li><b>漏检要可归因。</b>通道回执、粗筛未读、候选池去重，比「召回率」更能说明系统是否可信。</li>
+          <li><b>轨迹轴是承重墙。</b>判断的变更日志让半年后的你能解释当时的决定。</li>
+        </ol>
+        <p>接下来建议按顺序读：<a href="./architecture.html">系统架构</a>看机制，<a href="./usage-flow.html">一周流程</a>看人怎么用，<a href="../roadmap.html">路线图</a>看现在缺什么。三篇读完，后面的数据与工程文档才知道该往哪看。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <span></span>
+        <a class="next" href="./architecture.html"><span class="k">下一篇 · START →</span><span class="t">系统架构</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+          <a href="./usage-flow.html"><span class="tag">MECHANISM</span><span class="t">一个人，一周，从交活到组会</span><span class="d">周三一句话，周一收清单，会后勾四态。</span></a>
+          <a href="./research-methodology.html"><span class="tag">ENGINEERING</span><span class="t">研究方法提案</span><span class="d">早期方法论：为什么记录判断的变更。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

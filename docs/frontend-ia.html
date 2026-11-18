@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 前端信息架构：/inbox、/digest、/p/[projectId]/items 的路由、跳转规则与后端数据契约。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="收件箱、清单与领域 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="三条主路由、跳转规则与后端数据契约。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>收件箱、清单与领域 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>MECHANISM</span><span class="sep">/</span><span class="here">收件箱、清单与领域</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">FRONTEND IA · 07</p>
+          <h1>收件箱、清单与领域：<br><span class="grad">三条主路由。</span></h1>
+          <p class="lead">前端不是聊天框加侧栏，而是三个共享同一份工作区状态的主路由。路由决定人先看到什么，数据契约决定页面能承诺什么。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 8 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>3</b><span>主路由</span></div>
+          <div><b>23</b><span>领域 IA 路由</span></div>
+          <div><b>1</b><span>共享工作区状态</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="routes">
+        <h2><span class="n">01</span>三条主路由</h2>
+        <div class="dtable routes">
+          <table>
+            <thead><tr><th>路由</th><th>回答的问题</th><th>主要数据</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr><td>/inbox</td><td>今天欠什么？</td><td>状态线、三列看板、本周决定</td><td class="ok">可用</td></tr>
+              <tr><td>/digest</td><td>这周判了什么、漏了什么？</td><td>判断、粗筛未读、候选、通道异常</td><td class="ok">可用</td></tr>
+              <tr><td>/p/[projectId]/items</td><td>这个领域现在知道什么？</td><td>领域条目流、判断状态与出处</td><td class="ok">已接后端</td></tr>
+              <tr><td>/p/[projectId]/paper/[paperId]</td><td>这篇原文里依据在哪？</td><td>PDF 文档端点、节锚点、高亮</td><td class="no">路线图</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>前三条路由共用一份工作区状态：在收件箱确认一条判断，切到领域条目流不需要重新拉取；在清单里派活，回到收件箱能立刻看到任务卡。路由是视图，不是数据边界。</p>
+      </section>
+
+      <section id="inbox">
+        <h2><span class="n">02</span>/inbox：先给状态，再给输入</h2>
+        <p>收件箱的首屏不是输入框，而是状态线。它只说三件事：<strong>距组会几天、几条决定待确认、几条干完待验</strong>。扫一眼就知道今天欠什么。</p>
+        <ul>
+          <li><b>状态线</b>：时间压力 + 待处理数量，不展示无关统计。</li>
+          <li><b>派活框</b>：一句话 + 领域选择，不做复杂表单。</li>
+          <li><b>本周决定</b>：agent 起草，人只裁决；推翻理由 agent 先起草。</li>
+          <li><b>三列看板</b>：派出的活 / 进行中 / 干完待验；进行中显示工具轨迹。</li>
+          <li><b>清单摘要</b>：判断、粗筛未读、候选、通道异常四个数，点开进 /digest。</li>
+        </ul>
+        <p>这五个区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
+      </section>
+
+      <section id="digest">
+        <h2><span class="n">03</span>/digest：覆盖情况比数量重要</h2>
+        <p>本周清单不是论文排行榜，而是覆盖报告。它至少包含四组数据：</p>
+        <div class="split2">
+          <div class="panel"><span class="k">JUDGMENTS</span><h4>本周判断</h4><p>按领域分组，标出候选 / 确认 / 推翻 / 搁置；每条可回原文。</p></div>
+          <div class="panel"><span class="k">UNREAD</span><h4>粗筛未读</h4><p>每篇附一句不读的理由，避免「没读」变成隐形状态。</p></div>
+          <div class="panel"><span class="k">CANDIDATES</span><h4>扫描候选</h4><p>共多少、已派多少、未派多少；可一键派给 agent。</p></div>
+          <div class="panel"><span class="k">CHANNELS</span><h4>通道异常</h4><p>哪条通道 <code>skip</code> / <code>fail</code>，原因与下周是否重跑。</p></div>
+        </div>
+        <p>清单可以交付「不完整」的结果，但不能交付「不知道哪里不完整」的结果。这是页面与数据的共同责任。</p>
+      </section>
+
+      <section id="items">
+        <h2><span class="n">04</span>/p/[projectId]/items：领域条目流</h2>
+        <p>领域是判断的归属维度，不是文件夹。条目流展示这个领域当前「知道什么」，每条判断带状态、出处与变更记录。</p>
+        <div class="flow">
+          <div class="flow-step"><b>FILTER</b><strong>按状态</strong><span>候选 / 确认 / 推翻 / 搁置。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>READ</b><strong>按条目</strong><span>判断 + ID + 节锚点 + 引句。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>TRACE</b><strong>按轨迹</strong><span>谁起草、谁确认、为什么改。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>ACT</b><strong>裁决</strong><span>确认 / 推翻 / 搁置，理由必填。</span></div>
+        </div>
+        <p>领域 IA 规划有 23 条路由，覆盖条目、笔记、论文、扫描、设置等；当前并非全部可用。新增路由前需要先确认它落在哪份共享状态上，避免出现「页面有自己的缓存」。</p>
+      </section>
+
+      <section id="jumps">
+        <h2><span class="n">05</span>跳转规则</h2>
+        <p>跳转只读状态，不复制状态：</p>
+        <ul>
+          <li><b>收件箱 → 清单</b>：携带当前周与领域筛选，不重置。</li>
+          <li><b>清单 → 条目</b>：点击判断直接定位到条目；返回时保留清单滚动位置。</li>
+          <li><b>条目 → 原文</b>：携带节锚点；阅读页未上线前，仅显示出处文本。</li>
+          <li><b>候选 → 派活</b>：只传候选清单，不预设阅读顺序；顺序由 agent 决定。</li>
+        </ul>
+        <div class="callout">
+          <span class="k">不做的事</span>
+          <p>不在 URL 里放敏感令牌；不通过前端拼装后端没有的统计；不用「小圆点」代替明确的通道状态。所有可见状态都必须有数据落点。</p>
+        </div>
+      </section>
+
+      <section id="contract">
+        <h2><span class="n">06</span>后端数据契约</h2>
+        <p>页面能承诺什么，取决于后端给了什么。几条核心契约：</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>界面元素</th><th>数据来源</th><th>缺数据时</th></tr></thead>
+            <tbody>
+              <tr><td><b>状态线</b></td><td>组会日期、待确认决定数、待验任务数</td><td>显示「未知」，不猜 0</td></tr>
+              <tr><td><b>三列看板</b></td><td><code>tasks</code> 状态 + 工具轨迹</td><td>空列显示「暂无」，不伪造卡片</td></tr>
+              <tr><td><b>本周清单</b></td><td>判断、粗筛、候选、<code>channel_runs</code></td><td>缺通道回执时显式标「未运行」</td></tr>
+              <tr><td><b>领域条目</b></td><td><code>items</code> + 出处 + 轨迹</td><td>无出处显示「未定位」</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>「缺数据时显示未知」比「显示 0」更重要。0 是一个事实，未知是另一个事实；把未知渲染成 0，会让漏检重新变得不可见。</p>
+      </section>
+
+      <section id="future">
+        <h2><span class="n">07</span>阅读页的预留</h2>
+        <p>阅读页是当前最大的功能缺口。规划中的路由是 <code>/p/[projectId]/paper/[paperId]</code>，要同时满足三件事：</p>
+        <ul>
+          <li><b>原文</b>：文档端点、节边界、页眉过滤，引句可高亮。</li>
+          <li><b>分级</b>：L1 速览 / L2 精读 / L3 复现，<code>reading_level</code> 可写。</li>
+          <li><b>动作</b>：高亮、批注、阅读进度；「精读才入库」的门槛。</li>
+        </ul>
+        <p>阅读页不是把 PDF 塞进 iframe。它要能把判断的节锚点映射到原文位置，否则「点开就是原文」仍然只是一句文案。完整缺口见<a href="../roadmap.html">已知限制与规划</a>。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./usage-flow.html"><span class="k">← 上一篇 · MECHANISM</span><span class="t">一个人，一周，从交活到组会</span></a>
+        <a class="next" href="./workspace-data-model.html"><span class="k">下一篇 · DATA & CHANNELS →</span><span class="t">工作区数据模型</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./usage-flow.html"><span class="tag">MECHANISM</span><span class="t">一个人，一周，从交活到组会</span><span class="d">周三一句话，周一收清单，会后勾四态。</span></a>
+          <a href="./workspace-data-model.html"><span class="tag">DATA</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

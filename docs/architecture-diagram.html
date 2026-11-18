@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 系统上下文、容器、后端组件、Agent 单轮循环、记忆与数据模型、部署拓扑和请求时序。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统上下文与容器 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="上下文、容器、组件、部署拓扑与请求时序。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>系统上下文与容器 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>MECHANISM</span><span class="sep">/</span><span class="here">系统上下文与容器</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">ARCHITECTURE MAP · 04</p>
+          <h1>系统上下文、容器，<br><span class="grad">与一次请求的路径。</span></h1>
+          <p class="lead">把系统拆成四层来看：谁在用、由哪些运行单元组成、Agent 单轮里有哪些组件、一次派活如何穿过它们。图是示意，链路与工具名取自真实实现。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 8 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>5</b><span>运行容器</span></div>
+          <div><b>6</b><span>核心组件</span></div>
+          <div><b>2</b><span>外部数据源</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="context">
+        <h2><span class="n">01</span>系统上下文：谁在用，连了什么</h2>
+        <p>OpenAcademic 是一个<strong>单机可自部署</strong>的研究生产线。系统边界内是 Agent、工作区数据与界面；边界外只有三类依赖：模型端点、arXiv 全文、OpenAlex 引用。</p>
+        <div class="flow vert">
+          <div class="flow-step"><b>ACTOR</b><strong>研究者 / 组内成员</strong><span>交一句话、确认判断、开组会、勾四态。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>SYSTEM</b><strong>OpenAcademic</strong><span>收件箱、清单、领域条目、扫描通道、Agent 内核。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>EXTERNAL</b><strong>OpenAI 兼容端点 · arXiv · OpenAlex</strong><span>推理、全文与引用；对不上会显式上清单，不猜。</span></div>
+        </div>
+        <p>没有账号体系之外的 SaaS 依赖，没有外部消息队列，没有托管数据库。数据根在 <code>&lt;repo&gt;/.openacademic/</code>，生产环境用 <code>OPENACADEMIC_HOME</code> 指到代码目录之外。</p>
+      </section>
+
+      <section id="containers">
+        <h2><span class="n">02</span>容器：五个运行单元</h2>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>容器</th><th>职责</th><th>技术</th><th>不做什么</th></tr></thead>
+            <tbody>
+              <tr><td><b>Web</b></td><td>收件箱、清单、领域工作台</td><td>Next.js 16 + CopilotKit</td><td>不直接访问模型或数据库</td></tr>
+              <tr><td><b>Backend</b></td><td>登录、会话归属、SSE、工作区路由</td><td>FastAPI</td><td>不实现 Agent 循环</td></tr>
+              <tr><td><b>Core</b></td><td>单轮循环、工具、记忆、扫描</td><td>Python 包</td><td>不反向依赖 backend</td></tr>
+              <tr><td><b>Storage</b></td><td>关系数据、向量索引、论文文件</td><td>SQLite + Chroma + 目录</td><td>不做外部同步</td></tr>
+              <tr><td><b>Runner</b></td><td>启动、建库、播种管理员</td><td><code>start.mjs</code></td><td>不在服务器上编译前端</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>CLI 是 Core 的第二种外壳，和 Web 共用工具、记忆与上下文管理。它不经过 Backend，因此可以作为最小可验证路径：当 Web 出问题时，CLI 仍能证明内核是否正常。</p>
+      </section>
+
+      <section id="components">
+        <h2><span class="n">03</span>组件：Agent 单轮里有什么</h2>
+        <div class="split2">
+          <div class="panel"><span class="k">01 · LOOP</span><h4>单轮循环</h4><p>组装上下文 → 模型决策 → 工具调用 → 结果回填 → 压缩/限流 → 继续或收尾。主循环 40 轮。</p></div>
+          <div class="panel"><span class="k">02 · REGISTRY</span><h4>工具注册表</h4><p>27 个绑定；模型只见注册表。需要审批的工具单独走 HITL，<code>run_bash</code> 不在表内。</p></div>
+          <div class="panel"><span class="k">03 · MEMORY</span><h4>三层记忆</h4><p>笔记检索、论文元数据、当前上下文。压缩按「可重取性」排序。</p></div>
+          <div class="panel"><span class="k">04 · SCAN</span><h4>扫描通道</h4><p>关键词、前向引用、后向引用；每次运行写 <code>channel_runs</code>。</p></div>
+          <div class="panel"><span class="k">05 · HITL</span><h4>审批层</h4><p>请求、批准、拒绝、超时都有事件；拒绝理由回填给模型。</p></div>
+          <div class="panel"><span class="k">06 · TRAJECTORY</span><h4>轨迹轴</h4><p>判断的起草、确认、推翻、搁置 append-only；理由必填。</p></div>
+        </div>
+        <p>组件之间通过显式的数据结构连接，而不是共享可变全局状态。这让「一次任务停在哪」可以从事件与表里复原。</p>
+      </section>
+
+      <section id="data">
+        <h2><span class="n">04</span>记忆与数据模型</h2>
+        <p>从外部看，只需要记住四组数据：<strong>论文</strong>、<strong>判断</strong>、<strong>任务</strong>、<strong>运行回执</strong>。领域是它们的归属维度，轨迹轴是判断的变更日志。</p>
+        <div class="flow">
+          <div class="flow-step"><b>INPUT</b><strong>任务</strong><span><code>tasks</code> + 队列；重启恢复 queued。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>SOURCE</b><strong>论文</strong><span>arXiv 元数据、PDF、节边界。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>JUDGMENT</b><strong>判断</strong><span><code>items</code> + 候选态 + 出处。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>CHANGE</b><strong>轨迹</strong><span>append-only，理由必填。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>RECEIPT</b><strong>回执</strong><span><code>channel_runs</code> + <code>scan_candidates</code>。</span></div>
+        </div>
+        <p>字段、索引与只读视图见<a href="./workspace-data-model.html">工作区数据模型</a>；候选去重见<a href="./scan-candidates.html">候选落表与一键派活</a>。</p>
+      </section>
+
+      <section id="deploy">
+        <h2><span class="n">05</span>部署拓扑</h2>
+        <div class="flow vert">
+          <div class="flow-step"><b>EDGE</b><strong>Nginx</strong><span>TLS、反代、静态产物。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>APP</b><strong>systemd: frontend / backend</strong><span>前端只跑 CI 产物；后端跑 FastAPI。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>DATA</b><strong>OPENACADEMIC_HOME</strong><span>SQLite、Chroma、论文文件、<code>.secret_key</code>。</span></div>
+          <i>↓</i>
+          <div class="flow-step"><b>CI</b><strong>GitHub Actions</strong><span>出前端包，服务器下载后切换 release。</span></div>
+        </div>
+        <p>服务器上不编译前端，是为了让发布与构建解耦：回滚只需切目录，不需要重新装依赖。停机与回滚步骤见<a href="./deployment.html">服务器部署与升级</a>。</p>
+      </section>
+
+      <section id="sequence">
+        <h2><span class="n">06</span>一次派活的请求时序</h2>
+        <p>以「读 LooGLE 那篇，出节级笔记」为例，一次成功请求大致经过：</p>
+        <ol>
+          <li><b>Web</b> 提交一句话与领域，调用 Backend 的任务接口。</li>
+          <li><b>Backend</b> 写入 <code>tasks</code>，返回任务 ID；此时前端可以刷新或离开。</li>
+          <li><b>Runner</b> 从队列取出任务，启动 <code>core</code> 的 Agent 循环。</li>
+          <li><b>Core</b> 调 <code>get_papers</code> 检索，<code>paper_pdf_download</code> 下载，<code>read_paper_section</code> 按节读。</li>
+          <li><b>Core</b> 经 <code>save_item</code> 写入候选判断；轨迹轴记录起草事件。</li>
+          <li><b>Backend</b> 通过 SSE 推进度事件；任务完成，状态变为待验。</li>
+          <li><b>Web</b> 收件箱三列看板刷新，出现「条目 × 4 · 待验」。</li>
+        </ol>
+        <div class="callout">
+          <span class="k">关键点</span>
+          <p>第 2 步之后，任务就不再依赖浏览器连接。断线只影响界面刷新，不影响执行；这也是「不是聊天框」在架构上的体现。</p>
+        </div>
+      </section>
+
+      <section id="read">
+        <h2><span class="n">07</span>怎么读这些图</h2>
+        <p>先看依赖方向，再看状态落点，最后看失败路径。一个组件如果既不写状态、也不影响失败可见性，它多半不承重。</p>
+        <ul class="pillrow">
+          <li><b>上下文图</b> 回答「边界在哪」</li>
+          <li><b>容器图</b> 回答「部署什么」</li>
+          <li><b>组件图</b> 回答「循环怎么转」</li>
+          <li><b>时序图</b> 回答「断线怎么办」</li>
+        </ul>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="../roadmap.html"><span class="k">← 上一篇 · START</span><span class="t">已知限制与规划</span></a>
+        <a class="next" href="./reliability.html"><span class="k">下一篇 · MECHANISM →</span><span class="t">行为治理与失败可见性</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+          <a href="./deployment.html"><span class="tag">ENGINEERING</span><span class="t">服务器部署与升级</span><span class="d">systemd、Nginx、前端产物发布与回滚。</span></a>
+          <a href="./workspace-data-model.html"><span class="tag">DATA</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
+          <a href="./reliability.html"><span class="tag">MECHANISM</span><span class="t">行为治理与失败可见性</span><span class="d">限流、压缩、工具结果与失败可见性。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

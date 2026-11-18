@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 一周使用流程：周三派活、周一收清单、组会裁决、会后勾四态，以及人的四个动作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个人，一周，从交活到组会 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="周三一句话，周一收清单，会后勾四态。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>一个人，一周，从交活到组会 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>MECHANISM</span><span class="sep">/</span><span class="here">一个人，一周，从交活到组会</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">USAGE FLOW · 06</p>
+          <h1>一个人，一周，<br><span class="grad">从交活到组会。</span></h1>
+          <p class="lead">周三交一句话，周一看清单，组会讨论，会后勾四态。人一周只有四个动作；其余时间它在扫通道、读论文、写候选判断。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 7 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>4</b><span>人的一周动作</span></div>
+          <div><b>4</b><span>阅读四态</span></div>
+          <div><b>2 天</b><span>组会前状态线</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="wednesday">
+        <h2><span class="n">01</span>周三：交一句话</h2>
+        <p>不选关键词、不挑论文、不配检索式。你只需要说清楚<strong>想弄明白什么</strong>，以及它属于哪个领域。</p>
+        <div class="codeblock">
+          <div class="bar"><span class="lamp"><i class="r"></i><i class="y"></i><i class="g"></i></span><span>inbox / compose</span></div>
+          <pre><span class="p">▸</span> 读 LooGLE 那篇，出节级笔记，重点看长依赖
+<span class="c">领域</span> 长上下文大语言模型
+<span class="c">动作</span> 派出去 → tasks: queued</pre>
+        </div>
+        <p>一句话派活的关键不是自然语言多漂亮，而是任务落库：刷新、断线、重启都不会丢。你交完就可以离开，不需要守着对话框。</p>
+        <div class="callout">
+          <span class="k">写一句话的建议</span>
+          <p>写「要什么判断」比写「读哪几篇」更有用。读哪几篇、按什么顺序，归 agent 自己定；你只需要说清楚交付物长什么样。</p>
+        </div>
+      </section>
+
+      <section id="thursday">
+        <h2><span class="n">02</span>周四到周日：它自己跑</h2>
+        <p>这段时间你不需要参与。系统按任务与周窗口做三件事：扫通道、读论文、写候选判断。</p>
+        <div class="flow">
+          <div class="flow-step"><b>SCAN</b><strong>三通道</strong><span>关键词 + 前向 / 后向引用，写回执。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>PICK</b><strong>候选去重</strong><span>领域 + 周 + 标识；派过的跨周不再入库。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>READ</b><strong>按节精读</strong><span>检索、下载、逐节读，工具轨迹可见。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>WRITE</b><strong>候选判断</strong><span><code>save_item</code> 落库，不直接定稿。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>STOP</b><strong>待验</strong><span>干完的活停在收件箱，不自动采用。</span></div>
+        </div>
+        <p>「干完待验」是流程的核心停顿点。它把模型的产出挡在人面前，而不是直接混进领域条目。没有这个停顿，后面的确认与轨迹就失去意义。</p>
+      </section>
+
+      <section id="monday">
+        <h2><span class="n">03</span>周一：收本周清单</h2>
+        <p>清单不是论文列表，而是<strong>本周判断 + 覆盖情况</strong>。打开时先看状态线：距组会几天、几条决定待确认、几条干完待验。</p>
+        <div class="glass" style="margin-top:22px">
+          <div class="glass-top"><span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="glass-label">digest / week</span><span class="glass-badge">示意</span></div>
+          <div class="glass-body">
+            <div class="board">
+              <div class="board-row"><span class="board-name">本周判断</span><span class="board-meta ok">12 条</span><span class="bar"><i style="width:100%"></i></span><span class="pct">4 领域</span></div>
+              <div class="board-row"><span class="board-name">粗筛未读</span><span class="board-meta wip">17 篇</span><span class="bar"><i class="wip" style="width:34%"></i></span><span class="pct">附理由</span></div>
+              <div class="board-row"><span class="board-name">扫描候选</span><span class="board-meta">15 篇</span><span class="bar"><i style="width:40%"></i></span><span class="pct">已派 6</span></div>
+              <div class="board-row"><span class="board-name">通道异常</span><span class="board-meta wip">1 条</span><span class="bar"><i class="wip" style="width:12%"></i></span><span class="pct">429</span></div>
+            </div>
+          </div>
+        </div>
+        <p>清单回答四个问题：这周判了什么、依据是什么、哪些没读、哪条通道没跑。它不追求把 17 篇未读读完，而是让你知道为什么没读。</p>
+      </section>
+
+      <section id="meeting">
+        <h2><span class="n">04</span>组会：确认或推翻</h2>
+        <p>组会上讨论的不是「这个答案像不像」，而是「这条判断要不要采用」。每条候选都带着出处，讨论可以直接落到原文。</p>
+        <div class="split2">
+          <div class="panel"><span class="k">CONFIRM</span><h4>确认采用</h4><p>判断进入领域条目，可用于稿子与综述；轨迹轴记录确认人与时间。</p></div>
+          <div class="panel"><span class="k">OVERTURN</span><h4>推翻重跑</h4><p>理由必填；agent 先替你起草理由，你只改。推翻后原判断保留，不删除。</p></div>
+        </div>
+        <p>组会不负责「让模型再多写一点」。需要补证时，正确动作是退回重跑或新建一个更窄的任务，而不是在对话框里继续追问——后者不会落到轨迹轴。</p>
+        <div class="claim">
+          <div class="claim-top"><span class="k">本周决定 · 示意</span><span class="state">agent 起草 · 待确认</span></div>
+          <p class="claim-t">本周不深读新论文，先把 3 篇种子补齐节级引句。</p>
+          <div class="claim-src"><span class="claim-id">依据 3 条已确认</span><span class="claim-sec">11-09</span></div>
+          <div class="claim-foot"><span>确认 / 修改 / 推翻</span><span>推翻时 <b>理由必填</b></span></div>
+        </div>
+      </section>
+
+      <section id="after">
+        <h2><span class="n">05</span>会后：勾四态</h2>
+        <p>组会结束后，给每篇相关论文勾一个阅读状态。四态不是评分，是下一步动作：</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>状态</th><th>含义</th><th>下一步</th></tr></thead>
+            <tbody>
+              <tr><td><b>未读</b></td><td>还没进入阅读队列</td><td>留在候选池或粗筛</td></tr>
+              <tr><td><b>粗筛</b></td><td>L1 速览：看摘要、图表与结论</td><td>决定是否进入精读</td></tr>
+              <tr><td><b>精读</b></td><td>L2：按节阅读，写判断与引句</td><td>进入条目与组会讨论</td></tr>
+              <tr><td><b>复现</b></td><td>L3：复现实验或核对数值</td><td>产出可引用证据</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>勾四态的意义在于把「读没读」从口头承诺变成可见状态。粗筛未读要附一句不读的理由；精读才入库，避免把速览印象当成结论。</p>
+        <div class="callout warn">
+          <span class="k">现状</span>
+          <p>阅读页与四态的可写 UI 仍在路线图中（见<a href="../roadmap.html">已知限制</a>）。当前四态主要作为流程约定与数据字段存在，完整交互尚未落地。</p>
+        </div>
+      </section>
+
+      <section id="four-actions">
+        <h2><span class="n">06</span>人的四个动作</h2>
+        <div class="pillars">
+          <div class="pillar"><b>01 · ASK</b><h4>交一句话</h4><p>说清要什么判断，不说怎么检索。</p></div>
+          <div class="pillar"><b>02 · RULE</b><h4>确认或推翻</h4><p>对候选判断做裁决，理由入轨迹。</p></div>
+          <div class="pillar"><b>03 · MEET</b><h4>开组会</h4><p>带着出处讨论，不靠记忆复述。</p></div>
+          <div class="pillar"><b>04 · MARK</b><h4>勾四态</h4><p>把读没读变成可见状态。</p></div>
+        </div>
+        <p>除此之外的动作——选关键词、挑论文、配检索式、追问模型、整理引用格式——都应该由系统承担或至少不成为主流程。人的时间应该花在判断上，而不是操作上。</p>
+      </section>
+
+      <section id="week">
+        <h2><span class="n">07</span>一周状态表</h2>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>时间</th><th>系统</th><th>人</th><th>产物</th></tr></thead>
+            <tbody>
+              <tr><td><b>周三</b></td><td>任务落库、排队</td><td>交一句话</td><td><code>tasks.queued</code></td></tr>
+              <tr><td><b>周四–周日</b></td><td>扫描、精读、写候选</td><td>不参与</td><td>候选判断 + 回执</td></tr>
+              <tr><td><b>周一</b></td><td>生成本周清单</td><td>浏览状态线与清单</td><td>待确认 / 待验</td></tr>
+              <tr><td><b>组会</b></td><td>展示出处与依据</td><td>确认或推翻</td><td>轨迹轴事件</td></tr>
+              <tr><td><b>会后</b></td><td>记录四态</td><td>勾四态</td><td>阅读状态</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>如果某一周没有组会，流程仍然成立：清单可以只作为个人周报，确认与推翻照样留痕。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./reliability.html"><span class="k">← 上一篇 · MECHANISM</span><span class="t">行为治理与失败可见性</span></a>
+        <a class="next" href="./frontend-ia.html"><span class="k">下一篇 · MECHANISM →</span><span class="t">收件箱、清单与领域</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./product-thesis.html"><span class="tag">START</span><span class="t">产品主旨与亮点定位</span><span class="d">交付物、漏检归因与轨迹轴：产品为什么成立。</span></a>
+          <a href="./frontend-ia.html"><span class="tag">MECHANISM</span><span class="t">收件箱、清单与领域</span><span class="d">三条主路由、跳转规则与后端数据契约。</span></a>
+          <a href="./scan-candidates.html"><span class="tag">DATA</span><span class="t">候选落表与一键派活</span><span class="d">三通道落池、去重键与一键派活的边界。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>

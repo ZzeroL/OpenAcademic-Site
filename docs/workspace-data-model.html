@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236C5CE7'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='%23fff' text-anchor='middle'>OA</text></svg>">
+<meta name="description" content="OpenAcademic 工作区数据模型：判断、决定、任务、轨迹轴的表结构与只读视图，以及归属字段、逻辑删除与迁移影响面。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工作区数据模型 · 产品文档 · OpenAcademic">
+<meta property="og:description" content="判断、决定、任务、轨迹与只读视图。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="OpenAcademic">
+<title>工作区数据模型 · 产品文档 · OpenAcademic</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/docs.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){if(!window.__oaReveal){document.querySelectorAll(".reveal").forEach(function(n){n.classList.add("is-in");});}},2000);</script>
+</head>
+<body data-root="..">
+
+<a class="skip" href="#main">跳到正文</a>
+
+<main id="main">
+  <div class="doc-hero">
+    <div class="container">
+      <nav class="crumb" aria-label="面包屑">
+        <a href="../docs.html">文档</a><span class="sep">/</span><span>DATA &amp; CHANNELS</span><span class="sep">/</span><span class="here">工作区数据模型</span>
+      </nav>
+      <div class="doc-head">
+        <div>
+          <p class="eyebrow">DATA MODEL · 08</p>
+          <h1>判断怎么落库，<br><span class="grad">状态怎么被看见。</span></h1>
+          <p class="lead">工作区里最重要的不是论文表，而是判断表与轨迹轴。论文可以重新下载，判断与它的变更理由不能。本页给出逻辑模型、归属字段、只读视图与迁移影响面。</p>
+          <div class="docmeta">
+            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>约 9 分钟</span><span class="dot"></span>
+            <span class="state">已发布</span>
+          </div>
+        </div>
+        <aside class="doc-facts" aria-label="页面要点">
+          <div><b>9</b><span>核心逻辑表</span></div>
+          <div><b>3</b><span>只读视图</span></div>
+          <div><b>append</b><span>轨迹轴写入方式</span></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="container doc-shell">
+    <aside class="doc-toc" data-doc-toc aria-label="本页目录">
+      <p class="toc-k">本页目录</p>
+      <ol></ol>
+      <div class="toc-block">
+        <p class="toc-k">文档索引</p>
+        <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <section id="principles">
+        <h2><span class="n">01</span>建模原则：判断是主表</h2>
+        <p>很多学术工具把论文当主表，判断是笔记的附属。OpenAcademic 反过来：<strong>判断是主表，论文是依据</strong>。一条判断可以引用多篇论文的多个节，但一条判断只有一个当前状态。</p>
+        <div class="flow">
+          <div class="flow-step"><b>DOMAIN</b><strong>领域</strong><span>归属维度，不是文件夹。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>ITEM</b><strong>判断</strong><span>主表；带状态与出处。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>EVIDENCE</b><strong>依据</strong><span>论文 + 节锚点 + 引句。</span></div>
+          <i>→</i>
+          <div class="flow-step"><b>TRAJECTORY</b><strong>轨迹</strong><span>append-only 变更日志。</span></div>
+        </div>
+        <p>这条原则决定了几件事：删除论文不能级联删除判断；判断的状态变更必须写轨迹；论文元数据可以刷新，判断的出处快照要保留。</p>
+      </section>
+
+      <section id="tables">
+        <h2><span class="n">02</span>核心表</h2>
+        <p>以下是逻辑表名与职责，物理表名、字段类型与索引以仓库迁移为准。</p>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>表</th><th>职责</th><th>关键字段（逻辑）</th><th>写入方</th></tr></thead>
+            <tbody>
+              <tr><td><b>domains</b></td><td>领域与归属</td><td>id、name、owner_id、status</td><td>管理员 / 工作区</td></tr>
+              <tr><td><b>papers</b></td><td>论文元数据与文件</td><td>arxiv_id、doi、openalex_id、title、pdf_path、section_map</td><td>扫描 / 工具</td></tr>
+              <tr><td><b>items</b></td><td>判断主表</td><td>id、domain_id、claim、status、paper_id、section、quote、locator_state</td><td>agent / 人</td></tr>
+              <tr><td><b>decisions</b></td><td>本周决定</td><td>id、week、text、status、evidence_item_ids</td><td>agent 起草 / 人裁决</td></tr>
+              <tr><td><b>tasks</b></td><td>派活与运行状态</td><td>id、domain_id、prompt、status、created_by、last_step</td><td>人 / runner</td></tr>
+              <tr><td><b>trajectory_events</b></td><td>判断变更日志</td><td>id、item_id、action、reason、actor、created_at</td><td>只追加</td></tr>
+              <tr><td><b>channel_runs</b></td><td>通道运行回执</td><td>id、channel、domain_id、week、status、hits、error</td><td>扫描</td></tr>
+              <tr><td><b>scan_candidates</b></td><td>扫描候选池</td><td>domain_id、week、identifier、state、dispatched_task_id</td><td>扫描 / 派活</td></tr>
+              <tr><td><b>notes</b></td><td>笔记与索引</td><td>id、domain_id、body、embedding_ref、links</td><td>人 / agent</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <span class="k">出处快照</span>
+          <p><code>items</code> 上的 <code>section</code> 与 <code>quote</code> 是判断发表时的快照，不随论文版本静默更新。论文换版后，应显式标记「出处需复核」，而不是自动覆盖。</p>
+        </div>
+      </section>
+
+      <section id="item">
+        <h2><span class="n">03</span>一条判断的字段</h2>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>字段</th><th>含义</th><th>约束</th></tr></thead>
+            <tbody>
+              <tr><td><b>claim</b></td><td>判断本身，一句话</td><td>不写过程，不写「本文认为」</td></tr>
+              <tr><td><b>status</b></td><td>候选 / 确认 / 推翻 / 搁置</td><td>只能经裁决或轨迹变更</td></tr>
+              <tr><td><b>paper_id</b></td><td>主依据论文</td><td>可空；空时显示「未定位」</td></tr>
+              <tr><td><b>section / quote</b></td><td>节锚点与引句</td><td>发表时快照；不做自动补全</td></tr>
+              <tr><td><b>locator_state</b></td><td>已定位 / 未定位 / 需复核</td><td>未定位不可直接引用</td></tr>
+              <tr><td><b>domain_id</b></td><td>归属领域</td><td>不可为空；跨领域用多条目</td></tr>
+              <tr><td><b>owner_id</b></td><td>起草者</td><td>agent 或人，均可审计</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>字段设计里没有「置信度」。置信度不能替代人裁决，反而会让候选态看起来像已定稿。不确定性通过 <code>locator_state</code> 与候选状态表达。</p>
+      </section>
+
+      <section id="views">
+        <h2><span class="n">04</span>归属字段与只读视图</h2>
+        <p>界面不直接拼装表，而是读视图。当前有三类只读视图：</p>
+        <div class="split2">
+          <div class="panel"><span class="k">v_week_digest</span><h4>本周清单</h4><p>判断、粗筛未读、候选与通道异常汇总；按领域 + 周聚合。</p></div>
+          <div class="panel"><span class="k">v_domain_items</span><h4>领域条目流</h4><p>判断 + 出处 + 当前状态；只包含未逻辑删除的条目。</p></div>
+          <div class="panel"><span class="k">v_channel_health</span><h4>通道健康</h4><p>每条通道最近一次运行状态、错误与下周是否重跑。</p></div>
+        </div>
+        <p>归属字段统一用 <code>domain_id</code> 与 <code>owner_id</code>。多用户隔离靠 <code>owner_id</code> 与领域成员关系，而不是在前端过滤。视图里不要出现跨用户聚合，除非显式标注为管理员视图。</p>
+      </section>
+
+      <section id="delete">
+        <h2><span class="n">05</span>逻辑删除与迁移</h2>
+        <ul>
+          <li><b>逻辑删除</b>：<code>deleted_at</code> 非空即视为删除；视图过滤，轨迹轴不删除。</li>
+          <li><b>论文删除</b>：不级联删除判断；判断保留出处快照，标记「依据已移除」。</li>
+          <li><b>状态回退</b>：不直接改 <code>status</code>；写一条轨迹事件，再由事件派生当前状态。</li>
+          <li><b>迁移</b>：只增不删字段；旧字段保留读兼容，写路径先切新字段。</li>
+        </ul>
+        <div class="callout warn">
+          <span class="k">迁移影响面</span>
+          <p>改 <code>items</code> 或 <code>channel_runs</code> 的字段时，至少检查：工作区视图、清单聚合、扫描去重键、轨迹轴回放、pytest 里的工作区模型测试。任何一项没有覆盖，就不要合。</p>
+        </div>
+      </section>
+
+      <section id="impact">
+        <h2><span class="n">06</span>改动前的检查清单</h2>
+        <ol>
+          <li>新字段是否有明确的写入方与读取方？没有读取方的字段不加。</li>
+          <li>新状态是否需要在界面可见？如果需要，它落在哪个视图？</li>
+          <li>删除或合并是否破坏轨迹轴的可解释性？</li>
+          <li>是否改变了候选去重键？跨周已派候选会不会重新入库？</li>
+          <li>多用户隔离是否仍然成立？</li>
+        </ol>
+        <p>这五条来自实际缺口：候选跨周重复、状态无落点、轨迹无法回放，都会让「可核对」失效。</p>
+      </section>
+
+      <section id="extend">
+        <h2><span class="n">07</span>怎么扩展</h2>
+        <p>扩展数据模型时，优先加<strong>事件</strong>而不是加<strong>状态字段</strong>。事件可以回放，状态字段只能覆盖。只有当查询性能确实需要时，才从事件派生冗余字段，并保证它可以重建。</p>
+        <blockquote>能重建的，才允许冗余；不能重建的，必须保留原事件。</blockquote>
+        <p>相关阅读：<a href="./scan-candidates.html">候选落表与一键派活</a>解释候选键，<a href="./frontend-ia.html">收件箱、清单与领域</a>解释视图如何被页面消费。</p>
+      </section>
+
+      <nav class="docnav" aria-label="文档翻页">
+        <a class="prev" href="./frontend-ia.html"><span class="k">← 上一篇 · MECHANISM</span><span class="t">收件箱、清单与领域</span></a>
+        <a class="next" href="./scan-candidates.html"><span class="k">下一篇 · DATA &amp; CHANNELS →</span><span class="t">候选落表与一键派活</span></a>
+      </nav>
+
+      <aside class="related">
+        <p class="k">继续阅读</p>
+        <div class="related-grid">
+          <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
+          <a href="./scan-candidates.html"><span class="tag">DATA</span><span class="t">候选落表与一键派活</span><span class="d">三通道落池、去重键与一键派活的边界。</span></a>
+          <a href="./frontend-ia.html"><span class="tag">MECHANISM</span><span class="t">收件箱、清单与领域</span><span class="d">三条主路由、跳转规则与后端数据契约。</span></a>
+          <a href="../roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
+        </div>
+      </aside>
+
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+    </article>
+  </div>
+</main>
+
+<script src="../assets/reveal.js" defer></script>
+<script src="../assets/doc-page.js" defer></script>
+</body>
+</html>
