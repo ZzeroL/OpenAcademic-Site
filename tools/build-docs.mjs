@@ -191,7 +191,7 @@ ${tocList(doc)}
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 

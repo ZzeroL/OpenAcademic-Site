@@ -11,7 +11,7 @@ const architectureDiagram = {
     "把系统拆成四层来看：谁在用、由哪些运行单元组成、Agent 单轮里有哪些组件、一次派活如何穿过它们。图是示意，链路与工具名取自真实实现。",
   desc: "OpenAcademic 系统上下文、容器、后端组件、Agent 单轮循环、记忆与数据模型、部署拓扑和请求时序。",
   card: "上下文、容器、组件、部署拓扑与请求时序。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "8 分钟",
   status: "已发布",
   facts: [
@@ -145,7 +145,7 @@ const architectureDiagram = {
           <li><b>Backend</b> 写入 <code>tasks</code>，返回任务 ID；此时前端可以刷新或离开。</li>
           <li><b>Runner</b> 从队列取出任务，启动 <code>core</code> 的 Agent 循环。</li>
           <li><b>Core</b> 调 <code>get_papers</code> 检索，<code>paper_pdf_download</code> 下载，<code>read_paper_section</code> 按节读。</li>
-          <li><b>Core</b> 经 <code>save_item</code> 写入候选判断；轨迹轴记录起草事件。</li>
+          <li><b>Core</b> 经 <code>save_item</code> 写入候选判断（引句先在所称节里逐字核对）；轨迹轴记录起草事件。</li>
           <li><b>Backend</b> 通过 SSE 推进度事件；任务完成，状态变为待验。</li>
           <li><b>Web</b> 收件箱三列看板刷新，出现「条目 × 4 · 待验」。</li>
         </ol>
@@ -185,7 +185,7 @@ const reliability = {
     "限流三层、上下文分层压缩、工具结果策略、HITL 审批，以及哪些失败必须显式上界面。可靠性不是「永不失败」，而是失败之后系统还知道自己在哪一步。",
   desc: "OpenAcademic 行为治理：三层限流、两档上下文压缩、工具结果策略、HITL 审批与失败可见性矩阵。",
   card: "限流、压缩、工具结果与失败可见性。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "9 分钟",
   status: "已发布",
   facts: [
@@ -294,6 +294,7 @@ const reliability = {
               <tr><td><b>通道 429 / 超时</b></td><td><code>channel_runs.status</code></td><td class="ok">是</td><td>下周重跑，或换源</td></tr>
               <tr><td><b>PDF 缺页 / 节边界异常</b></td><td>工具结果 + 判断标记</td><td class="ok">是</td><td>换版本或人工核对</td></tr>
               <tr><td><b>引句定位失败</b></td><td>「未定位」</td><td class="ok">是</td><td>不可直接引用</td></tr>
+              <tr><td><b>引句校验不通过</b></td><td><code>invalid_args</code> + 该节开头</td><td class="ok">是（回给模型）</td><td>按原文重发，不落库</td></tr>
               <tr><td><b>任务超轮数</b></td><td>待验 + 最后一步</td><td class="ok">是</td><td>拆小任务重派</td></tr>
               <tr><td><b>单次工具重试</b></td><td>工具轨迹</td><td class="no">否</td><td>无需动作</td></tr>
               <tr><td><b>内部调试日志</b></td><td>日志文件</td><td class="no">否</td><td>无需动作</td></tr>
@@ -357,7 +358,7 @@ const usageFlow = {
     "周三交一句话，周一看清单，组会讨论，会后勾四态。人一周只有四个动作；其余时间它在扫通道、读论文、写候选判断。",
   desc: "OpenAcademic 一周使用流程：周三派活、周一收清单、组会裁决、会后勾四态，以及人的四个动作。",
   card: "周三一句话，周一收清单，会后勾四态。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "7 分钟",
   status: "已发布",
   facts: [
@@ -431,7 +432,7 @@ const usageFlow = {
       num: "04",
       title: "组会：确认或推翻",
       html: `
-        <p>组会上讨论的不是「这个答案像不像」，而是「这条判断要不要采用」。每条候选都带着出处，讨论可以直接落到原文。</p>
+        <p>组会上讨论的不是「这个答案像不像」，而是「这条判断要不要采用」。每条候选都带着 ID、节与已核对引句，讨论可以直接落到原文；「复制引用」能把「判断 + 题录 + 节 + 引句」整块贴进纪要。</p>
         <div class="split2">
           <div class="panel">
             <span class="k">CONFIRM</span>
@@ -527,7 +528,7 @@ const frontendIa = {
     "前端不是聊天框加侧栏，而是三个共享同一份工作区状态的主路由。路由决定人先看到什么，数据契约决定页面能承诺什么。",
   desc: "OpenAcademic 前端信息架构：/inbox、/digest、/p/[projectId]/items 的路由、跳转规则与后端数据契约。",
   card: "三条主路由、跳转规则与后端数据契约。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "8 分钟",
   status: "已发布",
   facts: [
@@ -553,7 +554,7 @@ const frontendIa = {
             </tbody>
           </table>
         </div>
-        <p>前三条路由共用一份工作区状态：在收件箱确认一条判断，切到领域条目流不需要重新拉取；在清单里派活，回到收件箱能立刻看到任务卡。路由是视图，不是数据边界。</p>
+        <p>前三条路由共用一份工作区状态，但状态不靠前端缓存续命：每次进入主视图都会按后端重取一次，切回来看到的是当前真值。这也是为什么会话里续跑发表的判断能在回到清单时立刻出现，而不是等「确认采用」触发刷新。在清单里派活，回到收件箱同样能立刻看到任务卡。路由是视图，不是数据边界。</p>
       `
     },
     {
@@ -567,9 +568,10 @@ const frontendIa = {
           <li><b>派活框</b>：一句话 + 领域选择，不做复杂表单。</li>
           <li><b>本周决定</b>：agent 起草，人只裁决；推翻理由 agent 先起草。</li>
           <li><b>三列看板</b>：派出的活 / 进行中 / 干完待验；进行中显示工具轨迹。</li>
+          <li><b>已处理回看</b>：已采用的条目带「回看执行」链接，直接回到那次派活的会话。</li>
           <li><b>清单摘要</b>：判断、粗筛未读、候选、通道异常四个数，点开进 /digest。</li>
         </ul>
-        <p>这五个区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
+        <p>这些区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
       `
     },
     {
@@ -618,6 +620,7 @@ const frontendIa = {
           <i>→</i>
           <div class="flow-step"><b>ACT</b><strong>裁决</strong><span>确认 / 推翻 / 搁置，理由必填。</span></div>
         </div>
+        <p>条目按证据等级显示徽章：<code>quote_verified=1</code> →「引句已核对」，只有节锚点 →「仅节锚点」，否则「未定位」；旧条目没有引句时显式标「无引句（旧条目）」，不隐藏。核对抽屉并排显示节正文与引句块，并提供「复制引用」（判断 + 题录 + 节 + 引句）。</p>
         <p>领域 IA 规划有 23 条路由，覆盖条目、笔记、论文、扫描、设置等；当前并非全部可用。新增路由前需要先确认它落在哪份共享状态上，避免出现「页面有自己的缓存」。</p>
       `
     },

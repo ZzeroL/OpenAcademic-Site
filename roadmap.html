@@ -45,7 +45,7 @@
     <div class="container">
       <p class="eyebrow">ROADMAP · WHAT WORKS TODAY</p>
       <h1>现在能用到哪，<br><span class="grad">接下来往哪走。</span></h1>
-      <p class="lead">主链路已经可用，工作区与扫描通道都接上了后端；最大的功能缺口是<strong>阅读页</strong>与 <strong>LaTeX 精确模式</strong>，最大的工程债是<strong>验证</strong>。</p>
+      <p class="lead">主链路已经可用，工作区与扫描通道都接上了后端；1.1.0 接进工作区，1.1.1 补上引句证据链与领域自动入库。最大的功能缺口是<strong>阅读页</strong>与 <strong>LaTeX 精确模式</strong>，最大的工程债是<strong>验证</strong>。</p>
       <div class="actions">
         <a class="btn btn-dark" href="#gaps">看最大缺口 <span class="arr" aria-hidden="true">↓</span></a>
         <a class="btn btn-line" href="./docs.html">回文档索引 <span class="arr" aria-hidden="true">→</span></a>
@@ -53,7 +53,7 @@
       <div class="glass reveal">
         <div class="glass-top">
           <span class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
-          <span class="glass-label">status / 2026-11-13</span>
+          <span class="glass-label">status / 2026-11-19 · v1.1.1</span>
           <span class="glass-badge">live</span>
         </div>
         <div class="glass-body">
@@ -124,17 +124,20 @@
       <div class="section-head reveal">
         <p class="kicker">SHIPPED</p>
         <h2 class="h2">从派活到回写，闭环已经能跑。</h2>
-        <p class="sub">判断、决定、任务、通道健康与粗筛未读都来自后端；派活会真跑，任务收尾后本周数据整批重取。</p>
+        <p class="sub">判断、决定、任务、通道健康与粗筛未读都来自后端；派活会真跑，进入主视图也会重取工作区，任务收尾后本周数据整批重取。</p>
       </div>
       <ul class="checks reveal">
         <li><b>收件箱 / 本周清单 / 领域条目流</b>共用一份工作区状态，路由切换不丢操作。</li>
         <li><b>派活落库</b>：<code>tasks</code> + 进程内队列，重启后 <code>queued</code> 自动恢复。</li>
-        <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻。</li>
+        <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻；<code>located=true</code> 必须带逐字引句。</li>
+        <li><b>引句证据链</b>：发表 / 修改时按归一化规则在所称节正文里核对引句，徽章区分「引句已核对 / 仅节锚点 / 未定位」；核对抽屉可复制引用。</li>
+        <li><b>领域自动入库</b>：领域会话里 <code>save_note</code> / <code>save_item</code> 写到的论文自动挂进领域（<code>role=read</code>，已有角色不动）。</li>
+        <li><b>工作区真值重取</b>：进入主视图即重取工作区，会话续跑发表的判断不再等「确认采用」才出现在清单；已采用的条目可回看执行现场。</li>
         <li><b>关键词通道</b>：逐领域跑 arXiv，命中 / 失败 / 限流写 <code>channel_runs</code>。</li>
         <li><b>引用链通道</b>：OpenAlex 前向「本周谁引了种子」与后向「种子引了谁」。</li>
         <li><b>扫描候选</b>：落 <code>scan_candidates</code>，按领域 + 周 + 标识去重，可一键派活。</li>
         <li><b>三标识对齐</b>：arXiv → OpenAlex 实测 100/100，引用链本期做。</li>
-        <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。</li>
+        <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、引句契约、通道与 PDF 读取。</li>
       </ul>
     </div>
   </section>
@@ -215,6 +218,7 @@
         <li>前端 IA：登录 → 交活 → 四态回写</li>
         <li>上下文回收 B1–B8</li>
         <li>一次真机精读端到端</li>
+        <li>引句校验与 PATCH 矩阵</li>
         <li>LaTeX 产物与节边界一致性</li>
       </ul>
       <div class="notice reveal">
@@ -246,7 +250,7 @@
           <h3>往哪走。</h3>
           <p>方向不是「更聪明的模型」，而是模型越强越值钱的资产：证据链、轨迹轴、通道运行记录。</p>
           <ul class="list">
-            <li><b>可追溯综述</b><span>paper_id + section + quote</span></li>
+            <li><b>可追溯综述</b><span>单条 quote 已落地，差聚合与排版</span></li>
             <li><b>评估</b><span>citation precision / hallucination rate</span></li>
             <li><b>多源检索与图谱</b><span>Semantic Scholar / PubMed / 引文图谱</span></li>
             <li><b>RAG</b><span>可配置嵌入 / rerank / 来源标注</span></li>

@@ -52,7 +52,7 @@
           <h1>系统上下文、容器，<br><span class="grad">与一次请求的路径。</span></h1>
           <p class="lead">把系统拆成四层来看：谁在用、由哪些运行单元组成、Agent 单轮里有哪些组件、一次派活如何穿过它们。图是示意，链路与工具名取自真实实现。</p>
           <div class="docmeta">
-            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>更新 2026-11-19</span><span class="dot"></span>
             <span>约 8 分钟</span><span class="dot"></span>
             <span class="state">已发布</span>
           </div>
@@ -81,7 +81,7 @@
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 
@@ -216,7 +216,7 @@
           <li><b>Backend</b> 写入 <code>tasks</code>，返回任务 ID；此时前端可以刷新或离开。</li>
           <li><b>Runner</b> 从队列取出任务，启动 <code>core</code> 的 Agent 循环。</li>
           <li><b>Core</b> 调 <code>get_papers</code> 检索，<code>paper_pdf_download</code> 下载，<code>read_paper_section</code> 按节读。</li>
-          <li><b>Core</b> 经 <code>save_item</code> 写入候选判断；轨迹轴记录起草事件。</li>
+          <li><b>Core</b> 经 <code>save_item</code> 写入候选判断（引句先在所称节里逐字核对）；轨迹轴记录起草事件。</li>
           <li><b>Backend</b> 通过 SSE 推进度事件；任务完成，状态变为待验。</li>
           <li><b>Web</b> 收件箱三列看板刷新，出现「条目 × 4 · 待验」。</li>
         </ol>
@@ -250,11 +250,11 @@
         <div class="related-grid">
           <a href="./architecture.html"><span class="tag">START</span><span class="t">系统架构</span><span class="d">单轮循环、工具注册、三层记忆与审批边界。</span></a>
           <a href="./deployment.html"><span class="tag">ENGINEERING</span><span class="t">服务器部署与升级</span><span class="d">systemd、Nginx、前端产物发布与回滚。</span></a>
-          <a href="./workspace-data-model.html"><span class="tag">DATA & CHANNELS</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
+          <a href="./workspace-data-model.html"><span class="tag">DATA & CHANNELS</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹、引句校验与只读视图。</span></a>
         </div>
       </aside>
 
-      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-19，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
     </article>
   </div>
 </main>

@@ -11,7 +11,7 @@ const productThesis = {
     "助手回答一个问题，生产线交回一批可核对的判断。OpenAcademic 把「读过并真的知道」拆成可验证的交付物、可归因的漏检和 append-only 的轨迹——这三件事决定了它为什么存在。",
   desc: "OpenAcademic 产品主旨：交付物、判断与操作的分界，漏检可归因，以及轨迹轴为什么是承重墙。",
   card: "交付物、漏检归因与轨迹轴：产品为什么成立。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "8 分钟",
   status: "已发布",
   facts: [
@@ -40,11 +40,11 @@ const productThesis = {
             <p>落到领域条目里，带 ID、节锚点与原文引句；可以确认、推翻、搁置，变更留痕。</p>
           </div>
         </div>
-        <p>这条分界写在数据里而不是文案里：判断经 <code>save_item</code> 契约发表，候选态等人裁决；派活落 <code>tasks</code>，干完停在「待验」；扫描通道每次运行都写 <code>channel_runs</code> 回执。界面只是这些状态的视图。</p>
+        <p>这条分界写在数据里而不是文案里：判断经 <code>save_item</code> 契约发表，候选态等人裁决；已定位的判断必须带一段<strong>逐字引句</strong>，发表时按归一化规则在所称节的正文里核对命中；派活落 <code>tasks</code>，干完停在「待验」；扫描通道每次运行都写 <code>channel_runs</code> 回执。界面只是这些状态的视图。</p>
         <div class="claim">
           <div class="claim-top"><span class="k">一条条目 · 结构示意</span><span class="state">候选 · 待确认</span></div>
           <p class="claim-t">LooGLE 的长依赖题说明：上下文变长后，掉点集中在需要跨段拼接证据的题目上，而不是检索本身。</p>
-          <div class="claim-src"><span class="claim-id">arXiv 2311.04939</span><span class="claim-sec">§4 · Results</span><span class="claim-sec">引句可回原文</span></div>
+          <div class="claim-src"><span class="claim-id">arXiv 2311.04939</span><span class="claim-sec">§4 · Results</span><span class="claim-sec">引句已核对</span></div>
           <p class="claim-quote">“…the drop concentrates on questions whose evidence spans multiple distant segments.”</p>
           <div class="claim-foot"><span>判断 <b>不是摘要</b></span><span>出处 <b>不是链接列表</b></span><span>推翻时 <b>理由必填</b></span></div>
         </div>
@@ -115,7 +115,7 @@ const productThesis = {
           <i>→</i>
           <div class="flow-step"><b>03</b><strong>精读</strong><span>按节读原文，工具轨迹可见。</span></div>
           <i>→</i>
-          <div class="flow-step"><b>04</b><strong>发表</strong><span><code>save_item</code> 写入候选态。</span></div>
+          <div class="flow-step"><b>04</b><strong>发表</strong><span><code>save_item</code> 写入候选态，引句逐字核对。</span></div>
           <i>→</i>
           <div class="flow-step"><b>05</b><strong>裁决</strong><span>人确认 / 推翻 / 搁置，理由入轴。</span></div>
           <i>→</i>
@@ -138,7 +138,7 @@ const productThesis = {
           <div class="panel">
             <span class="k">01 · EVIDENCE</span>
             <h4>每条结论追得到原文</h4>
-            <p><code>ID</code> + 节锚点 + 引句三件套；定位不到就显式标记，禁止编造节号或引句。</p>
+            <p><code>ID</code> + 节锚点 + 引句三件套；引句必须逐字来自所称的节（12–300 字符、连续一段），定位不到就显式标记，禁止编造节号或引句。</p>
           </div>
           <div class="panel">
             <span class="k">02 · COVERAGE</span>
@@ -217,7 +217,7 @@ const architecture = {
     "一个 Agent 内核，两种外壳。单轮循环负责「下一步做什么」，工具注册表负责「能做什么」，三层记忆与两档压缩负责「还记得什么」，HITL 审批负责「哪些不能自己干」。",
   desc: "OpenAcademic 系统架构：单轮循环、工具注册与分发、三层记忆、上下文压缩、限流与 HITL 审批。",
   card: "单轮循环、工具注册、三层记忆与审批边界。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "10 分钟",
   status: "已发布",
   facts: [
@@ -302,6 +302,7 @@ const architecture = {
             </tbody>
           </table>
         </div>
+        <p>判断工具另有一条证据约束：<code>located=true</code> 时必须带一段逐字来自所述节的引句（12–300 字符、连续一段），发表与修改都按归一化规则对节正文校验；校验不过整条拒绝，并给模型可读的改法。领域会话里 <code>save_note</code> / <code>save_item</code> 写到的论文会自动挂进当前领域（<code>role=read</code>，已有角色不动）——否则论文只落在全局论文库，领域论文库与领域笔记里都看不到。</p>
         <p>权限不是靠提示词约束，而是靠注册表与审批层。模型不知道 <code>run_bash</code> 存在，就不会试图「找个办法执行命令」。这是把安全边界放在代码而不是语气里。</p>
       `
     },
@@ -380,13 +381,13 @@ const roadmap = {
     "主链路已经可用，工作区与扫描通道都接上了后端；最大的功能缺口是阅读页与 LaTeX 精确模式，最大的工程债是验证。这是一份面向使用者的现状清单，不是承诺表。",
   desc: "OpenAcademic 已知限制与规划：已落地能力、四个最大缺口、部署前必改项、验证债与刻意不做的边界。",
   card: "已落地、最大缺口、部署前必改与验证债。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "9 分钟",
-  status: "持续更新",
+  status: "持续更新 · v1.1.1",
   facts: [
     { b: "4", s: "最大功能缺口" },
-    { b: "8", s: "已落地能力" },
-    { b: "2026-11-13", s: "状态口径" }
+    { b: "12", s: "已落地能力" },
+    { b: "v1.1.1", s: "当前版本 · 2026-11-19" }
   ],
   related: ["deployment", "reliability", "product-thesis"],
   sections: [
@@ -395,7 +396,7 @@ const roadmap = {
       num: "01",
       title: "一句话现状",
       html: `
-        <p class="lead-in">从派活到回写，闭环已经能跑；从「人也能读」到「精确研究」，还差一层。</p>
+        <p class="lead-in">从派活到回写，闭环已经能跑；1.1.0 把工作区与扫描接进主链，1.1.1 补上引句证据链与领域自动入库；从「人也能读」到「精确研究」，还差一层。</p>
         <div class="strip">
           <div><b>100%</b><span>主链路</span><em>可用</em></div>
           <div><b>100%</b><span>工作区</span><em>已接后端</em></div>
@@ -413,12 +414,16 @@ const roadmap = {
         <ul>
           <li><b>收件箱 / 本周清单 / 领域条目流</b>共用一份工作区状态，路由切换不丢操作。</li>
           <li><b>派活落库</b>：<code>tasks</code> + 进程内队列，重启后 <code>queued</code> 自动恢复。</li>
-          <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻。</li>
+          <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻；<code>located=true</code> 必须带逐字引句。</li>
+          <li><b>引句证据链</b>：发表 / 修改时按归一化规则在所称节正文里核对引句，<code>quote_verified=1</code> 才标「引句已核对」；徽章区分「引句已核对 / 仅节锚点 / 未定位」。</li>
+          <li><b>领域自动入库</b>：领域会话里 <code>save_note</code> / <code>save_item</code> 写到的论文自动挂进领域（<code>role=read</code>，已有角色不动）。</li>
+          <li><b>工作区真值重取</b>：进入主视图即重取工作区，会话续跑发表的判断不再等「确认采用」才出现在清单。</li>
+          <li><b>已采用可回看</b>：收件箱「已处理 → 已采用」的条目带执行现场链接，采用后仍能回到那次派活的会话。</li>
           <li><b>关键词通道</b>：逐领域跑 arXiv，命中 / 失败 / 限流写 <code>channel_runs</code>。</li>
           <li><b>引用链通道</b>：OpenAlex 前向「本周谁引了种子」与后向「种子引了谁」。</li>
           <li><b>扫描候选</b>：落 <code>scan_candidates</code>，按领域 + 周 + 标识去重，可一键派活。</li>
           <li><b>三标识对齐</b>：arXiv → OpenAlex 实测 100/100，引用链本期做。</li>
-          <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。</li>
+          <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、引句契约、通道与 PDF 读取。</li>
         </ul>
         <div class="callout ok">
           <span class="k">可验证的说法</span>
@@ -493,6 +498,7 @@ const roadmap = {
           <li>前端 IA：登录 → 交活 → 四态回写</li>
           <li>上下文回收 B1–B8</li>
           <li>一次真机精读端到端</li>
+          <li>引句校验与 PATCH 矩阵</li>
           <li>LaTeX 产物与节边界一致性</li>
         </ul>
         <div class="callout">
@@ -531,7 +537,7 @@ const roadmap = {
           <table>
             <thead><tr><th>方向</th><th>落点</th><th>为什么现在做</th></tr></thead>
             <tbody>
-              <tr><td><b>可追溯综述</b></td><td><code>paper_id + section + quote</code></td><td>判断已经落库，差的是聚合与排版</td></tr>
+              <tr><td><b>可追溯综述</b></td><td><code>paper_id + section + quote</code></td><td>单条引句已落地，差聚合与排版</td></tr>
               <tr><td><b>评估</b></td><td>citation precision / hallucination rate</td><td>没有指标就无法证明「可核对」</td></tr>
               <tr><td><b>多源检索与图谱</b></td><td>Semantic Scholar / PubMed / 引文图谱</td><td>单 arXiv 覆盖不了邻近工作</td></tr>
               <tr><td><b>RAG</b></td><td>可配置嵌入 / rerank / 来源标注</td><td>笔记检索已有索引，缺可调参数</td></tr>

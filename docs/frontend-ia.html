@@ -52,7 +52,7 @@
           <h1>收件箱、清单与领域：<br><span class="grad">三条主路由。</span></h1>
           <p class="lead">前端不是聊天框加侧栏，而是三个共享同一份工作区状态的主路由。路由决定人先看到什么，数据契约决定页面能承诺什么。</p>
           <div class="docmeta">
-            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>更新 2026-11-19</span><span class="dot"></span>
             <span>约 8 分钟</span><span class="dot"></span>
             <span class="state">已发布</span>
           </div>
@@ -81,7 +81,7 @@
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 
@@ -113,7 +113,7 @@
             </tbody>
           </table>
         </div>
-        <p>前三条路由共用一份工作区状态：在收件箱确认一条判断，切到领域条目流不需要重新拉取；在清单里派活，回到收件箱能立刻看到任务卡。路由是视图，不是数据边界。</p>
+        <p>前三条路由共用一份工作区状态，但状态不靠前端缓存续命：每次进入主视图都会按后端重取一次，切回来看到的是当前真值。这也是为什么会话里续跑发表的判断能在回到清单时立刻出现，而不是等「确认采用」触发刷新。在清单里派活，回到收件箱同样能立刻看到任务卡。路由是视图，不是数据边界。</p>
       
       </section>
 
@@ -126,9 +126,10 @@
           <li><b>派活框</b>：一句话 + 领域选择，不做复杂表单。</li>
           <li><b>本周决定</b>：agent 起草，人只裁决；推翻理由 agent 先起草。</li>
           <li><b>三列看板</b>：派出的活 / 进行中 / 干完待验；进行中显示工具轨迹。</li>
+          <li><b>已处理回看</b>：已采用的条目带「回看执行」链接，直接回到那次派活的会话。</li>
           <li><b>清单摘要</b>：判断、粗筛未读、候选、通道异常四个数，点开进 /digest。</li>
         </ul>
-        <p>这五个区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
+        <p>这些区块的顺序是产品判断：先告诉你欠什么，再让你加活。很多工具反过来，先给输入框，再让人自己记住上下文。</p>
       
       </section>
 
@@ -175,6 +176,7 @@
           <i>→</i>
           <div class="flow-step"><b>ACT</b><strong>裁决</strong><span>确认 / 推翻 / 搁置，理由必填。</span></div>
         </div>
+        <p>条目按证据等级显示徽章：<code>quote_verified=1</code> →「引句已核对」，只有节锚点 →「仅节锚点」，否则「未定位」；旧条目没有引句时显式标「无引句（旧条目）」，不隐藏。核对抽屉并排显示节正文与引句块，并提供「复制引用」（判断 + 题录 + 节 + 引句）。</p>
         <p>领域 IA 规划有 23 条路由，覆盖条目、笔记、论文、扫描、设置等；当前并非全部可用。新增路由前需要先确认它落在哪份共享状态上，避免出现「页面有自己的缓存」。</p>
       
       </section>
@@ -237,12 +239,12 @@
         <p class="k">继续阅读</p>
         <div class="related-grid">
           <a href="./usage-flow.html"><span class="tag">MECHANISM</span><span class="t">一个人，一周，从交活到组会</span><span class="d">周三一句话，周一收清单，会后勾四态。</span></a>
-          <a href="./workspace-data-model.html"><span class="tag">DATA & CHANNELS</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹与只读视图。</span></a>
+          <a href="./workspace-data-model.html"><span class="tag">DATA & CHANNELS</span><span class="t">工作区数据模型</span><span class="d">判断、决定、任务、轨迹、引句校验与只读视图。</span></a>
           <a href="./roadmap.html"><span class="tag">START</span><span class="t">已知限制与规划</span><span class="d">已落地、最大缺口、部署前必改与验证债。</span></a>
         </div>
       </aside>
 
-      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-19，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
     </article>
   </div>
 </main>

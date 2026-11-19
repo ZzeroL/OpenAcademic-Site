@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#F5F5F7">
 <meta name="color-scheme" content="light">
 <link rel="icon" type="image/svg+xml" href="../assets/logo-mark-sm.svg">
-<meta name="description" content="OpenAcademic 工作区数据模型：判断、决定、任务、轨迹轴的表结构与只读视图，以及归属字段、逻辑删除与迁移影响面。">
+<meta name="description" content="OpenAcademic 工作区数据模型：判断、决定、任务、轨迹轴的表结构与只读视图，引句证据链的校验规则，以及归属字段、逻辑删除与迁移影响面。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工作区数据模型 · 产品文档 · OpenAcademic">
-<meta property="og:description" content="OpenAcademic 工作区数据模型：判断、决定、任务、轨迹轴的表结构与只读视图，以及归属字段、逻辑删除与迁移影响面。">
+<meta property="og:description" content="OpenAcademic 工作区数据模型：判断、决定、任务、轨迹轴的表结构与只读视图，引句证据链的校验规则，以及归属字段、逻辑删除与迁移影响面。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="OpenAcademic">
 <title>工作区数据模型 · 产品文档 · OpenAcademic</title>
@@ -50,9 +50,9 @@
         <div>
           <p class="eyebrow">DATA MODEL · 08</p>
           <h1>判断怎么落库，<br><span class="grad">状态怎么被看见。</span></h1>
-          <p class="lead">工作区里最重要的不是论文表，而是判断表与轨迹轴。论文可以重新下载，判断与它的变更理由不能。本页给出逻辑模型、归属字段、只读视图与迁移影响面。</p>
+          <p class="lead">工作区里最重要的不是论文表，而是判断表与轨迹轴，以及条目上那段逐字引句。论文可以重新下载，判断、引句与变更理由不能。本页给出逻辑模型、归属字段、只读视图与迁移影响面。</p>
           <div class="docmeta">
-            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>更新 2026-11-19</span><span class="dot"></span>
             <span>约 9 分钟</span><span class="dot"></span>
             <span class="state">已发布</span>
           </div>
@@ -73,29 +73,31 @@
         <li><a href="#principles"><span class="i">01</span><span>建模原则：判断是主表</span></a></li>
         <li><a href="#tables"><span class="i">02</span><span>核心表</span></a></li>
         <li><a href="#item"><span class="i">03</span><span>一条判断的字段</span></a></li>
-        <li><a href="#views"><span class="i">04</span><span>归属字段与只读视图</span></a></li>
-        <li><a href="#delete"><span class="i">05</span><span>逻辑删除与迁移</span></a></li>
-        <li><a href="#impact"><span class="i">06</span><span>改动前的检查清单</span></a></li>
-        <li><a href="#extend"><span class="i">07</span><span>怎么扩展</span></a></li>
+        <li><a href="#quote"><span class="i">04</span><span>引句证据链：什么叫可引用</span></a></li>
+        <li><a href="#views"><span class="i">05</span><span>归属字段与只读视图</span></a></li>
+        <li><a href="#delete"><span class="i">06</span><span>逻辑删除与迁移</span></a></li>
+        <li><a href="#impact"><span class="i">07</span><span>改动前的检查清单</span></a></li>
+        <li><a href="#extend"><span class="i">08</span><span>怎么扩展</span></a></li>
       </ol>
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 
     <article class="prose">
       <details class="toc-mobile">
-        <summary>本页目录 · 7 节</summary>
+        <summary>本页目录 · 8 节</summary>
         <ol>
         <li><a href="#principles"><span class="i">01</span><span>建模原则：判断是主表</span></a></li>
         <li><a href="#tables"><span class="i">02</span><span>核心表</span></a></li>
         <li><a href="#item"><span class="i">03</span><span>一条判断的字段</span></a></li>
-        <li><a href="#views"><span class="i">04</span><span>归属字段与只读视图</span></a></li>
-        <li><a href="#delete"><span class="i">05</span><span>逻辑删除与迁移</span></a></li>
-        <li><a href="#impact"><span class="i">06</span><span>改动前的检查清单</span></a></li>
-        <li><a href="#extend"><span class="i">07</span><span>怎么扩展</span></a></li>
+        <li><a href="#quote"><span class="i">04</span><span>引句证据链：什么叫可引用</span></a></li>
+        <li><a href="#views"><span class="i">05</span><span>归属字段与只读视图</span></a></li>
+        <li><a href="#delete"><span class="i">06</span><span>逻辑删除与迁移</span></a></li>
+        <li><a href="#impact"><span class="i">07</span><span>改动前的检查清单</span></a></li>
+        <li><a href="#extend"><span class="i">08</span><span>怎么扩展</span></a></li>
         </ol>
       </details>
 
@@ -113,6 +115,7 @@
           <div class="flow-step"><b>TRAJECTORY</b><strong>轨迹</strong><span>append-only 变更日志。</span></div>
         </div>
         <p>这条原则决定了几件事：删除论文不能级联删除判断；判断的状态变更必须写轨迹；论文元数据可以刷新，判断的出处快照要保留。</p>
+        <p>领域会话里读写（<code>save_note</code> / <code>save_item</code>）到的论文会自动挂进当前领域（<code>role=read</code>，已有角色不动）；只读不写不挂，避免先读后拒的候选污染论文库。挂载失败只记日志，不回滚已落盘的笔记或条目。</p>
       
       </section>
 
@@ -126,7 +129,7 @@
             <tbody>
               <tr><td><b>domains</b></td><td>领域与归属</td><td>id、name、owner_id、status</td><td>管理员 / 工作区</td></tr>
               <tr><td><b>papers</b></td><td>论文元数据与文件</td><td>arxiv_id、doi、openalex_id、title、pdf_path、section_map</td><td>扫描 / 工具</td></tr>
-              <tr><td><b>items</b></td><td>判断主表</td><td>id、domain_id、claim、status、paper_id、section、quote、locator_state</td><td>agent / 人</td></tr>
+              <tr><td><b>items</b></td><td>判断主表</td><td>id、domain_id、claim、status、paper_id、section、quote、quote_verified、locator_state</td><td>agent / 人</td></tr>
               <tr><td><b>decisions</b></td><td>本周决定</td><td>id、week、text、status、evidence_item_ids</td><td>agent 起草 / 人裁决</td></tr>
               <tr><td><b>tasks</b></td><td>派活与运行状态</td><td>id、domain_id、prompt、status、created_by、last_step</td><td>人 / runner</td></tr>
               <tr><td><b>trajectory_events</b></td><td>判断变更日志</td><td>id、item_id、action、reason、actor、created_at</td><td>只追加</td></tr>
@@ -138,7 +141,7 @@
         </div>
         <div class="callout">
           <span class="k">出处快照</span>
-          <p><code>items</code> 上的 <code>section</code> 与 <code>quote</code> 是判断发表时的快照，不随论文版本静默更新。论文换版后，应显式标记「出处需复核」，而不是自动覆盖。</p>
+          <p><code>items</code> 上的 <code>section</code> 与 <code>quote</code> 是判断发表时的快照，不随论文版本静默更新。论文换版后，应显式标记「出处需复核」，而不是自动覆盖。<code>quote</code> 与 <code>quote_verified</code> 是只加列的结果：老库启动时由迁移自动补列，旧条目照常可读。</p>
         </div>
       
       </section>
@@ -153,7 +156,8 @@
               <tr><td><b>claim</b></td><td>判断本身，一句话</td><td>不写过程，不写「本文认为」</td></tr>
               <tr><td><b>status</b></td><td>候选 / 确认 / 推翻 / 搁置</td><td>只能经裁决或轨迹变更</td></tr>
               <tr><td><b>paper_id</b></td><td>主依据论文</td><td>可空；空时显示「未定位」</td></tr>
-              <tr><td><b>section / quote</b></td><td>节锚点与引句</td><td>发表时快照；不做自动补全</td></tr>
+              <tr><td><b>section / quote</b></td><td>节锚点与逐字引句</td><td>发表时快照；不做自动补全</td></tr>
+              <tr><td><b>quote_verified</b></td><td>引句是否已在对应节校验命中</td><td>1 = 已核对；0 = 无引句或已失效</td></tr>
               <tr><td><b>locator_state</b></td><td>已定位 / 未定位 / 需复核</td><td>未定位不可直接引用</td></tr>
               <tr><td><b>domain_id</b></td><td>归属领域</td><td>不可为空；跨领域用多条目</td></tr>
               <tr><td><b>owner_id</b></td><td>起草者</td><td>agent 或人，均可审计</td></tr>
@@ -161,11 +165,46 @@
           </table>
         </div>
         <p>字段设计里没有「置信度」。置信度不能替代人裁决，反而会让候选态看起来像已定稿。不确定性通过 <code>locator_state</code> 与候选状态表达。</p>
+        <p>引句也不是转述：发表时只接受与所报节逐字命中的连续片段；模型写不出合规引句时，宁可 <code>located=false</code>，也不允许编造。</p>
+      
+      </section>
+
+      <section id="quote">
+        <h2><span class="n">04</span>引句证据链：什么叫可引用</h2>
+
+        <p>「有节锚点」只证明判断挂在哪一节，还不证明那句话在原文里。引句证据链把这一步收紧：<code>located=true</code> 的条目必须带一段<strong>逐字引句</strong>，发表与修改时都按归一化规则在所称节的解析正文里做连续子串匹配。</p>
+        <h3>数据只加两列</h3>
+        <div class="dtable">
+          <table>
+            <thead><tr><th>列</th><th>含义</th><th>约束</th></tr></thead>
+            <tbody>
+              <tr><td><b>quote</b></td><td>逐句引句，发表时写入</td><td>可为空：旧条目或 <code>located=false</code></td></tr>
+              <tr><td><b>quote_verified</b></td><td>是否在对应节里校验命中</td><td>1 = 已核对；0 = 无引句或校验已失效</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>老库启动时由迁移自动补列，旧条目照常可读、引句为空；<code>item_history</code> 不加列——轨迹轴记的是判断的变更，引句是依据，不参与判断历史。</p>
+        <h3>校验规则</h3>
+        <ol>
+          <li><b>归一化后匹配</b>：Unicode NFKC、去零宽字符、弯引号归一、PDF 断行连字符与空白折叠、ASCII 大小写折叠。</li>
+          <li><b>长度 12–300 字符</b>：太短证明不了论断（如「See Figure 2」），太长等于把整节贴进来。</li>
+          <li><b>必须在所报节</b>：拿别的节或摘要冒充会被拒绝；<code>abstract</code> / <code>摘要</code> 别名从产物的摘要字段校验。</li>
+          <li><b>只接受连续一段</b>：含 <code>…</code> / <code>...</code> 的多段拼接直接拒绝。</li>
+        </ol>
+        <p>校验不过整条不写，返回 <code>invalid_args</code> 并附该节开头 200 字，模型可自行对齐后重发；通过才写 <code>quote_verified=1</code>。</p>
+        <h3>修改与旧条目</h3>
+        <ul>
+          <li><b>改引句</b>：按生效后的 <code>section</code> 重新校验，通过才保留已核对状态。</li>
+          <li><b>改节但没带引句</b>：引句随旧节失效，自动清空。</li>
+          <li><b>改判断</b>：默认保留引句；<code>quote_verified</code> 只证明句子在原文里，不证明它支撑新判断。</li>
+          <li><b>改为未定位</b>：清空节与引句；旧条目显式标「无引句（旧条目）」，不隐藏。</li>
+        </ul>
+        <p>证据等级在响应里派生、不落列：<code>quote_verified=1</code> → <code>verified_quote</code>，<code>anchor_located=1</code> → <code>section_only</code>，否则 <code>unlocated</code>。前端据此显示徽章，便于度量「可免核对比例」。</p>
       
       </section>
 
       <section id="views">
-        <h2><span class="n">04</span>归属字段与只读视图</h2>
+        <h2><span class="n">05</span>归属字段与只读视图</h2>
 
         <p>界面不直接拼装表，而是读视图。当前有三类只读视图：</p>
         <div class="split2">
@@ -177,7 +216,7 @@
           <div class="panel">
             <span class="k">v_domain_items</span>
             <h4>领域条目流</h4>
-            <p>判断 + 出处 + 当前状态；只包含未逻辑删除的条目。</p>
+            <p>判断 + 出处 + 引句与核对态 + 当前状态；只包含未逻辑删除的条目。</p>
           </div>
           <div class="panel">
             <span class="k">v_channel_health</span>
@@ -190,12 +229,13 @@
       </section>
 
       <section id="delete">
-        <h2><span class="n">05</span>逻辑删除与迁移</h2>
+        <h2><span class="n">06</span>逻辑删除与迁移</h2>
 
         <ul>
           <li><b>逻辑删除</b>：<code>deleted_at</code> 非空即视为删除；视图过滤，轨迹轴不删除。</li>
           <li><b>论文删除</b>：不级联删除判断；判断保留出处快照，标记「依据已移除」。</li>
           <li><b>状态回退</b>：不直接改 <code>status</code>；写一条轨迹事件，再由事件派生当前状态。</li>
+          <li><b>引句变更</b>：v1 不写 <code>item_history</code>；清空引句只把 <code>quote_verified</code> 归 0，判断历史不受影响。</li>
           <li><b>迁移</b>：只增不删字段；旧字段保留读兼容，写路径先切新字段。</li>
         </ul>
         <div class="callout warn">
@@ -206,7 +246,7 @@
       </section>
 
       <section id="impact">
-        <h2><span class="n">06</span>改动前的检查清单</h2>
+        <h2><span class="n">07</span>改动前的检查清单</h2>
 
         <ol>
           <li>新字段是否有明确的写入方与读取方？没有读取方的字段不加。</li>
@@ -220,7 +260,7 @@
       </section>
 
       <section id="extend">
-        <h2><span class="n">07</span>怎么扩展</h2>
+        <h2><span class="n">08</span>怎么扩展</h2>
 
         <p>扩展数据模型时，优先加<strong>事件</strong>而不是加<strong>状态字段</strong>。事件可以回放，状态字段只能覆盖。只有当查询性能确实需要时，才从事件派生冗余字段，并保证它可以重建。</p>
         <blockquote>能重建的，才允许冗余；不能重建的，必须保留原事件。</blockquote>
@@ -242,7 +282,7 @@
         </div>
       </aside>
 
-      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-19，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
     </article>
   </div>
 </main>

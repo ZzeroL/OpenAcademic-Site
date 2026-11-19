@@ -52,15 +52,15 @@
           <h1>现在缺什么，<br><span class="grad">接下来做什么。</span></h1>
           <p class="lead">主链路已经可用，工作区与扫描通道都接上了后端；最大的功能缺口是阅读页与 LaTeX 精确模式，最大的工程债是验证。这是一份面向使用者的现状清单，不是承诺表。</p>
           <div class="docmeta">
-            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>更新 2026-11-19</span><span class="dot"></span>
             <span>约 9 分钟</span><span class="dot"></span>
-            <span class="state">持续更新</span>
+            <span class="state">持续更新 · v1.1.1</span>
           </div>
         </div>
         <aside class="doc-facts" aria-label="页面要点">
           <div><b>4</b><span>最大功能缺口</span></div>
-          <div><b>8</b><span>已落地能力</span></div>
-          <div><b>2026-11-13</b><span>状态口径</span></div>
+          <div><b>12</b><span>已落地能力</span></div>
+          <div><b>v1.1.1</b><span>当前版本 · 2026-11-19</span></div>
         </aside>
       </div>
     </div>
@@ -81,7 +81,7 @@
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 
@@ -102,7 +102,7 @@
       <section id="status">
         <h2><span class="n">01</span>一句话现状</h2>
 
-        <p class="lead-in">从派活到回写，闭环已经能跑；从「人也能读」到「精确研究」，还差一层。</p>
+        <p class="lead-in">从派活到回写，闭环已经能跑；1.1.0 把工作区与扫描接进主链，1.1.1 补上引句证据链与领域自动入库；从「人也能读」到「精确研究」，还差一层。</p>
         <div class="strip">
           <div><b>100%</b><span>主链路</span><em>可用</em></div>
           <div><b>100%</b><span>工作区</span><em>已接后端</em></div>
@@ -119,12 +119,16 @@
         <ul>
           <li><b>收件箱 / 本周清单 / 领域条目流</b>共用一份工作区状态，路由切换不丢操作。</li>
           <li><b>派活落库</b>：<code>tasks</code> + 进程内队列，重启后 <code>queued</code> 自动恢复。</li>
-          <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻。</li>
+          <li><b>agent 发表判断</b>：精读时经 <code>save_item</code> 写入领域，候选态由人确认或推翻；<code>located=true</code> 必须带逐字引句。</li>
+          <li><b>引句证据链</b>：发表 / 修改时按归一化规则在所称节正文里核对引句，<code>quote_verified=1</code> 才标「引句已核对」；徽章区分「引句已核对 / 仅节锚点 / 未定位」。</li>
+          <li><b>领域自动入库</b>：领域会话里 <code>save_note</code> / <code>save_item</code> 写到的论文自动挂进领域（<code>role=read</code>，已有角色不动）。</li>
+          <li><b>工作区真值重取</b>：进入主视图即重取工作区，会话续跑发表的判断不再等「确认采用」才出现在清单。</li>
+          <li><b>已采用可回看</b>：收件箱「已处理 → 已采用」的条目带执行现场链接，采用后仍能回到那次派活的会话。</li>
           <li><b>关键词通道</b>：逐领域跑 arXiv，命中 / 失败 / 限流写 <code>channel_runs</code>。</li>
           <li><b>引用链通道</b>：OpenAlex 前向「本周谁引了种子」与后向「种子引了谁」。</li>
           <li><b>扫描候选</b>：落 <code>scan_candidates</code>，按领域 + 周 + 标识去重，可一键派活。</li>
           <li><b>三标识对齐</b>：arXiv → OpenAlex 实测 100/100，引用链本期做。</li>
-          <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。</li>
+          <li><b>pytest 覆盖</b>：记忆层、领域容器、上下文回收、工作区模型、引句契约、通道与 PDF 读取。</li>
         </ul>
         <div class="callout ok">
           <span class="k">可验证的说法</span>
@@ -196,6 +200,7 @@
           <li>前端 IA：登录 → 交活 → 四态回写</li>
           <li>上下文回收 B1–B8</li>
           <li>一次真机精读端到端</li>
+          <li>引句校验与 PATCH 矩阵</li>
           <li>LaTeX 产物与节边界一致性</li>
         </ul>
         <div class="callout">
@@ -232,7 +237,7 @@
           <table>
             <thead><tr><th>方向</th><th>落点</th><th>为什么现在做</th></tr></thead>
             <tbody>
-              <tr><td><b>可追溯综述</b></td><td><code>paper_id + section + quote</code></td><td>判断已经落库，差的是聚合与排版</td></tr>
+              <tr><td><b>可追溯综述</b></td><td><code>paper_id + section + quote</code></td><td>单条引句已落地，差聚合与排版</td></tr>
               <tr><td><b>评估</b></td><td>citation precision / hallucination rate</td><td>没有指标就无法证明「可核对」</td></tr>
               <tr><td><b>多源检索与图谱</b></td><td>Semantic Scholar / PubMed / 引文图谱</td><td>单 arXiv 覆盖不了邻近工作</td></tr>
               <tr><td><b>RAG</b></td><td>可配置嵌入 / rerank / 来源标注</td><td>笔记检索已有索引，缺可调参数</td></tr>
@@ -258,7 +263,7 @@
         </div>
       </aside>
 
-      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-19，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
     </article>
   </div>
 </main>

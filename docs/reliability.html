@@ -52,7 +52,7 @@
           <h1>让失败有位置，<br><span class="grad">让清单照常交付。</span></h1>
           <p class="lead">限流三层、上下文分层压缩、工具结果策略、HITL 审批，以及哪些失败必须显式上界面。可靠性不是「永不失败」，而是失败之后系统还知道自己在哪一步。</p>
           <div class="docmeta">
-            <span>更新 2026-11-13</span><span class="dot"></span>
+            <span>更新 2026-11-19</span><span class="dot"></span>
             <span>约 9 分钟</span><span class="dot"></span>
             <span class="state">已发布</span>
           </div>
@@ -81,7 +81,7 @@
       <div class="toc-block">
         <p class="toc-k">文档索引</p>
         <a href="../docs.html"><b>全部 15 篇</b><span>DOCS / INDEX</span></a>
-        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-13</span></a>
+        <a href="../roadmap.html"><b>已知限制与规划</b><span>STATUS / 2026-11-19</span></a>
       </div>
     </aside>
 
@@ -192,6 +192,7 @@
               <tr><td><b>通道 429 / 超时</b></td><td><code>channel_runs.status</code></td><td class="ok">是</td><td>下周重跑，或换源</td></tr>
               <tr><td><b>PDF 缺页 / 节边界异常</b></td><td>工具结果 + 判断标记</td><td class="ok">是</td><td>换版本或人工核对</td></tr>
               <tr><td><b>引句定位失败</b></td><td>「未定位」</td><td class="ok">是</td><td>不可直接引用</td></tr>
+              <tr><td><b>引句校验不通过</b></td><td><code>invalid_args</code> + 该节开头</td><td class="ok">是（回给模型）</td><td>按原文重发，不落库</td></tr>
               <tr><td><b>任务超轮数</b></td><td>待验 + 最后一步</td><td class="ok">是</td><td>拆小任务重派</td></tr>
               <tr><td><b>单次工具重试</b></td><td>工具轨迹</td><td class="no">否</td><td>无需动作</td></tr>
               <tr><td><b>内部调试日志</b></td><td>日志文件</td><td class="no">否</td><td>无需动作</td></tr>
@@ -252,7 +253,7 @@
         </div>
       </aside>
 
-      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-13，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
+      <p class="doc-note"><b>口径</b>本页口径截至 2026-11-19，随代码与实测更新；涉及字段与接口时，以仓库中的实现为准。</p>
     </article>
   </div>
 </main>

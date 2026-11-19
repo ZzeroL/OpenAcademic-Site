@@ -207,7 +207,7 @@ const development = {
     "日常提交走 Gitee，GitHub 收口同步；两边内容一致。分支、提交规范、PR 检查清单、测试与前端构建都服务于同一件事：让改动可核对。",
   desc: "OpenAcademic 开发与发版流程：分支、提交规范、PR 检查清单、测试、前端构建与 Gitee / GitHub 双仓同步。",
   card: "分支、PR 清单、测试与双仓同步。",
-  updated: "2026-11-13",
+  updated: "2026-11-19",
   read: "7 分钟",
   status: "已发布",
   facts: [
@@ -286,7 +286,7 @@ chore(ci): 增加前端 typecheck 门禁</pre>
       num: "04",
       title: "测试",
       html: `
-        <p>pytest 覆盖记忆层、领域容器、上下文回收、工作区模型、通道与 PDF 读取。前端目前以构建与人工验证为主。</p>
+        <p>pytest 覆盖记忆层、领域容器、上下文回收、工作区模型、引句契约、通道与 PDF 读取。前端目前以构建与人工验证为主。</p>
         <div class="split2">
           <div class="panel">
             <span class="k">优先补测</span>
@@ -340,7 +340,7 @@ chore(ci): 增加前端 typecheck 门禁</pre>
           <li>功能分支合入 <code>main</code>，等待检查全绿。</li>
           <li>在 Gitee 打 tag；同步到 GitHub，保持两边 commit 一致。</li>
           <li>CI 出前端包；按<a href="./deployment.html">服务器部署与升级</a>发布。</li>
-          <li>发布说明写：迁移、配置变更、回滚注意、验证结果。</li>
+          <li>发布说明写：迁移、配置变更、回滚注意、验证结果；同时同步 <code>CHANGELOG.md</code> 的版本段与已知限制。</li>
         </ol>
         <p>双仓同步优先用 <code>git push --mirror</code> 或等价方式，不手工复制文件。若出现分叉，先对齐再发布，不要在两个远端各改一版。</p>
       `
